@@ -1,4 +1,4 @@
-# Surfes
+# Surfes [![Build Status](https://travis-ci.org/kokabe2/surfes.svg?branch=master)](https://travis-ci.org/kokabe2/surfes)
 
 Surfes is a simple, universal, reusable framework for embedded systems.
 
