@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
-    ${CMAKE_CURRENT_LIST_DIR}/common/spy_runtime_error.c
-    ${CMAKE_CURRENT_LIST_DIR}/infrastructures/drivers/led_driver_test.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/infrastructures/drivers/ssd_driver_test.cpp
+    common/simple_list_test.cpp
+    common/spy_runtime_error.c
+    infrastructures/drivers/led_driver_test.cpp
+    infrastructures/drivers/ssd_driver_test.cpp
 )
 target_include_directories(gtests
   PUBLIC
@@ -12,11 +13,11 @@ target_include_directories(gtests
 )
 target_link_libraries(gtests
   gtest_main
-  surfes
+  surfes_boot
 )
 add_test(
   NAME
-    surfes_test
+    surfes_boot_test
   COMMAND
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/gtests
 )

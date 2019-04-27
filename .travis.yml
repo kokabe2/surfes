@@ -5,6 +5,7 @@ compiler:
   - gcc++
 
 script:
+  - cd boot
   - mkdir -p build
   - cd build
   - cmake ..

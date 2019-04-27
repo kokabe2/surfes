@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef SRC_INFRASTRUCTURES_DRIVERS_LED_DRIVER_H_
-#define SRC_INFRASTRUCTURES_DRIVERS_LED_DRIVER_H_
+#ifndef BOOT_SRC_INFRASTRUCTURES_DRIVERS_LED_DRIVER_H_
+#define BOOT_SRC_INFRASTRUCTURES_DRIVERS_LED_DRIVER_H_
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -17,4 +17,4 @@ void LedDriver_TurnAllOff(LedDriver self);
 bool LedDriver_IsOn(LedDriver self, int led_number);
 bool LedDriver_IsOff(LedDriver self, int led_number);
 
-#endif  // SRC_INFRASTRUCTURES_DRIVERS_LED_DRIVER_H_
+#endif  // BOOT_SRC_INFRASTRUCTURES_DRIVERS_LED_DRIVER_H_
