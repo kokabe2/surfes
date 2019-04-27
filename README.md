@@ -2,18 +2,97 @@
 
 Surfes is a simple, universal, reusable framework for embedded systems.
 
-## How to use this project
+## High level architecture
 
-### Build
+### Package / Component
 
-```bash
-$ cd surfes
-$ mkdir build
-$ cd build
-$ cmake ..
-$ make
+```plantuml
+@startuml component diagram
+skinparam {
+    defaultFontName Ricty Diminished
+    monochrome true
+}
+
+package "boot" as boot_package{
+    [boot]
+    [script]
+}
+
+package "core" as core_package{
+    [kernel]
+    [init]
+    [utility]
+    [foo]
+    [bar]
+    [baz]
+}
+
+[init] -[hidden]do--> [kernel]
+[utility] -[hidden]l--> [kernel]
+
+package "updater" as updater_package{
+    [updater]
+}
+
+package "qux" as qux_package{
+    [qux]
+}
+
+package "quux" as quux_package{
+    [quux]
+}
+
+boot_package -[hidden]d-> updater_package
+updater_package -[hidden]d-> core_package
+core_package -[hidden]le-> qux_package
+core_package -[hidden]le-> quux_package
+
+@enduml
 ```
 
-### Run the tests
+| Package             | Purpose                             |
+| ------------------- | ----------------------------------- |
+| boot                | Statup the system                   |
+| updater             | Update components(files)            |
+| core                | Provide main features of the system |
+| qux / quux / others | User-defined                        |
 
-Either using `ctest` or directly using `bin/gtests` in the build directory.
+### State
+
+```plantuml
+@startuml state machine diagram
+skinparam {
+    defaultFontName Ricty Diminished
+    monochrome true
+}
+
+[*] --> boot
+boot -left-> updater : Runlevel 1
+updater --> boot : Return
+boot --> core : Runlevel 2 to 5
+core --> boot : Return
+boot --> qux : Runlevel 2 to 5
+qux --> boot : Return
+boot --> quux : Runlevel 2 to 5
+quux --> boot : Return
+boot --> boot : Runlevel 6
+boot -up-> [*] : Runlevel 0
+
+@enduml
+```
+
+#### Runlevel
+
+A runlevel is a mode of operation, and it defines the state of the machine after boot.
+Only one runlevel is executed on startup; run levels could be executed one after another.
+Default runlevel is 3.
+
+| ID  | Name           | Description                                              |
+| --- | -------------- | -------------------------------------------------------- |
+| 0   | Halt           | Shuts down the system, power-off if hardware supports it |
+| 1   | Recovery mode  | Mode for downloading and recovering files                |
+| 2   | Reserved       | Currently unused                                         |
+| 3   | User mode      | Starts the system normally                               |
+| 4   | Developer mode | Same as runlevel 3 + x                                   |
+| 5   | Reserved       | Currently unused                                         |
+| 6   | Reboot         | Reboots the system                                       |
