@@ -8,7 +8,7 @@ extern "C" {
 }
 
 typedef struct {
-  uint8_t padding[16];
+  char padding[16];
 } InstanceHelperDummyStruct, *InstanceHelperDummy;
 
 class InstanceHelperTest : public ::testing::Test {
