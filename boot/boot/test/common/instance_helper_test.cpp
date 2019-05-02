@@ -4,7 +4,7 @@
 
 extern "C" {
 #include "common/instance_helper.h"
-#include "spy_runtime_error.h"
+#include "common/spy_runtime_error.h"
 }
 
 typedef struct {

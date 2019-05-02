@@ -4,7 +4,7 @@
 
 extern "C" {
 #include "common/modular_sum.h"
-#include "spy_runtime_error.h"
+#include "common/spy_runtime_error.h"
 }
 
 class ModularSumTest : public ::testing::Test {
