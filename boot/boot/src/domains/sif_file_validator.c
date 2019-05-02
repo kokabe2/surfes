@@ -2,7 +2,7 @@
 // This software is released under the MIT License, see LICENSE.
 #include "sif_file_validator.h"
 
-#include "stdbool.h"
+#include <stdbool.h>
 
 #include "common/runtime_error.h"
 #include "sif_header.h"
