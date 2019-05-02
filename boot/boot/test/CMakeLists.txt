@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
-    common/simple_list_test.cpp
     common/spy_runtime_error.c
     infrastructures/drivers/led_driver_test.cpp
     infrastructures/drivers/ssd_driver_test.cpp

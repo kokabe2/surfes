@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_library(surfes_boot "")
 target_sources(surfes_boot
   PRIVATE
-    common/simple_list.c
     infrastructures/drivers/led_driver.c
     infrastructures/drivers/ssd_driver.c
 )

@@ -1,7 +1,7 @@
 // Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef BOOT_SRC_INFRASTRUCTURES_DRIVERS_SSD_DRIVER_H_
-#define BOOT_SRC_INFRASTRUCTURES_DRIVERS_SSD_DRIVER_H_
+#ifndef BOOT_BOOT_SRC_INFRASTRUCTURES_DRIVERS_SSD_DRIVER_H_
+#define BOOT_BOOT_SRC_INFRASTRUCTURES_DRIVERS_SSD_DRIVER_H_
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -19,4 +19,4 @@ bool SsdDriver_IsOff(SsdDriver self, int segment_number);
 void SsdDriver_Set(SsdDriver self, uint8_t encoding);
 uint8_t SsdDriver_Get(SsdDriver self);
 
-#endif  // BOOT_SRC_INFRASTRUCTURES_DRIVERS_SSD_DRIVER_H_
+#endif  // BOOT_BOOT_SRC_INFRASTRUCTURES_DRIVERS_SSD_DRIVER_H_
