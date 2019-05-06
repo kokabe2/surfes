@@ -15,7 +15,7 @@ skinparam {
 
 package "boot" as boot_package{
     [boot]
-    [script]
+    [config]
 }
 
 package "core" as core_package{
@@ -34,28 +34,17 @@ package "updater" as updater_package{
     [updater]
 }
 
-package "qux" as qux_package{
-    [qux]
-}
-
-package "quux" as quux_package{
-    [quux]
-}
-
 boot_package -[hidden]d-> updater_package
 updater_package -[hidden]d-> core_package
-core_package -[hidden]le-> qux_package
-core_package -[hidden]le-> quux_package
 
 @enduml
 ```
 
-| Package             | Purpose                             |
-| ------------------- | ----------------------------------- |
-| boot                | Statup the system                   |
-| updater             | Update components(files)            |
-| core                | Provide main features of the system |
-| qux / quux / others | User-defined                        |
+| Package | Purpose                             |
+| ------- | ----------------------------------- |
+| boot    | Statup the system                   |
+| updater | Update components(files)            |
+| core    | Provide main features of the system |
 
 ### State
 
@@ -71,10 +60,6 @@ boot -left-> updater : Runlevel 1
 updater --> boot : Return
 boot --> core : Runlevel 2 to 5
 core --> boot : Return
-boot --> qux : Runlevel 2 to 5
-qux --> boot : Return
-boot --> quux : Runlevel 2 to 5
-quux --> boot : Return
 boot --> boot : Runlevel 6
 boot -up-> [*] : Runlevel 0
 
