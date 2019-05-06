@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 
-enum SifFileValidatorError {
+enum SifFileValidationError {
   kSfvNoError = 0,
   kSfvMagicNumberError,
   kSfvClassError,
