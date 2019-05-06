@@ -5,16 +5,14 @@
 
 #include <stdint.h>
 
-typedef struct {
-  int size;
-  uint64_t version;
-  int (*Execute)(void);
-  int (*Write)(int id, const void *data);
-  int (*Read)(int id, void *data);
-  int (*Control)(int id, void *data);
-} SifFileStruct, *SifFile;
+typedef struct SifFileStruct *SifFile;
 
 SifFile SifFile_Open(uintptr_t file_address);
+uint64_t SifFile_GetVersion(SifFile self);
+int SifFile_Execute(SifFile self, int runlevel);
+int SifFile_Write(SifFile self, int id, const void *data);
+int SifFile_Read(SifFile self, int id, void *data);
+int SifFile_Control(SifFile self, int id, void *data);
 void SifFile_Close(SifFile *self);
 
 #endif  // BOOT_BOOT_SRC_DOMAINS_SIF_FILE_H_

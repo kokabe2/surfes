@@ -2,85 +2,101 @@
 // This software is released under the MIT License, see LICENSE.
 #include "sif_file.h"
 
+#include <stdbool.h>
 #include <stddef.h>
-#include <stdlib.h>
 
 #include "common/instance_helper.h"
+#include "common/runtime_error.h"
 #include "sif_file_validator.h"
 #include "sif_header.h"
 
-typedef struct {
-  SifFileStruct base;
-  void (*Close)(void);
-} SifFilePrivateStruct, *SifFilePrivate;
-
-static int default_Execute(void) { return 0; }
-static int default_Write(int id, const void* data) { return 0; }
-static int default_Read(int id, void* data) { return 0; }
-static int default_Control(int id, void* data) { return 0; }
-static void InstallDefalutInterface(SifHeader header, SifFilePrivate self) {
-  self->base.size = header->file_size;
-  self->base.version = header->file_version;
-  self->base.Execute = default_Execute;
-  self->base.Write = default_Write;
-  self->base.Read = default_Read;
-  self->base.Control = default_Control;
-}
-
-typedef int (*executor)(void);
-static void UpdateEntryPointIfNeeded(SifHeader header, SifFilePrivate self) {
-  if (header->entry_point) self->base.Execute = (executor)header->entry_point;
-}
-
+typedef int (*executor)(int);
 typedef struct {
   int (*Open)(void);
   void (*Close)(void);
   int (*Write)(int id, const void* data);
   int (*Read)(int id, void* data);
   int (*Control)(int id, void* data);
-} * PrimaryApiTable;
-static void UpdatePrimaryApiIfNeeded(SifHeader header, SifFilePrivate self) {
-  PrimaryApiTable api_table = (PrimaryApiTable)header->primary_api_address;
-  if (!api_table) return;
-  if (api_table->Write) self->base.Write = api_table->Write;
-  if (api_table->Read) self->base.Read = api_table->Read;
-  if (api_table->Control) self->base.Control = api_table->Control;
-  if (api_table->Close) self->Close = api_table->Close;
-}
+} * PrimaryApi;
 
-static void InstallInterface(SifHeader header, SifFilePrivate self) {
-  InstallDefalutInterface(header, self);
-  UpdateEntryPointIfNeeded(header, self);
-  UpdatePrimaryApiIfNeeded(header, self);
+typedef struct SifFileStruct {
+  SifHeader header;
+  executor Execute;
+  PrimaryApi primary_api;
+} SifFileStruct;
+
+static SifFile NewInstance(SifHeader header) {
+  SifFile self = (SifFile)InstanceHelper_New(sizeof(SifFileStruct));
+  if (self) {
+    self->header = header;
+    self->Execute = (executor)header->entry_point;
+    self->primary_api = (PrimaryApi)header->primary_api_address;
+  }
+
+  return self;
 }
 
 static int CallOpenIfNeeded(SifHeader header) {
-  PrimaryApiTable api_table = (PrimaryApiTable)header->primary_api_address;
-  if (api_table && api_table->Open) return api_table->Open();
+  PrimaryApi primary_api = (PrimaryApi)header->primary_api_address;
+  if (primary_api && primary_api->Open) return primary_api->Open();
+
   return 0;
 }
 
 SifFile SifFile_Open(uintptr_t file_address) {
   if (SifFileValidator_Validate(file_address)) return NULL;
+  if (CallOpenIfNeeded((SifHeader)file_address)) return NULL;
 
-  SifFilePrivate self =
-      (SifFilePrivate)InstanceHelper_New(sizeof(SifFilePrivateStruct));
-  if (!self) return NULL;
-
-  SifHeader header = (SifHeader)file_address;
-  InstallInterface(header, self);
-  if (CallOpenIfNeeded(header)) InstanceHelper_Delete(&self);
-
-  return (SifFile)self;
+  return NewInstance((SifHeader)file_address);
 }
 
-static void CallCloseIfNeeded(SifFilePrivate self) {
-  if (self && self->Close) self->Close();
+static void CallCloseIfNeeded(SifFile self) {
+  if (self->primary_api && self->primary_api->Close) self->primary_api->Close();
 }
 
 void SifFile_Close(SifFile* self) {
-  if (!self) return;
+  if (!self || !*self) return;
 
-  CallCloseIfNeeded((SifFilePrivate)*self);
+  CallCloseIfNeeded(*self);
   InstanceHelper_Delete(self);
+}
+
+static bool IsValid(SifFile self) {
+  if (self) return true;
+
+  RUNTINE_ERROR("SIF File: null instance", 0);
+  return false;
+}
+
+uint64_t SifFile_GetVersion(SifFile self) {
+  if (!IsValid(self)) return 0;
+
+  return self->header->file_version;
+}
+
+int SifFile_Execute(SifFile self, int runlevel) {
+  if (IsValid(self) && self->Execute) return self->Execute(runlevel);
+
+  return 0;
+}
+
+int SifFile_Write(SifFile self, int id, const void* data) {
+  if (IsValid(self) && self->primary_api && self->primary_api->Write)
+    return self->primary_api->Write(id, data);
+
+  return 0;
+}
+
+int SifFile_Read(SifFile self, int id, void* data) {
+  if (IsValid(self) && self->primary_api && self->primary_api->Read)
+    return self->primary_api->Read(id, data);
+
+  return 0;
+}
+
+int SifFile_Control(SifFile self, int id, void* data) {
+  if (IsValid(self) && self->primary_api && self->primary_api->Control)
+    return self->primary_api->Control(id, data);
+
+  return 0;
 }
