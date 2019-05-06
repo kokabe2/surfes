@@ -3,8 +3,6 @@
 #ifndef BOOT_BOOT_SRC_COMMON_INSTANCE_HELPER_H_
 #define BOOT_BOOT_SRC_COMMON_INSTANCE_HELPER_H_
 
-#include <stddef.h>
-
 void* InstanceHelper_New(int size);
 void InstanceHelper_Del(void** instance);
 #define InstanceHelper_Delete(x) InstanceHelper_Del((void**)x)
