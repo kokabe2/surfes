@@ -4,13 +4,14 @@
 
 #include <stdbool.h>
 
+#include "common/modular_sum.h"
 #include "common/runtime_error.h"
 #include "sif_header.h"
 
 static bool IsSifFile(SifHeader header) {
-  const uint8_t kMagicNumber[] = {0x7F, 'S', 'I', 'F'};
-  for (int i = 0; i < sizeof(kMagicNumber); ++i)
-    if (header->identification[i] != kMagicNumber[i]) {
+  uint8_t magic_number[] = {0x7F, 'S', 'I', 'F'};
+  for (int i = 0; i < sizeof(magic_number); ++i)
+    if (header->identification[i] != magic_number[i]) {
       RUNTINE_ERROR("SIF File Validator: non SIF file", i);
       return false;
     }
@@ -35,18 +36,25 @@ static bool IsValidVersion(SifHeader header) {
   return false;
 }
 
+static uint16_t headerSize(uint8_t sif_class) {
+  uint16_t header_size[] = {kSifHeaderSizeInClass32, kSifHeaderSizeInClass64};
+
+  return header_size[sif_class - 1];
+}
+
 static bool IsValidHeaderSize(SifHeader header) {
-  const uint16_t kHeaderSize[] = {kSifHeaderSizeInClass32,
-                                  kSifHeaderSizeInClass64};
   uint8_t sif_class = header->identification[kSifIdClass];
-  if (header->header_size == kHeaderSize[sif_class - 1]) return true;
+  if (header->header_size == headerSize(sif_class)) return true;
 
   RUNTINE_ERROR("SIF File Validator: invalid header size", header->header_size);
   return false;
 }
 
+static bool IsMultiplesOfFour(uint32_t size) { return (size % 4) == 0; }
+
 static bool IsValidFileSize(SifHeader header) {
-  if (header->file_size >= header->header_size && !(header->file_size % 4))
+  if (header->file_size >= header->header_size &&
+      IsMultiplesOfFour(header->file_size))
     return true;
 
   RUNTINE_ERROR("SIF File Validator: invalid file size", header->file_size);
@@ -61,13 +69,10 @@ static bool HasFileAddress(SifHeader header) {
 }
 
 static bool HasNoDataCorruption(SifHeader header) {
-  uint32_t sum = 0;
-  int loop = header->file_size / sizeof(uint32_t);
-  uint32_t* data = (uint32_t*)header;
-  for (int i = 0; i < loop; ++i) sum += data[i];
-  if (!sum) return true;
+  if (ModularSum_Verify((uint32_t*)header->file_address, header->file_size))
+    return false;
 
-  return false;
+  return true;
 }
 
 typedef bool (*validator)(SifHeader);
