@@ -11,15 +11,15 @@ extern "C" {
 
 namespace {
 SifHeaderStruct dummy_file_template = {
-    {0x7F, 0x53, 0x49, 0x46, kSc64, kSd2Lsb, kSvCurrent},
-    kStExe,
+    {0x7F, 'S', 'I', 'F', kSc64, kSd2Lsb, kSvCurrent},
+    kStData,
     kSmRx,
     0,
     sizeof(SifHeaderStruct),
-    5,
     0,
     0,
-    0x0001000000000000,
+    0,
+    0x0000000100000000,
     sizeof(SifHeaderStruct),
     0,
     0,
