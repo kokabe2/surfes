@@ -67,7 +67,6 @@ static bool HasNoDataCorruption(SifHeader header) {
   for (int i = 0; i < loop; ++i) sum += data[i];
   if (!sum) return true;
 
-  RUNTINE_ERROR("SIF File Validator: checksum error", sum);
   return false;
 }
 

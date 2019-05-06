@@ -126,9 +126,6 @@ TEST_F(SifFileValidatorTest, ValidateImperfectFile) {
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
   EXPECT_EQ(kSfvChecksumError, error);
-  EXPECT_STREQ("SIF File Validator: checksum error",
-               SpyRuntimeError_GetLastError());
-  EXPECT_NE(0, SpyRuntimeError_GetLastParameter());
 }
 
 TEST_F(SifFileValidatorTest, ValidateFile) {
