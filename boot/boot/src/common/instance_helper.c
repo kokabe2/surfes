@@ -7,15 +7,15 @@
 
 #include "common/runtime_error.h"
 
-static bool IsValidSize(int size) {
-  if (size > 0) return true;
+static bool IsInvalid(int size) {
+  if (size > 0) return false;
 
   RUNTINE_ERROR("Instance Helper: size is zero or less", size);
-  return false;
+  return true;
 }
 
 void* InstanceHelper_New(int size) {
-  if (!IsValidSize(size)) return NULL;
+  if (IsInvalid(size)) return NULL;
 
   return calloc(1, size);
 }
