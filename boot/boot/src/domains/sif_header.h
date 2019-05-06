@@ -14,7 +14,6 @@ enum SifIdentification {
   kSifIdData,
   kSifIdVersion,
   kSifIdPadding,
-  kSifIdSize = 16,
 };
 
 enum SifClass {
@@ -47,13 +46,14 @@ enum SifMachine {
 };
 
 enum SifSize {
+  kSifIdentificationSize = 16,
   kSifDscriptionSize = 128,
   kSifHeaderSizeInClass32 = 192,
   kSifHeaderSizeInClass64 = 208,
 };
 
 typedef struct {
-  uint8_t identification[kSifIdSize];
+  uint8_t identification[kSifIdentificationSize];
   uint16_t type;
   uint16_t machine;
   uint32_t flags;
