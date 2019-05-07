@@ -6,6 +6,7 @@ target_sources(surfes_boot
     common/modular_sum.c
     infrastructures/drivers/led_driver.c
     infrastructures/drivers/ssd_driver.c
+    infrastructures/frameworks/core_file.c
     infrastructures/frameworks/sif_file.c
     infrastructures/frameworks/sif_file_validator.c
 )
