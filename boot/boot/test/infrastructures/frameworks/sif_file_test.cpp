@@ -30,9 +30,9 @@ SifHeaderStruct dummy_data_file = {
 };
 
 bool was_ran;
-int Execute(void) {
+int Execute(int runlevel) {
   was_ran = true;
-  return 6;
+  return runlevel;
 }
 
 SifHeaderStruct dummy_exe_file = {
@@ -231,7 +231,7 @@ TEST_F(SifFileTest, GetVersionWithNull) {
 TEST_F(SifFileTest, ExecuteWithFileHasFunction) {
   instance = SifFile_Open(dummy_exe_file.file_address);
 
-  EXPECT_EQ(6, SifFile_Execute(instance, 3));
+  EXPECT_EQ(3, SifFile_Execute(instance, 3));
   EXPECT_TRUE(was_ran);
 }
 
