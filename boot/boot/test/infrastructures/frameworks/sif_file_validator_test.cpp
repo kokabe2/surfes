@@ -5,8 +5,8 @@
 extern "C" {
 #include "common/modular_sum.h"
 #include "common/spy_runtime_error.h"
-#include "domains/sif_file_validator.h"
-#include "domains/sif_header.h"
+#include "infrastructures/frameworks/sif_file_validator.h"
+#include "infrastructures/frameworks/sif_header.h"
 }
 
 namespace {

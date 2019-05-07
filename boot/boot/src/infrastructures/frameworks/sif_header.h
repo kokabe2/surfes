@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef BOOT_BOOT_SRC_DOMAINS_SIF_HEADER_H_
-#define BOOT_BOOT_SRC_DOMAINS_SIF_HEADER_H_
+#ifndef BOOT_BOOT_SRC_INFRASTRUCTURES_FRAMEWORKS_SIF_HEADER_H_
+#define BOOT_BOOT_SRC_INFRASTRUCTURES_FRAMEWORKS_SIF_HEADER_H_
 
 #include <stdint.h>
 
@@ -71,4 +71,4 @@ typedef struct {
   uint8_t description[kSifDscriptionSize];
 } SifHeaderStruct, *SifHeader;
 
-#endif  // BOOT_BOOT_SRC_DOMAINS_SIF_HEADER_H_
+#endif  // BOOT_BOOT_SRC_INFRASTRUCTURES_FRAMEWORKS_SIF_HEADER_H_

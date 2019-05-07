@@ -5,10 +5,10 @@ target_sources(gtests
     common/instance_helper_test.cpp
     common/modular_sum_test.cpp
     common/spy_runtime_error.c
-    domains/sif_file_test.cpp
-    domains/sif_file_validator_test.cpp
     infrastructures/drivers/led_driver_test.cpp
     infrastructures/drivers/ssd_driver_test.cpp
+    infrastructures/frameworks/sif_file_test.cpp
+    infrastructures/frameworks/sif_file_validator_test.cpp
 )
 target_include_directories(gtests
   PUBLIC

@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef BOOT_BOOT_SRC_DOMAINS_SIF_FILE_H_
-#define BOOT_BOOT_SRC_DOMAINS_SIF_FILE_H_
+#ifndef BOOT_BOOT_SRC_INFRASTRUCTURES_FRAMEWORKS_SIF_FILE_H_
+#define BOOT_BOOT_SRC_INFRASTRUCTURES_FRAMEWORKS_SIF_FILE_H_
 
 #include <stdint.h>
 
@@ -15,4 +15,4 @@ int SifFile_Read(SifFile self, int id, void *data);
 int SifFile_Control(SifFile self, int id, void *data);
 void SifFile_Close(SifFile *self);
 
-#endif  // BOOT_BOOT_SRC_DOMAINS_SIF_FILE_H_
+#endif  // BOOT_BOOT_SRC_INFRASTRUCTURES_FRAMEWORKS_SIF_FILE_H_
