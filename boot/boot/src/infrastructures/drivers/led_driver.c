@@ -15,9 +15,9 @@ enum {
 
 static bool Validate(uint8_t* io_address, uint8_t (*decoder)(int)) {
   if (!io_address)
-    RUNTINE_ERROR("LED Driver: null I/O address", 0);
+    RUNTIME_ERROR("LED Driver: null I/O address", 0);
   else if (!decoder)
-    RUNTINE_ERROR("LED Driver: null decode function", 0);
+    RUNTIME_ERROR("LED Driver: null decode function", 0);
   else
     return true;
 
@@ -58,14 +58,14 @@ void LedDriver_Destroy(LedDriver* self) {
 static bool IsInvalid(LedDriver self) {
   if (self) return false;
 
-  RUNTINE_ERROR("LED Driver: null instance", 0);
+  RUNTIME_ERROR("LED Driver: null instance", 0);
   return true;
 }
 
 static bool IsLedOutOfBounds(int led_number) {
   if (led_number >= kFirstLed && led_number <= kLastLed) return false;
 
-  RUNTINE_ERROR("LED Driver: out-of-bounds LED", led_number);
+  RUNTIME_ERROR("LED Driver: out-of-bounds LED", led_number);
   return true;
 }
 

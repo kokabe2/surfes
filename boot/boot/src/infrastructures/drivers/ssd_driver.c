@@ -21,9 +21,9 @@ struct SsdDriverStruct {
 
 static bool Validate(uint8_t* io_address, uint8_t (*decoder)(uint8_t)) {
   if (!io_address)
-    RUNTINE_ERROR("SSD Driver: null I/O address", 0);
+    RUNTIME_ERROR("SSD Driver: null I/O address", 0);
   else if (!decoder)
-    RUNTINE_ERROR("SSD Driver: null decode function", 0);
+    RUNTIME_ERROR("SSD Driver: null decode function", 0);
   else
     return true;
 
@@ -89,7 +89,7 @@ bool SsdDriver_IsOff(SsdDriver self, int segment_number) {
 static bool IsInvalid(SsdDriver self) {
   if (self) return false;
 
-  RUNTINE_ERROR("SSD Driver: null instance", 0);
+  RUNTIME_ERROR("SSD Driver: null instance", 0);
   return true;
 }
 

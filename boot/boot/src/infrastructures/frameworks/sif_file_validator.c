@@ -12,7 +12,7 @@ static bool IsSifFile(SifHeader header) {
   uint8_t magic_number[] = {0x7F, 'S', 'I', 'F'};
   for (int i = 0; i < sizeof(magic_number); ++i)
     if (header->identification[i] != magic_number[i]) {
-      RUNTINE_ERROR("SIF File Validator: non SIF file", i);
+      RUNTIME_ERROR("SIF File Validator: non SIF file", i);
       return false;
     }
 
@@ -23,7 +23,7 @@ static bool IsValidClass(SifHeader header) {
   if (header->identification[kSifIdClass] == kSc32) return true;
   if (header->identification[kSifIdClass] == kSc64) return true;
 
-  RUNTINE_ERROR("SIF File Validator: invalid SIF class",
+  RUNTIME_ERROR("SIF File Validator: invalid SIF class",
                 header->identification[kSifIdClass]);
   return false;
 }
@@ -31,7 +31,7 @@ static bool IsValidClass(SifHeader header) {
 static bool IsValidVersion(SifHeader header) {
   if (header->identification[kSifIdVersion] == kSvCurrent) return true;
 
-  RUNTINE_ERROR("SIF File Validator: invalid SIF version",
+  RUNTIME_ERROR("SIF File Validator: invalid SIF version",
                 header->identification[kSifIdVersion]);
   return false;
 }
@@ -46,7 +46,7 @@ static bool IsValidHeaderSize(SifHeader header) {
   uint8_t sif_class = header->identification[kSifIdClass];
   if (header->header_size == headerSize(sif_class)) return true;
 
-  RUNTINE_ERROR("SIF File Validator: invalid header size", header->header_size);
+  RUNTIME_ERROR("SIF File Validator: invalid header size", header->header_size);
   return false;
 }
 
@@ -57,14 +57,14 @@ static bool IsValidFileSize(SifHeader header) {
       IsMultiplesOfFour(header->file_size))
     return true;
 
-  RUNTINE_ERROR("SIF File Validator: invalid file size", header->file_size);
+  RUNTIME_ERROR("SIF File Validator: invalid file size", header->file_size);
   return false;
 }
 
 static bool HasFileAddress(SifHeader header) {
   if (header->file_address) return true;
 
-  RUNTINE_ERROR("SIF File Validator: no file address", header->file_address);
+  RUNTIME_ERROR("SIF File Validator: no file address", header->file_address);
   return false;
 }
 

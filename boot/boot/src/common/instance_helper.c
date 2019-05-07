@@ -10,7 +10,7 @@
 static bool IsInvalid(int size) {
   if (size > 0) return false;
 
-  RUNTINE_ERROR("Instance Helper: size is zero or less", size);
+  RUNTIME_ERROR("Instance Helper: size is zero or less", size);
   return true;
 }
 

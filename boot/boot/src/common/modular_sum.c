@@ -11,7 +11,7 @@ static bool IsMultiplesOfFour(int size) { return (size % 4) == 0; }
 static bool IsInvalid(int size) {
   if (size > 0 && IsMultiplesOfFour(size)) return false;
 
-  RUNTINE_ERROR("Modular Sum: invalid size", size);
+  RUNTIME_ERROR("Modular Sum: invalid size", size);
   return true;
 }
 

@@ -64,7 +64,7 @@ void SifFile_Close(SifFile* self) {
 static bool IsValid(SifFile self) {
   if (self) return true;
 
-  RUNTINE_ERROR("SIF File: null instance", 0);
+  RUNTIME_ERROR("SIF File: null instance", 0);
   return false;
 }
 
