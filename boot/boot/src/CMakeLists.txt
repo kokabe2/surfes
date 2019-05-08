@@ -10,6 +10,7 @@ target_sources(surfes_boot
     infrastructures/frameworks/system_runner.c
     infrastructures/frameworks/updater_file.c
     platform/microcontroller.c
+    platform/section.c
 )
 target_include_directories(surfes_boot
   PUBLIC
