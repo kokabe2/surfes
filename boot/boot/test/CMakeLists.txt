@@ -8,7 +8,6 @@ target_sources(gtests
     infrastructures/drivers/led_driver_test.cpp
     infrastructures/drivers/mock_io_data.cpp
     infrastructures/drivers/mock_io_data_test.cpp
-    infrastructures/drivers/ssd_driver_test.cpp
     infrastructures/frameworks/core_file_test.cpp
     infrastructures/frameworks/sif_file_test.cpp
     infrastructures/frameworks/sif_file_validator_test.cpp
