@@ -4,7 +4,6 @@ target_sources(surfes_boot
   PRIVATE
     common/instance_helper.c
     common/modular_sum.c
-    infrastructures/drivers/led_driver.c
     infrastructures/frameworks/core_file.c
     infrastructures/frameworks/sif_file.c
     infrastructures/frameworks/sif_file_validator.c
