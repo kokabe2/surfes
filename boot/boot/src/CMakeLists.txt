@@ -7,6 +7,7 @@ target_sources(surfes_boot
     infrastructures/frameworks/core_file.c
     infrastructures/frameworks/sif_file.c
     infrastructures/frameworks/sif_file_validator.c
+    infrastructures/frameworks/system_runner.c
     infrastructures/frameworks/updater_file.c
 )
 target_include_directories(surfes_boot
