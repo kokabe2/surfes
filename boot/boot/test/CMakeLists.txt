@@ -10,6 +10,7 @@ target_sources(gtests
     infrastructures/frameworks/core_file_test.cpp
     infrastructures/frameworks/sif_file_test.cpp
     infrastructures/frameworks/sif_file_validator_test.cpp
+    infrastructures/frameworks/updater_file_test.cpp
 )
 target_include_directories(gtests
   PUBLIC
