@@ -9,6 +9,7 @@ target_sources(surfes_boot
     infrastructures/frameworks/sif_file_validator.c
     infrastructures/frameworks/system_runner.c
     infrastructures/frameworks/updater_file.c
+    platform/microcontroller.c
 )
 target_include_directories(surfes_boot
   PUBLIC
