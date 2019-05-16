@@ -1,0 +1,8 @@
+﻿// Copyright(c) 2019 Ken Okabe
+// This software is released under the MIT License, see LICENSE.
+#ifndef BOOT_BOOT_SRC_SYSTEMS_REBOOT_SYSTEM_SERVICE_INTERFACE_H_
+#define BOOT_BOOT_SRC_SYSTEMS_REBOOT_SYSTEM_SERVICE_INTERFACE_H_
+
+void RebootSystemServiceInterface_Reboot(void);
+
+#endif  // BOOT_BOOT_SRC_SYSTEMS_REBOOT_SYSTEM_SERVICE_INTERFACE_H_

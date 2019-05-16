@@ -2,16 +2,27 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_library(surfes_boot "")
 target_sources(surfes_boot
   PRIVATE
-    common/instance_helper.c
-    common/modular_sum.c
-    infrastructures/frameworks/core_file.c
-    infrastructures/frameworks/sif_file.c
-    infrastructures/frameworks/sif_file_validator.c
-    infrastructures/frameworks/system_runner.c
-    infrastructures/frameworks/updater_file.c
-    platform/exeption_event.c
-    platform/microcontroller.c
-    platform/section.c
+    bootstrapper.c
+    application/boot_application.c
+    drivers/led_driver.c
+    drivers/ssd_driver.c
+    filer/sif_file_base.c
+    filer/sif_file_validator.c
+    script/system_script.c
+    systems/halt_system.c
+    systems/reboot_system.c
+    systems/sys_exe_file.c
+    systems/system_executor_factory_impl.c
+    systems/update_system.c
+    systems/user_system.c
+    platforms/exception_event.c
+    platforms/halt_system_service.c
+    platforms/microcontroller.c
+    platforms/platform.c
+    platforms/reboot_system_service.c
+    platforms/section.c
+    utilities/instance_helper.c
+    utilities/modular_sum.c
 )
 target_include_directories(surfes_boot
   PUBLIC

@@ -2,16 +2,22 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
-    common/instance_helper_test.cpp
-    common/modular_sum_test.cpp
-    common/spy_runtime_error.c
-    infrastructures/drivers/mock_io_data.cpp
-    infrastructures/drivers/mock_io_data_test.cpp
-    infrastructures/frameworks/core_file_test.cpp
-    infrastructures/frameworks/sif_file_test.cpp
-    infrastructures/frameworks/sif_file_validator_test.cpp
-    infrastructures/frameworks/system_runner_test.cpp
-    infrastructures/frameworks/updater_file_test.cpp
+    drivers/led_driver_test.cpp
+    drivers/mock_io_data.cpp
+    drivers/mock_io_data_test.cpp
+    drivers/ssd_driver_test.cpp
+    filer/sif_file_base_test.cpp
+    filer/sif_file_validator_test.cpp
+    script/system_script_test.cpp
+    systems/halt_system_test.cpp
+    systems/reboot_system_test.cpp
+    systems/sys_exe_file_test.cpp
+    systems/system_executor_factory_impl_test.cpp
+    systems/update_system_test.cpp
+    systems/user_system_test.cpp
+    utilities/instance_helper_test.cpp
+    utilities/modular_sum_test.cpp
+    utilities/spy_runtime_error.c
 )
 target_include_directories(gtests
   PUBLIC
