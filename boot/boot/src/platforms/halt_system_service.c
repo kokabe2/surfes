@@ -2,6 +2,6 @@
 // This software is released under the MIT License, see LICENSE.
 #include "systems/halt_system_service_interface.h"
 
-void HaltSystemServiceInterface_Halt(void) {
+void HaltSystemServiceInterface_Shutdown(void) {
   for (;;) continue;
 }
