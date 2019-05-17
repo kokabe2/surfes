@@ -11,3 +11,7 @@ void Platform_Initialize(void) {
   ExceptionEvent_Initialize();
   Microcontroller_Initialize();
 }
+
+void Platform_Abort(void) {
+  // do something
+}

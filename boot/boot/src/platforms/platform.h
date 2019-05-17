@@ -4,5 +4,6 @@
 #define BOOT_BOOT_SRC_PLATFORMS_PLATFORM_H_
 
 void Platform_Initialize(void);
+void Platform_Abort(void);
 
 #endif  // BOOT_BOOT_SRC_PLATFORMS_PLATFORM_H_
