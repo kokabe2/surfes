@@ -17,7 +17,7 @@ enum {
 typedef struct SsdDriverStruct {
   LedDriverStruct base;
   ssdDecoder decoder;
-  uint8_t encoding;
+  char encoding;
 } SsdDriverStruct;
 
 static bool IsInvalidAddress(uint8_t* io_address) {
@@ -92,20 +92,20 @@ static bool IsInvalid(SsdDriver self) {
   return true;
 }
 
-static void SetSsdImageBit(SsdDriver self, uint8_t encoding) {
+static void SetSsdImageBit(SsdDriver self, char encoding) {
   *self->base.io_address = self->decoder(encoding);
   self->encoding = encoding;
 }
 
-void SsdDriver_Set(SsdDriver self, uint8_t encoding) {
+void SsdDriver_Set(SsdDriver self, char encoding) {
   if (IsInvalid(self)) return;
 
   SetSsdImageBit(self, encoding);
 }
 
-static uint8_t GetSsdEncoding(SsdDriver self) { return self->encoding; }
+static char GetSsdEncoding(SsdDriver self) { return self->encoding; }
 
-uint8_t SsdDriver_Get(SsdDriver self) {
+char SsdDriver_Get(SsdDriver self) {
   if (IsInvalid(self)) return kNonsenseEncoding;
 
   return GetSsdEncoding(self);
