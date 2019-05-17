@@ -8,6 +8,10 @@ target_sources(surfes_boot
     drivers/ssd_driver.c
     filer/sif_file_base.c
     filer/sif_file_validator.c
+    platforms/exception_event.c
+    platforms/microcontroller.c
+    platforms/platform.c
+    platforms/section.c
     script/system_script.c
     systems/halt_system.c
     systems/reboot_system.c
@@ -15,12 +19,6 @@ target_sources(surfes_boot
     systems/system_executor_factory_impl.c
     systems/update_system.c
     systems/user_system.c
-    platforms/exception_event.c
-    platforms/halt_system_service.c
-    platforms/microcontroller.c
-    platforms/platform.c
-    platforms/reboot_system_service.c
-    platforms/section.c
     utilities/instance_helper.c
     utilities/modular_sum.c
 )
