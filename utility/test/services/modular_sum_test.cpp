@@ -3,8 +3,9 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "infrastructures/spy_runtime_error.h"
 #include "modular_sum.h"
+#include "spy_runtime_error.h"
+
 }
 
 class ModularSumTest : public ::testing::Test {
