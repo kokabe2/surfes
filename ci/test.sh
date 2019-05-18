@@ -10,5 +10,5 @@ test_package () {
     ctest
 }
 
-cd ${SCRIPT_DIR}/boot/boot && test_package
-cd ${SCRIPT_DIR}/utility && test_package
+cd ${SCRIPT_DIR}/../boot/boot && test_package
+cd ${SCRIPT_DIR}/../utility && test_package
