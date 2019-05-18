@@ -4,7 +4,7 @@
 
 extern "C" {
 #include "systems/system_executor_factory_impl.h"
-#include "utilities/spy_runtime_error.h"
+#include "spy_runtime_error.h"
 }
 
 class SystemExecutorFactoryImplTest : public ::testing::Test {

@@ -5,7 +5,7 @@
 extern "C" {
 #include "filer/sif_file_base.h"
 #include "filer/sif_header.h"
-#include "utilities/modular_sum.h"
+#include "modular_sum.h"
 }
 
 namespace {

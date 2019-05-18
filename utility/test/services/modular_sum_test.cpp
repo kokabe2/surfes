@@ -3,8 +3,8 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "utilities/modular_sum.h"
-#include "utilities/spy_runtime_error.h"
+#include "infrastructures/spy_runtime_error.h"
+#include "modular_sum.h"
 }
 
 class ModularSumTest : public ::testing::Test {

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(surfes_boot_boot)
+project(surfes_utility)
 
 # place binaries and libraries according to GNU standards
 include(GNUInstallDirs)
@@ -15,10 +15,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES Clang)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
-
-set(UTILITY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/src)
-set(UTILITY_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/test)
-set(UTILITY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/include)
 
 add_subdirectory(src)
 

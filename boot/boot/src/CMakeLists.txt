@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
-add_library(surfes_boot "")
-target_sources(surfes_boot
+add_library(surfes_boot_boot "")
+target_sources(surfes_boot_boot
   PRIVATE
     bootstrapper.c
     application/boot_application.c
@@ -19,10 +19,11 @@ target_sources(surfes_boot
     systems/system_executor_factory_impl.c
     systems/update_system.c
     systems/user_system.c
-    utilities/instance_helper.c
-    utilities/modular_sum.c
+    ${UTILITY_SOURCE_DIR}/infrastructures/instance_helper.c
+    ${UTILITY_SOURCE_DIR}/services/modular_sum.c
 )
-target_include_directories(surfes_boot
+target_include_directories(surfes_boot_boot
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
+    ${UTILITY_INCLUDE_DIR}
 )

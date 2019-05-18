@@ -9,7 +9,7 @@
 #include "reboot_system.h"
 #include "update_system.h"
 #include "user_system.h"
-#include "utilities/runtime_error.h"
+#include "runtime_error.h"
 
 enum {
   kLowestRunlevel = 0,

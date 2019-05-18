@@ -5,7 +5,7 @@
 #include <stddef.h>
 
 #include "sif_file_validator.h"
-#include "utilities/instance_helper.h"
+#include "instance_helper.h"
 
 static SifFileBase NewInstance(SifHeader header, int size) {
   SifFileBase self = (SifFileBase)InstanceHelper_New(size);

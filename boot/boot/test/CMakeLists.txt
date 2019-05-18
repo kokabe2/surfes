@@ -15,9 +15,7 @@ target_sources(gtests
     systems/system_executor_factory_impl_test.cpp
     systems/update_system_test.cpp
     systems/user_system_test.cpp
-    utilities/instance_helper_test.cpp
-    utilities/modular_sum_test.cpp
-    utilities/spy_runtime_error.c
+    ${UTILITY_TEST_DIR}/infrastructures/spy_runtime_error.c
 )
 target_include_directories(gtests
   PUBLIC
@@ -25,11 +23,11 @@ target_include_directories(gtests
 )
 target_link_libraries(gtests
   gtest_main
-  surfes_boot
+  surfes_boot_boot
 )
 add_test(
   NAME
-    surfes_boot_test
+    surfes_boot_boot_test
   COMMAND
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/gtests
 )

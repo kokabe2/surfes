@@ -7,8 +7,8 @@
 
 #include "led_driver.h"
 #include "led_driver_private.h"
-#include "utilities/instance_helper.h"
-#include "utilities/runtime_error.h"
+#include "instance_helper.h"
+#include "runtime_error.h"
 
 enum {
   kNonsenseEncoding = 0,

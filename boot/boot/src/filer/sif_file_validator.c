@@ -5,8 +5,8 @@
 #include <stdbool.h>
 
 #include "sif_header.h"
-#include "utilities/modular_sum.h"
-#include "utilities/runtime_error.h"
+#include "modular_sum.h"
+#include "runtime_error.h"
 
 static bool HasNoDataCorruption(SifHeader header) {
   if (ModularSum_Verify((uint32_t*)header->file_address, header->file_size))

@@ -6,8 +6,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 
-#include "utilities/instance_helper.h"
-#include "utilities/runtime_error.h"
+#include "instance_helper.h"
+#include "runtime_error.h"
 
 enum {
   kFirstLed = 1,

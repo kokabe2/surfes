@@ -3,8 +3,8 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "utilities/instance_helper.h"
-#include "utilities/spy_runtime_error.h"
+#include "instance_helper.h"
+#include "spy_runtime_error.h"
 }
 
 typedef struct {

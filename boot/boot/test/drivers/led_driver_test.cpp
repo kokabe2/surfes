@@ -4,7 +4,7 @@
 
 extern "C" {
 #include "drivers/led_driver.h"
-#include "utilities/spy_runtime_error.h"
+#include "spy_runtime_error.h"
 }
 
 namespace {
