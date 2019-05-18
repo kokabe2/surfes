@@ -5,9 +5,4 @@ compiler:
   - gcc++
 
 script:
-  - cd boot/boot
-  - mkdir -p build
-  - cd build
-  - cmake ..
-  - make
-  - ctest
+  - test.sh
