@@ -7,6 +7,7 @@ extern "C" {
 #include "registries/user_system_registry.h"
 #include "sif_header.h"
 #include "user_system_registry_file_interface.h"
+#include "user_system_registry_interface.h"
 }
 
 namespace {

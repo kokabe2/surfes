@@ -6,9 +6,6 @@
 #include "system_executable.h"
 
 enum {
-  kLowestRunlevel = 0,
-  kHighestRunlevel = 6,
-  kNumOfRunlevels = 7,
   kUserSystemRegistryFileAddress = 0xFFC00000,
 };
 

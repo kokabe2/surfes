@@ -17,8 +17,6 @@ target_sources(surfes_boot_boot
     systems/reboot_system.c
     systems/sys_exe_file.c
     systems/system_executor_factory_impl.c
-    systems/update_system.c
-    systems/user_system.c
     ${UTILITY_SOURCE_DIR}/domains/sif_file_base.c
     ${UTILITY_SOURCE_DIR}/domains/sif_file_validator.c
     ${UTILITY_SOURCE_DIR}/infrastructures/instance_helper.c

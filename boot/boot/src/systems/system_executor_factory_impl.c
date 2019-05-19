@@ -7,15 +7,9 @@
 
 #include "halt_system.h"
 #include "reboot_system.h"
-#include "update_system.h"
-#include "user_system.h"
+#include "registries/user_system_registry.h"
 #include "runtime_error.h"
-
-enum {
-  kLowestRunlevel = 0,
-  kHighestRunlevel = 6,
-  kNumOfRunlevels = 7,
-};
+#include "user_system_registry_interface.h"
 
 static bool IsInvalid(int runlevel) {
   if (runlevel >= kLowestRunlevel && runlevel <= kHighestRunlevel) return false;
@@ -25,20 +19,13 @@ static bool IsInvalid(int runlevel) {
   return true;
 }
 
-typedef ISystemExecutable (*systemExecutorGetter)(void);
-const systemExecutorGetter kSystemExecutorGetters[kNumOfRunlevels] = {
-    HaltSystem_getInstance,
-    UpdateSystem_getInstance,
-    NULL,
-    UserSystem_getInstance,
-    NULL,
-    NULL,
-    RebootSystem_getInstance,
-};
 static ISystemExecutable Make(int runlevel) {
   if (IsInvalid(runlevel)) return NULL;
 
-  return kSystemExecutorGetters[runlevel]();
+  if (runlevel == kLowestRunlevel) return HaltSystem_getInstance();
+  if (runlevel == kHighestRunlevel) return RebootSystem_getInstance();
+
+  return UserSystemRegistry_getExecutor(runlevel);
 }
 
 static ISystemExecutorFactoryStruct its_instance = {
