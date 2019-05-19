@@ -10,6 +10,7 @@ target_sources(surfes_boot_boot
     platforms/microcontroller.c
     platforms/platform.c
     platforms/section.c
+    registries/user_system_registry.c
     registries/user_system_registry_file.c
     script/system_script.c
     systems/halt_system.c

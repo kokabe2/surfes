@@ -6,6 +6,7 @@ target_sources(gtests
     drivers/mock_io_data.cpp
     drivers/mock_io_data_test.cpp
     drivers/ssd_driver_test.cpp
+    registries/user_system_registry_test.cpp
     registries/user_system_registry_file_test.cpp
     script/system_script_test.cpp
     systems/halt_system_test.cpp
