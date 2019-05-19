@@ -10,6 +10,7 @@ target_sources(surfes_boot_boot
     platforms/microcontroller.c
     platforms/platform.c
     platforms/section.c
+    registries/user_system_registry_file.c
     script/system_script.c
     systems/halt_system.c
     systems/reboot_system.c
@@ -25,5 +26,6 @@ target_sources(surfes_boot_boot
 target_include_directories(surfes_boot_boot
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
+    ${BOOT_INCLUDE_DIR}
     ${UTILITY_INCLUDE_DIR}
 )

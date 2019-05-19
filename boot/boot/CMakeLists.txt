@@ -19,6 +19,7 @@ endif()
 set(UTILITY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/src)
 set(UTILITY_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/test)
 set(UTILITY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/include)
+set(BOOT_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
 
 add_subdirectory(src)
 
