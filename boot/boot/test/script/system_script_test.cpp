@@ -5,9 +5,10 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "script/system_executable.h"
 #include "script/system_executor_factory.h"
 #include "script/system_script.h"
+#include "system_executable.h"
+
 }
 
 namespace {

@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 
-#include "script/system_executable.h"
+#include "system_executable.h"
 
 typedef struct UserSystemRegistryFileStruct *UserSystemRegistryFile;
 

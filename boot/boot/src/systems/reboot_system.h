@@ -3,7 +3,7 @@
 #ifndef BOOT_BOOT_SRC_SYSTEMS_REBOOT_SYSTEM_H_
 #define BOOT_BOOT_SRC_SYSTEMS_REBOOT_SYSTEM_H_
 
-#include "script/system_executable.h"
+#include "system_executable.h"
 
 ISystemExecutable RebootSystem_getInstance(void);
 

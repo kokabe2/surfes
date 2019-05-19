@@ -3,7 +3,7 @@
 #ifndef BOOT_BOOT_INCLUDE_USER_SYSTEM_REGISTRY_FILE_INTERFACE_H_
 #define BOOT_BOOT_INCLUDE_USER_SYSTEM_REGISTRY_FILE_INTERFACE_H_
 
-#include "script/system_executable.h"
+#include "system_executable.h"
 
 enum {
   kLowestRunlevel = 0,

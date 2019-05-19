@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 
-#include "script/system_executable.h"
+#include "system_executable.h"
 
 void UserSystem_Change(uintptr_t file_address);
 ISystemExecutable UserSystem_getInstance(void);
