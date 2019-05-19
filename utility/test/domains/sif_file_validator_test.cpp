@@ -3,9 +3,9 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "filer/sif_file_validator.h"
-#include "filer/sif_header.h"
+#include "domains/sif_file_validator.h"
 #include "modular_sum.h"
+#include "sif_header.h"
 #include "spy_runtime_error.h"
 }
 

@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef BOOT_BOOT_SRC_FILER_SIF_FILE_VALIDATOR_H_
-#define BOOT_BOOT_SRC_FILER_SIF_FILE_VALIDATOR_H_
+#ifndef UTILITY_SRC_DOMAINS_SIF_FILE_VALIDATOR_H_
+#define UTILITY_SRC_DOMAINS_SIF_FILE_VALIDATOR_H_
 
 #include <stdint.h>
 
@@ -17,4 +17,4 @@ enum SifFileValidationError {
 
 int SifFileValidator_Validate(uintptr_t file_address);
 
-#endif  // BOOT_BOOT_SRC_FILER_SIF_FILE_VALIDATOR_H_
+#endif  // UTILITY_SRC_DOMAINS_SIF_FILE_VALIDATOR_H_

@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef BOOT_BOOT_SRC_FILER_SIF_HEADER_H_
-#define BOOT_BOOT_SRC_FILER_SIF_HEADER_H_
+#ifndef UTILITY_INCLUDE_SIF_HEADER_H_
+#define UTILITY_INCLUDE_SIF_HEADER_H_
 
 #include <stdint.h>
 
@@ -72,4 +72,4 @@ typedef struct {
 typedef int (*openFunction)(void);
 typedef void (*closeFunction)(void);
 
-#endif  // BOOT_BOOT_SRC_FILER_SIF_HEADER_H_
+#endif  // UTILITY_INCLUDE_SIF_HEADER_H_

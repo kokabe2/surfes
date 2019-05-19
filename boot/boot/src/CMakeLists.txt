@@ -6,8 +6,6 @@ target_sources(surfes_boot_boot
     application/boot_application.c
     drivers/led_driver.c
     drivers/ssd_driver.c
-    filer/sif_file_base.c
-    filer/sif_file_validator.c
     platforms/exception_event.c
     platforms/microcontroller.c
     platforms/platform.c
@@ -19,6 +17,8 @@ target_sources(surfes_boot_boot
     systems/system_executor_factory_impl.c
     systems/update_system.c
     systems/user_system.c
+    ${UTILITY_SOURCE_DIR}/domains/sif_file_base.c
+    ${UTILITY_SOURCE_DIR}/domains/sif_file_validator.c
     ${UTILITY_SOURCE_DIR}/infrastructures/instance_helper.c
     ${UTILITY_SOURCE_DIR}/services/modular_sum.c
 )

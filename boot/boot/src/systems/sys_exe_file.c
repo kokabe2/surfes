@@ -4,7 +4,7 @@
 
 #include <stddef.h>
 
-#include "filer/sif_file_base.h"
+#include "sif_file_base.h"
 
 enum ValidationErrors {
   kNoError = 0,

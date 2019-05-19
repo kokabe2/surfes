@@ -1,6 +1,6 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#include "filer/sif_header.h"
+#include "sif_header.h"
 
 const SifHeaderStruct kBootFileHeader = {
     {0x7F, 'S', 'I', 'F', kSc32, kSd2Lsb, kSvCurrent},

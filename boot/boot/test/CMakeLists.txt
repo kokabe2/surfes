@@ -6,8 +6,6 @@ target_sources(gtests
     drivers/mock_io_data.cpp
     drivers/mock_io_data_test.cpp
     drivers/ssd_driver_test.cpp
-    filer/sif_file_base_test.cpp
-    filer/sif_file_validator_test.cpp
     script/system_script_test.cpp
     systems/halt_system_test.cpp
     systems/reboot_system_test.cpp

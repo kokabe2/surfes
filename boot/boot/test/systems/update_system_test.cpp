@@ -3,9 +3,9 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "filer/sif_header.h"
-#include "systems/update_system.h"
 #include "modular_sum.h"
+#include "sif_header.h"
+#include "systems/update_system.h"
 }
 
 namespace {
