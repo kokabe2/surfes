@@ -23,6 +23,6 @@ target_sources(surfes_boot_boot
 target_include_directories(surfes_boot_boot
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
-    ${BOOT_INCLUDE_DIR}
+    ${BOOT_BOOT_INCLUDE_DIR}
     ${UTILITY_INCLUDE_DIR}
 )
