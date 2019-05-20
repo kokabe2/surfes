@@ -2,7 +2,7 @@
 // This software is released under the MIT License, see LICENSE.
 #include "sif_header.h"
 
-const SifHeaderStruct kBootFileHeader = {
+const SifHeaderStruct kFileHeader = {
     {0x7F, 'S', 'I', 'F', kSc32, kSd2Lsb, kSvCurrent},
     kStExe,
     kSmRx,
