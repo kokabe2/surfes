@@ -19,7 +19,7 @@ typedef struct UserSystemRegistryFileStruct {
 } UserSystemRegistryFileStruct;
 
 static int Validate(SifHeader header) {
-  if (header->type != kStLib) return kFileTypeError;
+  if (header->type != kStData) return kFileTypeError;
 
   UserSystemRegistryFileEntryPoint entry_point =
       (UserSystemRegistryFileEntryPoint)header->entry_point;

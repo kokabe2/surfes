@@ -29,7 +29,7 @@ UserSystemRegistryFileEntryPointStruct entry_point = {
 };
 SifHeaderStruct dummy_file = {
     {0x7F, 'S', 'I', 'F', kSc64, kSd2Lsb, kSvCurrent},
-    kStLib,
+    kStData,
     kSmRx,
     0,
     sizeof(SifHeaderStruct),

@@ -27,7 +27,7 @@ ISystemExecutable getExecutor(int runlevel) {
 UserSystemRegistryFileEntryPointStruct entry_point;
 SifHeaderStruct dummy_file_template = {
     {0x7F, 'S', 'I', 'F', kSc64, kSd2Lsb, kSvCurrent},
-    kStLib,
+    kStData,
     kSmRx,
     0,
     sizeof(SifHeaderStruct),
@@ -79,7 +79,7 @@ TEST_F(UserSystemRegistryFileTest, GetExecutorWithNull) {
   EXPECT_EQ(NULL, UserSystemRegistryFile_getExecutor(NULL, 3));
 }
 
-TEST_F(UserSystemRegistryFileTest, OpenNonLibFile) {
+TEST_F(UserSystemRegistryFileTest, OpenNonDataFile) {
   dummy_file.type = kStExe;
   UpdateChecksum();
 
