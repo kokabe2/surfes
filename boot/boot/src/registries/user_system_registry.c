@@ -16,3 +16,8 @@ ISystemExecutable UserSystemRegistry_getExecutor(int runlevel) {
 
   return UserSystemRegistryFile_getExecutor(its_file, runlevel);
 }
+
+enum {
+  kDefaultRunlevel = 3,
+};
+int UserSystemRegistry_getDefaultRunlevel(void) { return kDefaultRunlevel; }
