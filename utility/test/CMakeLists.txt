@@ -14,11 +14,11 @@ target_include_directories(gtests
 )
 target_link_libraries(gtests
   gtest_main
-  surfes_core_utility
+  surfes_utility
 )
 add_test(
   NAME
-    surfes_core_utility_test
+    surfes_utility_test
   COMMAND
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/gtests
 )
