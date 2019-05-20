@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
-    drivers/led_driver_test.cpp
-    drivers/mock_io_data.cpp
-    drivers/mock_io_data_test.cpp
-    drivers/ssd_driver_test.cpp
     registries/user_system_registry_test.cpp
     registries/user_system_registry_file_test.cpp
     script/system_script_test.cpp
@@ -14,6 +10,7 @@ target_sources(gtests
     systems/sys_exe_file_test.cpp
     systems/system_executor_factory_impl_test.cpp
     ${UTILITY_TEST_DIR}/infrastructures/spy_runtime_error.c
+    ${UTILITY_TEST_DIR}/infrastructures/mock_io_data.cpp
 )
 target_include_directories(gtests
   PUBLIC

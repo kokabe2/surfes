@@ -3,8 +3,8 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "drivers/ssd_driver.h"
 #include "spy_runtime_error.h"
+#include "ssd_driver.h"
 }
 
 namespace {

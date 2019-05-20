@@ -5,6 +5,10 @@ target_sources(gtests
     domains/sif_file_base_test.cpp
     domains/sif_file_validator_test.cpp
     infrastructures/instance_helper_test.cpp
+    infrastructures/led_driver_test.cpp
+    infrastructures/mock_io_data.cpp
+    infrastructures/mock_io_data_test.cpp
+    infrastructures/ssd_driver_test.cpp
     infrastructures/spy_runtime_error.c
     services/modular_sum_test.cpp
 )

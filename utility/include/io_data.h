@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef BOOT_BOOT_SRC_DRIVERS_IO_DATA_H_
-#define BOOT_BOOT_SRC_DRIVERS_IO_DATA_H_
+#ifndef UTILITY_INCLUDE_IO_DATA_H_
+#define UTILITY_INCLUDE_IO_DATA_H_
 
 #include <stdint.h>
 
@@ -14,4 +14,4 @@ uint8_t IoData_Read8bit(ioAddress offset);
 uint16_t IoData_Read16bit(ioAddress offset);
 uint32_t IoData_Read32bit(ioAddress offset);
 
-#endif  // BOOT_BOOT_SRC_DRIVERS_IO_DATA_H_
+#endif  // UTILITY_INCLUDE_IO_DATA_H_

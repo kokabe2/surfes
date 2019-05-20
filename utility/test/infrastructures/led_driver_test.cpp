@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "drivers/led_driver.h"
+#include "led_driver.h"
 #include "spy_runtime_error.h"
 }
 

@@ -4,8 +4,6 @@ target_sources(surfes_boot_boot
   PRIVATE
     bootstrapper.c
     application/boot_application.c
-    drivers/led_driver.c
-    drivers/ssd_driver.c
     platforms/exception_event.c
     platforms/microcontroller.c
     platforms/platform.c
