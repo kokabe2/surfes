@@ -3,16 +3,16 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "registries/uintptr_registry_getter.h"
+#include "database/int_registry_getter.h"
 #include "spy_runtime_error.h"
 }
 
-TEST(UintptrRegistryGetterTest, GetWithNonExistKey) {
+TEST(IntRegistryGetterTest, GetWithNonExistKey) {
   SpyRuntimeError_Reset();
 
-  EXPECT_EQ(0, UintptrRegistryGetter_get(-3));
-  EXPECT_EQ(0, UintptrRegistryGetter_get(412037413));
-  EXPECT_STREQ("Uintptr Registry Getter: out-of-range key",
+  EXPECT_EQ(-1, IntRegistryGetter_get(-3));
+  EXPECT_EQ(-1, IntRegistryGetter_get(412037413));
+  EXPECT_STREQ("Int Registry Getter: out-of-range key",
                SpyRuntimeError_GetLastError());
   EXPECT_EQ(412037413, SpyRuntimeError_GetLastParameter());
 }
