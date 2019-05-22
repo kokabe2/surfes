@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 
-#include "default_parameters.h"
+#include "registry_default_api.h"
 #include "runtime_error.h"
 
 enum {
