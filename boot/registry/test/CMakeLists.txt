@@ -4,6 +4,7 @@ target_sources(gtests
   PRIVATE
     database/int_registry_getter_test.cpp
     database/uintptr_registry_getter_test.cpp
+    filer/sys_exe_file_test.cpp
     ${UTILITY_TEST_DIR}/infrastructures/spy_runtime_error.c
 )
 target_include_directories(gtests

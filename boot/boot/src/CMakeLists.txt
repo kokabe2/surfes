@@ -14,7 +14,6 @@ target_sources(surfes_boot_boot
     script/system_script.c
     systems/halt_system.c
     systems/reboot_system.c
-    systems/sys_exe_file.c
     systems/system_executor_factory_impl.c
     ${UTILITY_SOURCE_DIR}/domains/sif_file_base.c
     ${UTILITY_SOURCE_DIR}/domains/sif_file_validator.c
