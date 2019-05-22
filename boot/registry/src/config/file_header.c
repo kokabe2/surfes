@@ -1,9 +1,9 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#include "fixed_parameters.h"
 #include "registries/int_registry_getter.h"
 #include "registries/uintptr_registry_getter.h"
 #include "registry_file_api.h"
+#include "registry_fixed_api.h"
 #include "sif_header.h"
 
 const RegistryFileEntryPointStruct kEntryPoint = {
