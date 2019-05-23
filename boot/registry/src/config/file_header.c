@@ -6,7 +6,7 @@
 #include "registry_api.h"
 #include "sif_header.h"
 
-const RegistryFileEntryPointStruct kEntryPoint = {
+const RegistryApiStruct kEntryPoint = {
     .getIntRegistryValue = IntRegistryGetter_get,
     .getUintptrRegistryValue = UintptrRegistryGetter_get,
 };

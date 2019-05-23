@@ -28,9 +28,9 @@ enum UintptrRegistryKey {
   kUrkUpdaterFileAddress,
 };
 
-typedef struct RegistryFileEntryPointStruct {
+typedef struct RegistryApiStruct {
   int (*getIntRegistryValue)(int key);
   uintptr_t (*getUintptrRegistryValue)(int key);
-} RegistryFileEntryPointStruct, *RegistryFileEntryPoint;
+} RegistryApiStruct, *RegistryApi;
 
 #endif  // BOOT_REGISTRY_INCLUDE_REGISTRY_API_H_
