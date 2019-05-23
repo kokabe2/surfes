@@ -1,15 +1,10 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#include "database/int_registry_getter.h"
-#include "database/uintptr_registry_getter.h"
 #include "immutable_registry.h"
 #include "registry_api.h"
 #include "sif_header.h"
 
-const RegistryApiStruct kEntryPoint = {
-    .getIntRegistryValue = IntRegistryGetter_get,
-    .getUintptrRegistryValue = UintptrRegistryGetter_get,
-};
+extern const RegistryApiStruct kRegistyApi;
 
 const SifHeaderStruct kFileHeader = {
     .identification = {0x7F, 'S', 'I', 'F', kSc32, kSd2Lsb, kSvCurrent},
@@ -18,5 +13,5 @@ const SifHeaderStruct kFileHeader = {
     .header_size = sizeof(SifHeaderStruct),
     .file_version = 0x0000000100000000,
     .file_address = kRegistryFileAddress,
-    .entry_point = (uintptr_t)&kEntryPoint,
+    .entry_point = (uintptr_t)&kRegistyApi,
 };

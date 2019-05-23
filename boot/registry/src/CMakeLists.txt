@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_library(surfes_boot_registry "")
 target_sources(surfes_boot_registry
   PRIVATE
+    registry_api.c
     database/int_registry_getter.c
     database/uintptr_registry_getter.c
     config/file_header.c
