@@ -3,7 +3,7 @@
 #include "database/int_registry_getter.h"
 #include "database/uintptr_registry_getter.h"
 #include "immutable_registry.h"
-#include "registry_file_api.h"
+#include "registry_api.h"
 #include "sif_header.h"
 
 const RegistryFileEntryPointStruct kEntryPoint = {
