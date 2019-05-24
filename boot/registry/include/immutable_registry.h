@@ -7,6 +7,7 @@ enum BootFileMetadata {
   kBootFileVersion = 0x0000000100000000,
   kBootFileAddress = 0xFFFFE000,
   kRegistryFileAddress = 0xFFFFC000,
+  kUpdaterFileAddress = 0xFFFF0000,
 };
 
 #endif  // BOOT_REGISTRY_INCLUDE_IMMUTABLE_REGISTRY_H_
