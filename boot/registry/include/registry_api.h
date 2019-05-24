@@ -33,6 +33,6 @@ typedef struct RegistryApiStruct {
   uintptr_t (*getUintptrRegistryValue)(int key);
 } RegistryApiStruct, *RegistryApi;
 
-RegistryApi RegistryApi_getDefaultInstance(void);
+RegistryApi RegistryApi_getInstance(void);
 
 #endif  // BOOT_REGISTRY_INCLUDE_REGISTRY_API_H_

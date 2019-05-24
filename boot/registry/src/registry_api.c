@@ -10,6 +10,4 @@ const RegistryApiStruct kRegistryApi = {
     .getUintptrRegistryValue = UintptrRegistryGetter_get,
 };
 
-RegistryApi RegistryApi_getDefaultInstance(void) {
-  return (RegistryApi)&kRegistryApi;
-}
+RegistryApi RegistryApi_getInstance(void) { return (RegistryApi)&kRegistryApi; }
