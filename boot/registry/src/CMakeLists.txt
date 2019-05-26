@@ -6,6 +6,10 @@ target_sources(surfes_boot_registry
     database/int_registry_getter.c
     database/uintptr_registry_getter.c
     config/file_header.c
+    ${UTILITY_SOURCE_DIR}/domains/sif_file.c
+    ${UTILITY_SOURCE_DIR}/domains/sif_file_validator.c
+    ${UTILITY_SOURCE_DIR}/infrastructures/instance_helper.c
+    ${UTILITY_SOURCE_DIR}/services/modular_sum.c
 )
 target_include_directories(surfes_boot_registry
   PUBLIC

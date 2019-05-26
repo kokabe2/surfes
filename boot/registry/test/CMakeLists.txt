@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
+    registry_api_test.cpp
     database/int_registry_getter_test.cpp
     database/uintptr_registry_getter_test.cpp
     ${UTILITY_TEST_DIR}/infrastructures/spy_runtime_error.c
