@@ -74,7 +74,7 @@ class RegistryApiTest : public ::testing::Test {
 };
 
 TEST_F(RegistryApiTest, GetInstanceWithRegistryFile) {
-  RegistryApi_Change(dummy_file.file_address);
+  RegistryApi_Create(dummy_file.file_address);
 
   instance = RegistryApi_getInstance();
 
@@ -86,7 +86,7 @@ TEST_F(RegistryApiTest, GetInstanceWithRegistryFile) {
 }
 
 TEST_F(RegistryApiTest, GetInstanceWithBuiltinData) {
-  RegistryApi_Change(reinterpret_cast<uintptr_t>(&dummy_broken_file));
+  RegistryApi_Create(reinterpret_cast<uintptr_t>(&dummy_broken_file));
 
   instance = RegistryApi_getInstance();
 

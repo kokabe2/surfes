@@ -15,14 +15,9 @@ const RegistryApiStruct kRegistryApi = {
     .getUintptrRegistryValue = UintptrRegistryGetter_get,
 };
 
-static uintptr_t registry_file_address = kRegistryFileAddress;
-void RegistryApi_Change(uintptr_t file_address) {
-  registry_file_address = file_address;
-}
-
 static SifFile its_file;
-static RegistryApi NewInstance(void) {
-  its_file = SifFile_Open(registry_file_address);
+static RegistryApi NewInstance(uintptr_t file_address) {
+  its_file = SifFile_Open(file_address);
   RegistryApi instance = (RegistryApi)SifFile_getEntryPoint(its_file);
   if (instance) return instance;
 
@@ -30,14 +25,17 @@ static RegistryApi NewInstance(void) {
 }
 
 static RegistryApi its_instance = NULL;
+void RegistryApi_Create(uintptr_t file_address) {
+  its_instance = NewInstance(file_address);
+}
+
 RegistryApi RegistryApi_getInstance(void) {
-  if (!its_instance) its_instance = NewInstance();
+  if (!its_instance) its_instance = NewInstance(kRegistryFileAddress);
 
   return its_instance;
 }
 
 void RegistryApi_Destroy(void) {
   SifFile_Close(&its_file);
-  registry_file_address = kRegistryFileAddress;
   its_instance = NULL;
 }
