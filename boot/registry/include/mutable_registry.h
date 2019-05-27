@@ -19,6 +19,10 @@ enum Runlevel {
 enum FileAddress {
   kCoreFileAddress = 0xFFC00000,
   kUpdaterFileAddress = 0xFFFE0000,
+  kRecoverySystemFileAddress = kUpdaterFileAddress,
+  kUpdateSystemFileAddress = kUpdaterFileAddress,
+  kUserSystemFileAddress = kCoreFileAddress,
+  kDeveloperSystemFileAddress = kCoreFileAddress,
 };
 
 #endif  // BOOT_REGISTRY_INCLUDE_MUTABLE_REGISTRY_H_

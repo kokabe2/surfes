@@ -26,6 +26,10 @@ enum IntRegistryKey {
 enum UintptrRegistryKey {
   kUrkCoreFileAddress = 0,
   kUrkUpdaterFileAddress,
+  kUrkRecoverySystemFileAddress,
+  kUrkUpdateSystemFileAddress,
+  kUrkUserSystemFileAddress,
+  kUrkDeveloperSystemFileAddress,
 };
 
 typedef struct RegistryApiStruct {

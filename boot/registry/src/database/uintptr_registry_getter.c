@@ -12,8 +12,9 @@ enum {
 };
 
 static const int kUintptrRegistryValues[] = {
-    kCoreFileAddress,
-    kUpdaterFileAddress,
+    kCoreFileAddress,           kUpdaterFileAddress,
+    kRecoverySystemFileAddress, kUpdateSystemFileAddress,
+    kUserSystemFileAddress,     kDeveloperSystemFileAddress,
 };
 
 static bool IsInvalid(int key) {
