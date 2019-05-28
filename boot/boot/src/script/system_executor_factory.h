@@ -3,7 +3,7 @@
 #ifndef BOOT_BOOT_SRC_SCRIPT_SYSTEM_EXECUTOR_FACTORY_H_
 #define BOOT_BOOT_SRC_SCRIPT_SYSTEM_EXECUTOR_FACTORY_H_
 
-#include "system_executable.h"
+#include "script/system_executable.h"
 
 typedef struct {
   ISystemExecutable (*Make)(int runlevel);

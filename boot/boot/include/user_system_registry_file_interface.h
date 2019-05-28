@@ -3,7 +3,7 @@
 #ifndef BOOT_BOOT_INCLUDE_USER_SYSTEM_REGISTRY_FILE_INTERFACE_H_
 #define BOOT_BOOT_INCLUDE_USER_SYSTEM_REGISTRY_FILE_INTERFACE_H_
 
-#include "system_executable.h"
+#include "script/system_executable.h"
 
 enum {
   kUserSystemRegistryFileAddress = 0xFFC00000,

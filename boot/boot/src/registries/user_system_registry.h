@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 
-#include "system_executable.h"
+#include "script/system_executable.h"
 
 void UserSystemRegistry_Change(uintptr_t address);
 ISystemExecutable UserSystemRegistry_getExecutor(int runlevel);

@@ -4,7 +4,7 @@
 
 #include <stddef.h>
 
-#include "system_executable.h"
+#include "script/system_executable.h"
 
 static ISystemExecutorFactory its_factory = NULL;
 
