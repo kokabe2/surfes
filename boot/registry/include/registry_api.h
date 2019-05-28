@@ -18,8 +18,8 @@ enum IntRegistryKey {
   kIrkHaltModeRunlevel,
   kIrkRecoveryModeRunlevel,
   kIrkUpdateModeRunlevel,
-  kIrkUserModeRunlevel,
-  kIrkDeveloperModeRunlevel,
+  kIrkNormalModeRunlevel,
+  kIrkAdvancedModeRunlevel,
   kIrkRebootModeRunlevel,
 };
 
@@ -28,8 +28,8 @@ enum UintptrRegistryKey {
   kUrkUpdaterFileAddress,
   kUrkRecoverySystemFileAddress,
   kUrkUpdateSystemFileAddress,
-  kUrkUserSystemFileAddress,
-  kUrkDeveloperSystemFileAddress,
+  kUrkNormalSystemFileAddress,
+  kUrkAdvancedSystemFileAddress,
 };
 
 typedef struct RegistryApiStruct {

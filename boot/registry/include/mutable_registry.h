@@ -11,8 +11,8 @@ enum Runlevel {
   kHaltModeRunlevel = 0,
   kRecoveryModeRunlevel = 1,
   kUpdateModeRunlevel,
-  kUserModeRunlevel,
-  kDeveloperModeRunlevel,
+  kNormalModeRunlevel,
+  kAdvancedModeRunlevel,
   kRebootModeRunlevel = 6,
 };
 
@@ -21,8 +21,8 @@ enum FileAddress {
   kUpdaterFileAddress = 0xFFFE0000,
   kRecoverySystemFileAddress = kUpdaterFileAddress,
   kUpdateSystemFileAddress = kUpdaterFileAddress,
-  kUserSystemFileAddress = kCoreFileAddress,
-  kDeveloperSystemFileAddress = kCoreFileAddress,
+  kNormalSystemFileAddress = kCoreFileAddress,
+  kAdvancedSystemFileAddress = kCoreFileAddress,
 };
 
 #endif  // BOOT_REGISTRY_INCLUDE_MUTABLE_REGISTRY_H_
