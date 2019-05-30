@@ -7,12 +7,12 @@
 
 enum SifFileValidationError {
   kSfvNoError = 0,
-  kSfvChecksumError,
   kSfvMagicNumberError,
   kSfvClassError,
   kSfvVersionError,
   kSfvHeaderSizeError,
   kSfvFileSizeError,
+  kSfvChecksumError,
 };
 
 int SifFileValidator_Validate(uintptr_t file_address);

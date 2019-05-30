@@ -4,9 +4,9 @@
 
 #include <stdbool.h>
 
-#include "sif_header.h"
 #include "modular_sum.h"
 #include "runtime_error.h"
+#include "sif_header.h"
 
 static bool HasNoDataCorruption(SifHeader header) {
   if (ModularSum_Verify((uint32_t*)header->file_address, header->file_size))
@@ -66,8 +66,8 @@ static bool IsValidFileSize(SifHeader header) {
 
 typedef bool (*validator)(SifHeader);
 static const validator kValidators[] = {
-    HasNoDataCorruption, IsSifFile,         IsValidClass,
-    IsValidVersion,      IsValidHeaderSize, IsValidFileSize,
+    IsSifFile,         IsValidClass,    IsValidVersion,
+    IsValidHeaderSize, IsValidFileSize, HasNoDataCorruption,
 };
 int SifFileValidator_Validate(uintptr_t file_address) {
   SifHeader header = (SifHeader)file_address;
