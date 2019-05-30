@@ -20,13 +20,14 @@ set(UTILITY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/src)
 set(UTILITY_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/test)
 set(UTILITY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/include)
 set(BOOT_BOOT_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
+set(BOOT_REGISTRY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../registry/include)
 
 add_subdirectory(src)
 
 include(cmake/googletest.cmake)
 fetch_googletest(
   ${PROJECT_SOURCE_DIR}/cmake
-  ${PROJECT_BINARY_DIR}/googletest
+  ${PROJECT_SOURCE_DIR}/../../thirdparty/google/googletest
 )
 
 enable_testing()

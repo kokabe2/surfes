@@ -21,7 +21,7 @@ add_subdirectory(src)
 include(cmake/googletest.cmake)
 fetch_googletest(
   ${PROJECT_SOURCE_DIR}/cmake
-  ${PROJECT_BINARY_DIR}/googletest
+  ${PROJECT_SOURCE_DIR}/../thirdparty/google/googletest
 )
 
 enable_testing()
