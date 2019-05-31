@@ -12,10 +12,7 @@ enum {
 };
 
 static const int kIntRegistryValues[] = {
-    kDefaultRunlevel,    kLowestRunlevel,     kHighestRunlevel,
-    kNumOfRunlevels,     kHaltModeRunlevel,   kRecoveryModeRunlevel,
-    kUpdateModeRunlevel, kNormalModeRunlevel, kAdvancedModeRunlevel,
-    kRebootModeRunlevel,
+    kDefaultRunlevel,
 };
 
 static bool IsInvalid(int key) {

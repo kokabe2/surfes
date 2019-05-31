@@ -5,15 +5,6 @@
 
 enum Runlevel {
   kDefaultRunlevel = 3,
-  kLowestRunlevel = 0,
-  kHighestRunlevel = 6,
-  kNumOfRunlevels = 7,
-  kHaltModeRunlevel = 0,
-  kRecoveryModeRunlevel = 1,
-  kUpdateModeRunlevel,
-  kNormalModeRunlevel,
-  kAdvancedModeRunlevel,
-  kRebootModeRunlevel = 6,
 };
 
 enum FileAddress {

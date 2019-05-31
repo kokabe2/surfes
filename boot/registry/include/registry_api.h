@@ -12,15 +12,6 @@ enum RegistryFileApiError {
 
 enum IntRegistryKey {
   kIrkDefaultRunlevel = 0,
-  kIrkLowestRunlevel,
-  kIrkHighestRunlevel,
-  kIrkNumOfRunlevels,
-  kIrkHaltModeRunlevel,
-  kIrkRecoveryModeRunlevel,
-  kIrkUpdateModeRunlevel,
-  kIrkNormalModeRunlevel,
-  kIrkAdvancedModeRunlevel,
-  kIrkRebootModeRunlevel,
 };
 
 enum UintptrRegistryKey {

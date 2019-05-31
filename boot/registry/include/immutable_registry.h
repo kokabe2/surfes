@@ -10,4 +10,16 @@ enum BootFileMetadata {
   kUpdaterFileAddress = 0xFFFF0000,
 };
 
+enum Runlevel {
+  kLowestRunlevel = 0,
+  kHighestRunlevel = 6,
+  kNumOfRunlevels = 7,
+  kHaltModeRunlevel = 0,
+  kRecoveryModeRunlevel = 1,
+  kUpdateModeRunlevel,
+  kNormalModeRunlevel,
+  kAdvancedModeRunlevel,
+  kRebootModeRunlevel = 6,
+};
+
 #endif  // BOOT_REGISTRY_INCLUDE_IMMUTABLE_REGISTRY_H_
