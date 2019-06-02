@@ -8,6 +8,7 @@ target_sources(gtests
     systems/halt_system_test.cpp
     systems/reboot_system_test.cpp
     systems/system_executor_factory_impl_test.cpp
+    systems/user_system_test.cpp
     ${UTILITY_TEST_DIR}/infrastructures/spy_runtime_error.c
     ${UTILITY_TEST_DIR}/infrastructures/mock_io_data.cpp
 )
