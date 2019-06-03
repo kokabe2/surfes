@@ -1,4 +1,4 @@
-// Copyright(c) 2019 Ken Okabe
+﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #ifndef BOOT_REGISTRY_INCLUDE_IMMUTABLE_REGISTRY_H_
 #define BOOT_REGISTRY_INCLUDE_IMMUTABLE_REGISTRY_H_
@@ -10,7 +10,7 @@ enum BootFileMetadata {
   kRecoveryFileAddress = 0xFFFF0000,
 };
 
-enum Runlevel {
+enum StandardRunlevel {
   kLowestRunlevel = 0,
   kHighestRunlevel = 6,
   kNumOfRunlevels = 7,
