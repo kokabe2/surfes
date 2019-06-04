@@ -8,8 +8,8 @@
 #include "halt_system.h"
 #include "immutable_registry.h"
 #include "reboot_system.h"
-#include "registries/user_system_registry.h"
 #include "runtime_error.h"
+#include "user_system.h"
 
 static bool IsInvalid(int runlevel) {
   if (runlevel >= kLowestRunlevel && runlevel <= kHighestRunlevel) return false;
@@ -25,7 +25,7 @@ static ISystemExecutable Make(int runlevel) {
   if (runlevel == kLowestRunlevel) return HaltSystem_getInstance();
   if (runlevel == kHighestRunlevel) return RebootSystem_getInstance();
 
-  return UserSystemRegistry_getExecutor(runlevel);
+  return UserSystem_getExecutor(runlevel);
 }
 
 static ISystemExecutorFactoryStruct its_instance = {
