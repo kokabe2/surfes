@@ -9,6 +9,7 @@ target_sources(surfes_boot_boot
     platforms/microcontroller.c
     platforms/platform.c
     platforms/section.c
+    registries/user_system_file_provider_impl.c
     registries/user_system_registry.c
     registries/user_system_registry_file.c
     script/system_script.c
@@ -16,6 +17,9 @@ target_sources(surfes_boot_boot
     systems/reboot_system.c
     systems/user_system.c
     systems/system_executor_factory_impl.c
+    ${BOOT_REGISTRY_SOURCE_DIR}/registry_api.c
+    ${BOOT_REGISTRY_SOURCE_DIR}/database/int_registry_getter.c
+    ${BOOT_REGISTRY_SOURCE_DIR}/database/uintptr_registry_getter.c
     ${UTILITY_SOURCE_DIR}/domains/sif_file.c
     ${UTILITY_SOURCE_DIR}/domains/sif_file_base.c
     ${UTILITY_SOURCE_DIR}/domains/sif_file_validator.c
