@@ -3,11 +3,11 @@
 #include "gtest/gtest.h"
 
 extern "C" {
+#include "immutable_registry.h"
 #include "modular_sum.h"
 #include "registries/user_system_registry.h"
 #include "sif_header.h"
 #include "user_system_registry_file_interface.h"
-#include "user_system_registry_interface.h"
 }
 
 namespace {

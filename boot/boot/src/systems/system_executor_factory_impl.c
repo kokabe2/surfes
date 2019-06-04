@@ -6,10 +6,10 @@
 #include <stddef.h>
 
 #include "halt_system.h"
+#include "immutable_registry.h"
 #include "reboot_system.h"
 #include "registries/user_system_registry.h"
 #include "runtime_error.h"
-#include "user_system_registry_interface.h"
 
 static bool IsInvalid(int runlevel) {
   if (runlevel >= kLowestRunlevel && runlevel <= kHighestRunlevel) return false;
