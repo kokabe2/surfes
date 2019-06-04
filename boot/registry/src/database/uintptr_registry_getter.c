@@ -11,7 +11,7 @@ enum {
   kNonsenseValue = 0,
 };
 
-static const int kUintptrRegistryValues[] = {
+static const uintptr_t kUintptrRegistryValues[] = {
     kCoreFileAddress,           kUpdaterFileAddress,
     kRecoverySystemFileAddress, kUpdateSystemFileAddress,
     kNormalSystemFileAddress,   kAdvancedSystemFileAddress,
