@@ -8,19 +8,19 @@ extern "C" {
 #include "registries/user_system_file_provider_impl.h"
 }
 
-class UserSystemFileProviderImpl : public ::testing::Test {
+class UserSystemFileProviderImplTest : public ::testing::Test {
  protected:
   IUserSystemFileProvider instance;
 
   virtual void SetUp() { instance = UserSystemFileProviderImpl_getInstance(); }
 };
 
-TEST_F(UserSystemFileProviderImpl, GetInstance) {
+TEST_F(UserSystemFileProviderImplTest, GetInstance) {
   EXPECT_TRUE(instance != NULL);
   EXPECT_EQ(instance, UserSystemFileProviderImpl_getInstance());
 }
 
-TEST_F(UserSystemFileProviderImpl, GetFileAddress) {
+TEST_F(UserSystemFileProviderImplTest, GetFileAddress) {
   EXPECT_EQ(kRecoverySystemFileAddress,
             instance->getFileAddress(kRecoveryModeRunlevel));
   EXPECT_EQ(kUpdateSystemFileAddress,
@@ -31,7 +31,7 @@ TEST_F(UserSystemFileProviderImpl, GetFileAddress) {
             instance->getFileAddress(kAdvancedModeRunlevel));
 }
 
-TEST_F(UserSystemFileProviderImpl, GetFileAddressWithOutRangeOfRunlevel) {
+TEST_F(UserSystemFileProviderImplTest, GetFileAddressWithOutRangeOfRunlevel) {
   EXPECT_EQ(0, instance->getFileAddress(6));
   EXPECT_EQ(0, instance->getFileAddress(0));
   EXPECT_EQ(0, instance->getFileAddress(3141));
