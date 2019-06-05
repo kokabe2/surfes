@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
+    registries/runlevel_provider_test.cpp
     registries/user_system_file_provider_impl_test.cpp
-    registries/user_system_registry_test.cpp
-    registries/user_system_registry_file_test.cpp
     script/system_script_test.cpp
     systems/halt_system_test.cpp
     systems/reboot_system_test.cpp

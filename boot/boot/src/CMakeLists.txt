@@ -10,8 +10,7 @@ target_sources(surfes_boot_boot
     platforms/platform.c
     platforms/section.c
     registries/user_system_file_provider_impl.c
-    registries/user_system_registry.c
-    registries/user_system_registry_file.c
+    registries/runlevel_provider.c
     script/system_script.c
     systems/halt_system.c
     systems/reboot_system.c
@@ -21,7 +20,6 @@ target_sources(surfes_boot_boot
     ${BOOT_REGISTRY_SOURCE_DIR}/database/int_registry_getter.c
     ${BOOT_REGISTRY_SOURCE_DIR}/database/uintptr_registry_getter.c
     ${UTILITY_SOURCE_DIR}/domains/sif_file.c
-    ${UTILITY_SOURCE_DIR}/domains/sif_file_base.c
     ${UTILITY_SOURCE_DIR}/domains/sif_file_validator.c
     ${UTILITY_SOURCE_DIR}/infrastructures/instance_helper.c
     ${UTILITY_SOURCE_DIR}/services/modular_sum.c
