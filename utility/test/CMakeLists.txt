@@ -3,7 +3,6 @@ add_executable(gtests "")
 target_sources(gtests
   PRIVATE
     domains/sif_file_test.cpp
-    domains/sif_file_base_test.cpp
     domains/sif_file_validator_test.cpp
     infrastructures/instance_helper_test.cpp
     infrastructures/led_driver_test.cpp

@@ -3,7 +3,6 @@ add_library(surfes_utility "")
 target_sources(surfes_utility
   PRIVATE
     domains/sif_file.c
-    domains/sif_file_base.c
     domains/sif_file_validator.c
     infrastructures/instance_helper.c
     infrastructures/led_driver.c
