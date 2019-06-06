@@ -26,7 +26,7 @@ static bool IsInvalid(int runlevel) {
 static uintptr_t getFileAddress(int runlevel) {
   if (IsInvalid(runlevel)) return kNonsenseFileAddress;
 
-  uintptr_t key = kRegistryKeysForSystemFileAddress[runlevel];
+  int key = kRegistryKeysForSystemFileAddress[runlevel];
   RegistryApi ra = RegistryApi_getInstance();
 
   return ra->getUintptrRegistryValue(key);
