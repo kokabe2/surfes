@@ -3,8 +3,8 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "systems/system_executor_factory_impl.h"
 #include "spy_runtime_error.h"
+#include "systems/system_executor_factory_impl.h"
 }
 
 class SystemExecutorFactoryImplTest : public ::testing::Test {
@@ -18,12 +18,14 @@ class SystemExecutorFactoryImplTest : public ::testing::Test {
 };
 
 TEST_F(SystemExecutorFactoryImplTest, GetInstance) {
+  EXPECT_TRUE(instance != NULL);
   EXPECT_EQ(instance, SystemExecutorFactoryImpl_getInstance());
 }
 
 TEST_F(SystemExecutorFactoryImplTest, Make) {
   ISystemExecutable se = instance->Make(0);
 
+  EXPECT_TRUE(se != NULL);
   EXPECT_EQ(se, instance->Make(0));
 }
 

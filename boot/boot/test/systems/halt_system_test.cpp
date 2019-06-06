@@ -24,6 +24,7 @@ class HaltSystemTest : public ::testing::Test {
 };
 
 TEST_F(HaltSystemTest, GetInstance) {
+  EXPECT_TRUE(instance != NULL);
   EXPECT_EQ(instance, HaltSystem_getInstance());
 }
 

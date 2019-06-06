@@ -24,6 +24,7 @@ class RebootSystemTest : public ::testing::Test {
 };
 
 TEST_F(RebootSystemTest, GetInstance) {
+  EXPECT_TRUE(instance != NULL);
   EXPECT_EQ(instance, RebootSystem_getInstance());
 }
 
