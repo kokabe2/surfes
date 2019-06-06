@@ -16,6 +16,7 @@ static int kRegistryKeysForSystemFileAddress[] = {
     kNonsenseRegistryKey,          kUrkRecoverySystemFileAddress,
     kUrkUpdateSystemFileAddress,   kUrkNormalSystemFileAddress,
     kUrkAdvancedSystemFileAddress, kNonsenseRegistryKey,
+    kNonsenseRegistryKey,
 };
 
 static bool IsInvalid(int runlevel) {
