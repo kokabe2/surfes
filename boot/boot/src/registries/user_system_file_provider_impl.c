@@ -12,7 +12,7 @@ enum {
   kNonsenseFileAddress = 0,
 };
 
-static int kRegistryKeysForSystemFileAddress[] = {
+static const int kRegistryKeysForSystemFileAddress[] = {
     kNonsenseRegistryKey,          kUrkRecoverySystemFileAddress,
     kUrkUpdateSystemFileAddress,   kUrkNormalSystemFileAddress,
     kUrkAdvancedSystemFileAddress, kNonsenseRegistryKey,
