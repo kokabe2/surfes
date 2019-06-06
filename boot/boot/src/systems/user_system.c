@@ -14,15 +14,21 @@ void UserSystem_Create(IUserSystemFileProvider provider) {
 
 void UserSystem_Destroy(void) { its_provider = NULL; }
 
+static SystemFileEntryPoint getEntryPoint(uintptr_t file_address) {
+  SifFile sf = SifFile_Open(file_address);
+  SystemFileEntryPoint sfep = (SystemFileEntryPoint)SifFile_getEntryPoint(sf);
+  SifFile_Close(&sf);
+
+  return sfep;
+}
+
 static int its_runlevel;
 static int Execute(void) {
   int next_runlevel = -1;
 
   uintptr_t file_address = its_provider->getFileAddress(its_runlevel);
-  SifFile sf = SifFile_Open(file_address);
-  SystemFileEntryPoint sfep = (SystemFileEntryPoint)SifFile_getEntryPoint(sf);
+  SystemFileEntryPoint sfep = getEntryPoint(file_address);
   if (sfep) next_runlevel = sfep->Execute(its_runlevel);
-  SifFile_Close(&sf);
 
   return next_runlevel;
 }
