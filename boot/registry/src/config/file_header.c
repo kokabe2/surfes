@@ -4,7 +4,7 @@
 #include "registry_api.h"
 #include "sif_header.h"
 
-extern const RegistryApiStruct kRegistyApi;
+extern const RegistryApiStruct kRegistryApi;
 
 const SifHeaderStruct kFileHeader = {
     .identification = {0x7F, 'S', 'I', 'F', kSc32, kSd2Lsb, kSvCurrent},
@@ -13,5 +13,5 @@ const SifHeaderStruct kFileHeader = {
     .header_size = sizeof(SifHeaderStruct),
     .file_version = 0x0000000100000000,
     .file_address = kRegistryFileAddress,
-    .entry_point = (uintptr_t)&kRegistyApi,
+    .entry_point = (uintptr_t)&kRegistryApi,
 };
