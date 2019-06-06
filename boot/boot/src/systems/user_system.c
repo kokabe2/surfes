@@ -3,7 +3,6 @@
 #include "user_system.h"
 
 #include <stddef.h>
-#include <stdint.h>
 
 #include "sif_file.h"
 #include "system_file_entry_point.h"
