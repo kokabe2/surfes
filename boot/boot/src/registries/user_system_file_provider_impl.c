@@ -3,7 +3,6 @@
 #include "user_system_file_provider_impl.h"
 
 #include <stdbool.h>
-#include <stddef.h>
 
 #include "immutable_registry.h"
 #include "registry_api.h"
