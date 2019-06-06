@@ -9,13 +9,13 @@ target_sources(surfes_boot_boot
     platforms/microcontroller.c
     platforms/platform.c
     platforms/section.c
-    registries/user_system_file_provider_impl.c
     registries/runlevel_provider.c
+    registries/user_system_file_provider_impl.c
     script/system_script.c
     systems/halt_system.c
     systems/reboot_system.c
-    systems/user_system.c
     systems/system_executor_factory_impl.c
+    systems/user_system.c
     ${BOOT_REGISTRY_SOURCE_DIR}/registry_api.c
     ${BOOT_REGISTRY_SOURCE_DIR}/database/int_registry_getter.c
     ${BOOT_REGISTRY_SOURCE_DIR}/database/uintptr_registry_getter.c
