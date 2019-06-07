@@ -4,6 +4,7 @@
 
 #include <stddef.h>
 
+#include "immutable_registry.h"
 #include "sif_file.h"
 #include "system_file_entry_point.h"
 
@@ -24,7 +25,9 @@ static SystemFileEntryPoint getEntryPoint(uintptr_t file_address) {
 
 static int its_runlevel;
 static int Execute(void) {
-  int next_runlevel = -1;
+  int next_runlevel = its_runlevel == kRecoveryModeRunlevel
+                          ? kHaltModeRunlevel
+                          : kRecoveryModeRunlevel;
 
   uintptr_t file_address = its_provider->getFileAddress(its_runlevel);
   SystemFileEntryPoint sfep = getEntryPoint(file_address);
