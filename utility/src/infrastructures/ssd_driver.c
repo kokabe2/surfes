@@ -5,9 +5,9 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+#include "instance_helper.h"
 #include "led_driver.h"
 #include "led_driver_private.h"
-#include "instance_helper.h"
 #include "runtime_error.h"
 
 enum {
