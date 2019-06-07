@@ -1,8 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#include "sif_header.h"
-
 #include "immutable_registry.h"
+#include "sif_header.h"
 
 const SifHeaderStruct kFileHeader = {
     .identification = {0x7F, 'S', 'I', 'F', kSc32, kSd2Lsb, kSvCurrent},
