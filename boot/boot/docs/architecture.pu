@@ -1,0 +1,194 @@
+﻿
+@startuml class diagram
+skinparam {
+    defaultFontName Ricty Diminished
+    monochrome true
+}
+
+package boot {
+    class BootStrapper <<EntryPoint>> {
+        +BootStrapper()
+    }
+
+    folder application {
+        class BootApplication <<Static>> {
+            +Run()
+        }
+    }
+
+    folder script {
+        class SystemScript <<SingleInstance>> {
+            -factory: ISystemExecutorFactory
+            +Create(ISystemExecutorFactory)
+            +Destroy()
+            +Run(int)
+        }
+        interface ISystemExecutable {
+            +Execute(): int
+        }
+        interface ISystemExecutorFactory {
+            +Make(int): ISystemExecutable
+        }
+
+        SystemScript --> ISystemExecutable
+        SystemScript --> ISystemExecutorFactory
+    }
+
+    folder registries {
+        class RunlevelProvider <<Static>> {
+            +getDefaultRunlevel(): int
+        }
+        class UserSystemFileProviderImpl <<Singleton>> {
+            +getInstance(): IUserSystemFileProvider
+        }
+    }
+
+    folder systems {
+        class SystemExecutorFactoryImpl <<Singleton>> {
+            +getInstance(): ISystemExecutorFactory
+        }
+        class HaltSystem <<Singleton>> {
+            +getInstance(): ISystemExecutable
+        }
+        interface HaltSystemServiceInterface {
+            +Shutdown()
+        }
+        class RebootSystem <<Singleton>> {
+            +getInstance(): ISystemExecutable
+        }
+        interface RebootSystemServiceInterface {
+            +Reboot()
+        }
+        class UserSystem <<Singleton>> {
+            -provider: IUserSystemFileProvider
+            +Create(IUserSystemFileProvider)
+            +Destroy()
+            +UserSystem_getExecutor(int): ISystemExecutable
+        }
+        interface IUserSystemFileProvider {
+            +getFileAddress(int): uintptr_t
+        }
+
+        SystemExecutorFactoryImpl --> HaltSystem
+        SystemExecutorFactoryImpl --> RebootSystem
+        SystemExecutorFactoryImpl --> UserSystem
+        HaltSystem --> HaltSystemServiceInterface
+        RebootSystem --> RebootSystemServiceInterface
+        UserSystem --> IUserSystemFileProvider
+    }
+
+    folder platforms {
+        class Platform <<Static>> {
+            +Initialize()
+            +Abort()
+        }
+        class Microcontroller <<Static>> {
+            +Initialize()
+        }
+        class foo <<Static>> {
+            +Initialize()
+        }
+        class bar <<Static>> {
+            +Initialize()
+        }
+        class baz <<Static>> {
+            +Initialize()
+        }
+        class Section <<Static>> {
+            +Initialize()
+        }
+        class ExeptionEvent <<Static>> {
+            +Initialize()
+        }
+        class HaltSystemService <<Static>> {
+            +Shutdown()
+        }
+        class RebootSystemService <<Static>> {
+            +Reboot()
+        }
+
+        Platform --> Microcontroller
+        Platform --> ExeptionEvent
+        Platform --> Section
+        Microcontroller --> foo
+        Microcontroller --> bar
+        Microcontroller --> baz
+    }
+
+    BootStrapper --> Platform
+    BootStrapper --> BootApplication
+    BootApplication --> UserSystemFileProviderImpl
+    BootApplication --> UserSystem
+    BootApplication --> SystemScript
+    BootApplication --> RunlevelProvider
+    BootApplication --> SystemExecutorFactoryImpl
+
+    IUserSystemFileProvider <|.. UserSystemFileProviderImpl
+    ISystemExecutorFactory <|.. SystemExecutorFactoryImpl
+    ISystemExecutable <|.. HaltSystem
+    ISystemExecutable <|.. RebootSystem
+    ISystemExecutable <|.. UserSystem
+    HaltSystemServiceInterface <|.. HaltSystemService
+    RebootSystemServiceInterface <|.. RebootSystemService
+}
+
+package registry {
+    class RegistryApi <<Static>> {
+        +getInstance(): RegistryApi
+        +getIntRegistryValue(int): int
+        +getUintptrRegistryValue(int): uintptr_t
+    }
+
+    folder database {
+        class IntRegistryGetter <<Static>> {
+            +get(int): int
+        }
+        class UintptrRegistryGetter <<Static>> {
+            +get(int): uintptr_t
+        }
+    }
+
+    RegistryApi --> IntRegistryGetter
+    RegistryApi --> UintptrRegistryGetter
+}
+
+package utility {
+    folder domains {
+        class SifFile <<MultipleInstance>> {
+            -version: uint64_t
+            -entry_point: uintptr_t
+            -Close: closeFunction
+            +Open(uintptr_t): SifFile
+            +Close()
+            +getVersion(): uint64_t
+            +getEntryPoint(): uintptr_t
+        }
+        class SifFileValidator <<Static>> {
+            +Validate(uintptr_t): int
+        }
+    }
+
+    folder infrastructures {
+        class InstanceHelper <<Static>> {
+            +New(): void*
+            +Delete(void**)
+        }
+    }
+
+    folder services {
+        class ModularSum <<Static>> {
+            +Verify(const uint32_t *, int): uint32_t
+            +Calculate(const uint32_t *, int): uint32_t
+        }
+    }
+
+    ' ModularSum -[hidden]d- InstanceHelper
+    SifFile --> InstanceHelper
+    SifFile --> SifFileValidator
+    SifFileValidator --> ModularSum
+}
+
+UserSystem -> "0..5" SifFile
+RunlevelProvider --> RegistryApi
+UserSystemFileProviderImpl --> RegistryApi
+@enduml
