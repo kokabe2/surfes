@@ -6,6 +6,7 @@ target_sources(surfes_utility
     domains/sif_file_validator.c
     infrastructures/instance_helper.c
     infrastructures/led_driver.c
+    infrastructures/micro_time.c
     infrastructures/ssd_driver.c
     services/modular_sum.c
 )
