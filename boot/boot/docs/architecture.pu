@@ -35,11 +35,11 @@ package boot {
     }
 
     folder registries {
-        class RunlevelProvider <<Static>> {
-            +getDefaultRunlevel(): int
-        }
         class UserSystemFileProviderImpl <<Singleton>> {
             +getInstance(): IUserSystemFileProvider
+        }
+        class RunlevelProvider <<Static>> {
+            +getDefaultRunlevel(): int
         }
     }
 
@@ -69,9 +69,9 @@ package boot {
             +getFileAddress(int): uintptr_t
         }
 
-        SystemExecutorFactoryImpl --> HaltSystem
-        SystemExecutorFactoryImpl --> RebootSystem
-        SystemExecutorFactoryImpl --> UserSystem
+        HaltSystem <-- SystemExecutorFactoryImpl
+        RebootSystem <-- SystemExecutorFactoryImpl
+        UserSystem <-- SystemExecutorFactoryImpl
         HaltSystem --> HaltSystemServiceInterface
         RebootSystem --> RebootSystemServiceInterface
         UserSystem --> IUserSystemFileProvider
@@ -81,6 +81,12 @@ package boot {
         class Platform <<Static>> {
             +Initialize()
             +Abort()
+        }
+        class Section <<Static>> {
+            +Initialize()
+        }
+        class ExeptionEvent <<Static>> {
+            +Initialize()
         }
         class Microcontroller <<Static>> {
             +Initialize()
@@ -94,12 +100,6 @@ package boot {
         class baz <<Static>> {
             +Initialize()
         }
-        class Section <<Static>> {
-            +Initialize()
-        }
-        class ExeptionEvent <<Static>> {
-            +Initialize()
-        }
         class HaltSystemService <<Static>> {
             +Shutdown()
         }
@@ -107,21 +107,21 @@ package boot {
             +Reboot()
         }
 
-        Platform --> Microcontroller
-        Platform --> ExeptionEvent
-        Platform --> Section
-        Microcontroller --> foo
-        Microcontroller --> bar
-        Microcontroller --> baz
+        Section <-- Platform
+        ExeptionEvent <-- Platform
+        Microcontroller <-- Platform
+        foo <-- Microcontroller
+        bar <-- Microcontroller
+        baz <-- Microcontroller
     }
 
-    BootStrapper --> Platform
-    BootStrapper --> BootApplication
-    BootApplication --> UserSystemFileProviderImpl
-    BootApplication --> UserSystem
-    BootApplication --> SystemScript
-    BootApplication --> RunlevelProvider
-    BootApplication --> SystemExecutorFactoryImpl
+    Platform <-- BootStrapper
+    BootApplication <-- BootStrapper
+    UserSystemFileProviderImpl <-- BootApplication
+    UserSystem <-- BootApplication
+    SystemScript <-- BootApplication
+    RunlevelProvider <-- BootApplication
+    SystemExecutorFactoryImpl <-- BootApplication
 
     IUserSystemFileProvider <|.. UserSystemFileProviderImpl
     ISystemExecutorFactory <|.. SystemExecutorFactoryImpl
@@ -138,18 +138,6 @@ package registry {
         +getIntRegistryValue(int): int
         +getUintptrRegistryValue(int): uintptr_t
     }
-
-    folder database {
-        class IntRegistryGetter <<Static>> {
-            +get(int): int
-        }
-        class UintptrRegistryGetter <<Static>> {
-            +get(int): uintptr_t
-        }
-    }
-
-    RegistryApi --> IntRegistryGetter
-    RegistryApi --> UintptrRegistryGetter
 }
 
 package utility {
@@ -163,32 +151,12 @@ package utility {
             +getVersion(): uint64_t
             +getEntryPoint(): uintptr_t
         }
-        class SifFileValidator <<Static>> {
-            +Validate(uintptr_t): int
-        }
     }
-
-    folder infrastructures {
-        class InstanceHelper <<Static>> {
-            +New(): void*
-            +Delete(void**)
-        }
-    }
-
-    folder services {
-        class ModularSum <<Static>> {
-            +Verify(const uint32_t *, int): uint32_t
-            +Calculate(const uint32_t *, int): uint32_t
-        }
-    }
-
-    ' ModularSum -[hidden]d- InstanceHelper
-    SifFile --> InstanceHelper
-    SifFile --> SifFileValidator
-    SifFileValidator --> ModularSum
 }
 
 UserSystem -> "0..5" SifFile
-RunlevelProvider --> RegistryApi
-UserSystemFileProviderImpl --> RegistryApi
+RunlevelProvider -> RegistryApi
+UserSystemFileProviderImpl -> RegistryApi
+
+registries <-[hidden]- platforms
 @enduml
