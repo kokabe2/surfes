@@ -5,16 +5,23 @@ skinparam {
     monochrome true
 }
 
-[*] -> active : Created
-state active {
-    [*] -> Ready
-    Ready --> Running : Dispatched
-    Running -> Ready : Preempted
-    Ready -up-> Suspended : Task_Suspend()\n called
+state Running
+state NotRunning as "Not Running" {
+    state Ready
+    state Blocked
+    state Suspended
+
+    [*] --> Ready
     Suspended --> Ready : Task_Resume()\n called
-    Running -> Blocked : Blocking API called
-    Blocked -> Ready : Event
-    Blocked -> Suspended : Task_Suspend()\n called
+    Ready -> Suspended : Task_Suspend()\n called
+    Blocked -up-> Ready : Event
+    Blocked -up-> Suspended : Task_Suspend()\n called
 }
-active -> [*] : Destroyed
+
+[*] --> NotRunning : Created
+Ready --> Running : Dispatched
+Running -> Ready : Preempted
+Running -> Blocked : Blocking API called
+NotRunning --> [*] : Destroyed
+Running --> [*] : Destroyed
 @enduml
