@@ -12,6 +12,7 @@ target_sources(gtests
     infrastructures/ssd_driver_test.cpp
     infrastructures/spy_runtime_error.c
     services/modular_sum_test.cpp
+    services/sjis_code_converter_test.cpp
 )
 target_include_directories(gtests
   PUBLIC

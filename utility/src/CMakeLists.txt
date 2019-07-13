@@ -9,6 +9,7 @@ target_sources(surfes_utility
     infrastructures/micro_time.c
     infrastructures/ssd_driver.c
     services/modular_sum.c
+    services/sjis_code_converter.c
 )
 target_include_directories(surfes_utility
   PUBLIC
