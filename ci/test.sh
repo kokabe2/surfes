@@ -13,5 +13,6 @@ test_package () {
 cd ${SCRIPT_DIR}/../boot/boot && test_package
 cd ${SCRIPT_DIR}/../boot/registry && test_package
 cd ${SCRIPT_DIR}/../core/boot && test_package
+cd ${SCRIPT_DIR}/../core/kernel && test_package
 cd ${SCRIPT_DIR}/../updater/boot && test_package
 cd ${SCRIPT_DIR}/../utility && test_package
