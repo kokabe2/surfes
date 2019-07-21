@@ -3,6 +3,7 @@ add_library(surfes_core_kernel "")
 target_sources(surfes_core_kernel
   PRIVATE
     utkernel/isr.c
+    utkernel/task.c
     ${UTILITY_SOURCE_DIR}/infrastructures/instance_helper.c
     ${UTILITY_SOURCE_DIR}/infrastructures/runtime_error.c
 )

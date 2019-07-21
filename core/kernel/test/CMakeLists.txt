@@ -3,7 +3,9 @@ add_executable(gtests "")
 target_sources(gtests
   PRIVATE
     utkernel/isr_test.cpp
+    utkernel/task_test.cpp
     utkernel/impl/fake_int.c
+    utkernel/impl/fake_task.c
 )
 target_include_directories(gtests
   PUBLIC
