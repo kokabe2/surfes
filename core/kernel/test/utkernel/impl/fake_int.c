@@ -10,9 +10,9 @@ typedef struct {
   ATR intatr;
   FP inthdr;
   INT level;
-} UtkIntStruct;
+} IntControlBlockStruct;
 
-static UtkIntStruct int_control_blocks[N_INTNO];
+static IntControlBlockStruct int_control_blocks[N_INTNO];
 
 static void DummyIsr(UINT intno) {}
 
