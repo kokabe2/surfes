@@ -2,7 +2,6 @@
 // This software is released under the MIT License, see LICENSE.
 #include "task.h"
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -70,10 +69,8 @@ Task Task_Create(FunctionEntry entry, int priority, int stack_size,
   if (!Validate(entry, priority, stack_size)) return NULL;
 
   Task self = NewInstance(entry, parameters);
-  if (self && !RunTask(self, priority, stack_size)) {
-    assert(false);
+  if (self && !RunTask(self, priority, stack_size))
     InstanceHelper_Delete(&self);
-  }
 
   return self;
 }
