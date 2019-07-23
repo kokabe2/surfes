@@ -126,3 +126,10 @@ void Task_Resume(Task self) {
   self->Resume = NULL;
   Resume(self->id);
 }
+
+void Task_Delay(Task self, int time_in_milliseconds) {
+  if (!self || (time_in_milliseconds <= 0)) return;
+  if (self->id != tk_get_tid()) return;
+
+  tk_dly_tsk(time_in_milliseconds);
+}

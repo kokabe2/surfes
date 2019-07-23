@@ -208,3 +208,40 @@ TEST_F(TaskTest, ResumeWithNull) {
 
   SUCCEED();
 }
+
+TEST_F(TaskTest, Delay) {
+  fake_task_setState(1, TTS_RUN);
+
+  Task_Delay(instance, 100);
+
+  EXPECT_EQ(TTS_WAI, fake_task_getState(1));
+  EXPECT_EQ(100, fake_task_getTimeout(1));
+}
+
+TEST_F(TaskTest, DelayNotRunningTask) {
+  fake_task_setState(1, TTS_RUN);
+  Task task = Task_Create(FakeTask, kTpHighestPriority, 128, NULL);
+
+  Task_Delay(task, 100);
+
+  EXPECT_EQ(TTS_RUN, fake_task_getState(1));
+  EXPECT_EQ(0, fake_task_getTimeout(1));
+  EXPECT_NE(TTS_WAI, fake_task_getState(2));
+  EXPECT_EQ(0, fake_task_getTimeout(2));
+}
+
+TEST_F(TaskTest, DelayWithNull) {
+  Task_Delay(NULL, 100);
+
+  SUCCEED();
+}
+
+TEST_F(TaskTest, DelayWithTimeZeroOrLess) {
+  fake_task_setState(1, TTS_RUN);
+
+  Task_Delay(instance, -10);
+  Task_Delay(instance, 0);
+
+  EXPECT_EQ(TTS_RUN, fake_task_getState(1));
+  EXPECT_EQ(0, fake_task_getTimeout(1));
+}

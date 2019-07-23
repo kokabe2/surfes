@@ -208,6 +208,15 @@ ER tk_rsm_tsk(ID tskid) {
   return E_OK;
 }
 
+ER tk_dly_tsk(RELTIM dlytim) {
+  ID tskid = RetrieveTaskId(TTS_RUN);
+  if (tskid == kNonsenseId) return E_CTX;
+
+  task_control_blocks[tskid].state = TTS_WAI;
+  task_control_blocks[tskid].tmout = (TMO)dlytim;
+  return E_OK;
+}
+
 ID tk_get_tid(void) {
   ID tskid = RetrieveTaskId(TTS_RUN);
   if (tskid == kNonsenseId) tskid = 0;

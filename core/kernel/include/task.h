@@ -22,5 +22,6 @@ Task Task_Create(FunctionEntry entry, int priority, int stack_size,
 void Task_Destroy(Task* self);
 void Task_Suspend(Task self);
 void Task_Resume(Task self);
+void Task_Delay(Task self, int time_in_milliseconds);
 
 #endif  // CORE_KERNEL_INCLUDE_TASK_H_

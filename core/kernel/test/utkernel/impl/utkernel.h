@@ -32,6 +32,7 @@ typedef W SZ;
 typedef INT ID;
 typedef INT ER;
 typedef W TMO;
+typedef UW RELTIM;
 typedef void (*FP)();
 
 typedef struct {
@@ -64,6 +65,7 @@ ER tk_wup_tsk(ID tskid);
 ER tk_rel_wai(ID tskid);
 ER tk_sus_tsk(ID tskid);
 ER tk_rsm_tsk(ID tskid);
+ER tk_dly_tsk(RELTIM dlytim);
 
 ID tk_get_tid(void);
 
