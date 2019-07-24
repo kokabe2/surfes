@@ -15,14 +15,13 @@ enum {
 typedef int (*ResumeFunction)(int id);
 typedef struct TaskStruct {
   FunctionEntry Entry;
-  void* parameters;
   int id;
   ResumeFunction Resume;
 } TaskStruct;
 
-static void TaskEntry(int unused, void* exinf) {
+static void TaskEntry(int start_code, void* exinf) {
   Task self = (Task)exinf;
-  self->Entry(self->parameters);
+  self->Entry(self, start_code);
   tk_exd_tsk();
 }
 
@@ -39,17 +38,14 @@ static int ReversePriority(int priority) {
   return kTpHighestPriority - priority + kPriorityOffset;
 }
 
-static Task NewInstance(FunctionEntry entry, void* parameters) {
+static Task NewInstance(FunctionEntry entry) {
   Task self = (Task)InstanceHelper_New(sizeof(TaskStruct));
-  if (self) {
-    self->Entry = entry;
-    self->parameters = parameters;
-  }
+  if (self) self->Entry = entry;
 
   return self;
 }
 
-static bool RunTask(Task self, int priority, int stack_size) {
+static bool RunTask(Task self, int priority, int stack_size, int start_code) {
   T_CTSK packet = {
       .exinf = (void*)self,
       .tskatr = (TA_HLNG | TA_RNG0),
@@ -59,17 +55,17 @@ static bool RunTask(Task self, int priority, int stack_size) {
   };
 
   if ((self->id = tk_cre_tsk(&packet)) < 0) return false;
-  if (tk_sta_tsk(self->id, 0) != E_OK) return false;
+  if (tk_sta_tsk(self->id, start_code) != E_OK) return false;
 
   return true;
 }
 
 Task Task_Create(FunctionEntry entry, int priority, int stack_size,
-                 void* parameters) {
+                 int start_code) {
   if (!Validate(entry, priority, stack_size)) return NULL;
 
-  Task self = NewInstance(entry, parameters);
-  if (self && !RunTask(self, priority, stack_size))
+  Task self = NewInstance(entry);
+  if (self && !RunTask(self, priority, stack_size, start_code))
     InstanceHelper_Delete(&self);
 
   return self;

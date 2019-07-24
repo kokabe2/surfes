@@ -14,11 +14,11 @@ enum TaskStackSize {
   kTssMaxSize = 4 * 1024,
 };
 
-typedef void (*FunctionEntry)(void* parameters);
 typedef struct TaskStruct* Task;
+typedef void (*FunctionEntry)(Task self, int start_code);
 
 Task Task_Create(FunctionEntry entry, int priority, int stack_size,
-                 void* parameters);
+                 int start_code);
 void Task_Destroy(Task* self);
 void Task_Suspend(Task self);
 void Task_Resume(Task self);

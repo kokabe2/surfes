@@ -1,4 +1,4 @@
-// Copyright(c) 2019 Ken Okabe
+﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "gtest/gtest.h"
 
@@ -8,12 +8,11 @@ extern "C" {
 }
 
 namespace {
-const int kDummyParameter = 1234;
-bool task_ran;
-void* given_parameters;
-void FakeTask(void* parameters) {
-  given_parameters = parameters;
-  task_ran = true;
+Task given_instance;
+int given_code;
+void FakeTask(Task self, int start_code) {
+  given_instance = self;
+  given_code = start_code;
 }
 }  // namespace
 
@@ -23,10 +22,9 @@ class TaskTest : public ::testing::Test {
 
   virtual void SetUp() {
     fake_task_init();
-    task_ran = false;
-    given_parameters = NULL;
-    instance = Task_Create(FakeTask, kTpDefaultPriority, 1024,
-                           (void*)&kDummyParameter);
+    given_instance = NULL;
+    given_code = 0;
+    instance = Task_Create(FakeTask, kTpDefaultPriority, 1024, 12345678);
   }
   virtual void TearDown() { Task_Destroy(&instance); }
 };
@@ -41,14 +39,14 @@ TEST_F(TaskTest, Create) {
 
 TEST_F(TaskTest, CreateThenDispatch) {
   EXPECT_TRUE(fake_task_dispatch(1));
-  EXPECT_TRUE(task_ran);
-  EXPECT_EQ((void*)&kDummyParameter, given_parameters);
+  EXPECT_EQ(instance, given_instance);
+  EXPECT_EQ(12345678, given_code);
   EXPECT_EQ(TTS_NONE, fake_task_getState(1));  // After end of task
 }
 
 TEST_F(TaskTest, CreateWithBoundaryPriority) {
-  Task highest_priority = Task_Create(FakeTask, kTpHighestPriority, 128, NULL);
-  Task lowest_priority = Task_Create(FakeTask, kTpLowestPriority, 128, NULL);
+  Task highest_priority = Task_Create(FakeTask, kTpHighestPriority, 128, 0);
+  Task lowest_priority = Task_Create(FakeTask, kTpLowestPriority, 128, 0);
 
   EXPECT_EQ(5, fake_task_getPriority(2));
   EXPECT_EQ(12, fake_task_getPriority(3));
@@ -57,20 +55,19 @@ TEST_F(TaskTest, CreateWithBoundaryPriority) {
 }
 
 TEST_F(TaskTest, CreateWithNullEntry) {
-  EXPECT_EQ(NULL, Task_Create(NULL, kTpDefaultPriority, 1024,
-                              (void*)&kDummyParameter));
+  EXPECT_EQ(NULL, Task_Create(NULL, kTpDefaultPriority, 1024, 0));
 }
 
 TEST_F(TaskTest, CreateWithOutOfRangePriority) {
-  EXPECT_EQ(NULL, Task_Create(FakeTask, kTpLowestPriority - 1, 128, NULL));
-  EXPECT_EQ(NULL, Task_Create(FakeTask, kTpHighestPriority + 1, 128, NULL));
+  EXPECT_EQ(NULL, Task_Create(FakeTask, kTpLowestPriority - 1, 128, 0));
+  EXPECT_EQ(NULL, Task_Create(FakeTask, kTpHighestPriority + 1, 128, 0));
 }
 
 TEST_F(TaskTest, CreateWithOutOfRangeStackSize) {
-  EXPECT_EQ(NULL, Task_Create(FakeTask, kTpDefaultPriority, 0, NULL));
-  EXPECT_EQ(NULL, Task_Create(FakeTask, kTpDefaultPriority, -1024, NULL));
+  EXPECT_EQ(NULL, Task_Create(FakeTask, kTpDefaultPriority, 0, 0));
+  EXPECT_EQ(NULL, Task_Create(FakeTask, kTpDefaultPriority, -1024, 0));
   EXPECT_EQ(NULL,
-            Task_Create(FakeTask, kTpDefaultPriority, kTssMaxSize + 1, NULL));
+            Task_Create(FakeTask, kTpDefaultPriority, kTssMaxSize + 1, 0));
 }
 
 TEST_F(TaskTest, Destroy) {
@@ -220,7 +217,7 @@ TEST_F(TaskTest, Delay) {
 
 TEST_F(TaskTest, DelayNotRunningTask) {
   fake_task_setState(1, TTS_RUN);
-  Task task = Task_Create(FakeTask, kTpHighestPriority, 128, NULL);
+  Task task = Task_Create(FakeTask, kTpHighestPriority, 128, 0);
 
   Task_Delay(task, 100);
 

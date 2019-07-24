@@ -19,6 +19,7 @@ typedef struct {
   FP task;
   PRI itskpri;
   SZ stksz;
+  INT stacd;
   UINT state;
   TMO tmout;
   INT suscnt;
@@ -33,6 +34,7 @@ static void InitBlock(ID tskid) {
   task_control_blocks[tskid].task = NULL;
   task_control_blocks[tskid].itskpri = ~0;
   task_control_blocks[tskid].stksz = 0;
+  task_control_blocks[tskid].stacd = 0;
   task_control_blocks[tskid].state = TTS_NONE;
   task_control_blocks[tskid].tmout = 0;
   task_control_blocks[tskid].suscnt = 0;
@@ -73,7 +75,8 @@ bool fake_task_dispatch(ID tskid) {
   if (task_control_blocks[tskid].state != TTS_RDY) return false;
 
   task_control_blocks[tskid].state = TTS_RUN;
-  task_control_blocks[tskid].task(0, task_control_blocks[tskid].exinf);
+  task_control_blocks[tskid].task(task_control_blocks[tskid].stacd,
+                                  task_control_blocks[tskid].exinf);
   return true;
 }
 
@@ -115,6 +118,7 @@ ER tk_sta_tsk(ID tskid, INT stacd) {
   if (task_control_blocks[tskid].state == TTS_NONE) return E_NOEXS;
   if (task_control_blocks[tskid].state != TTS_DMT) return E_OBJ;
 
+  task_control_blocks[tskid].stacd = stacd;
   task_control_blocks[tskid].state = TTS_RDY;
   return E_OK;
 }
