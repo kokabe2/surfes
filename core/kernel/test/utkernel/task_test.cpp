@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2019 Ken Okabe
+// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "gtest/gtest.h"
 
@@ -228,6 +228,7 @@ TEST_F(TaskTest, DelayNotRunningTask) {
   EXPECT_EQ(0, fake_task_getTimeout(1));
   EXPECT_NE(TTS_WAI, fake_task_getState(2));
   EXPECT_EQ(0, fake_task_getTimeout(2));
+  Task_Destroy(&task);
 }
 
 TEST_F(TaskTest, DelayWithNull) {
