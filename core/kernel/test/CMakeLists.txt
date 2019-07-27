@@ -2,9 +2,12 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
+    utkernel/inbox_test.cpp
     utkernel/isr_test.cpp
     utkernel/task_test.cpp
     utkernel/impl/fake_int.c
+    utkernel/impl/fake_mailbox.c
+    utkernel/impl/fake_memorypool.c
     utkernel/impl/fake_task.c
 )
 target_include_directories(gtests

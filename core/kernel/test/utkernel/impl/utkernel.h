@@ -6,6 +6,8 @@
 #define CONST const
 
 #define TA_HLNG 0x00000001
+#define TA_TFIFO 0x00000000
+#define TA_MFIFO 0x00000000
 #define TA_RNG0 0x00000000
 
 #define E_OK (0)
@@ -15,10 +17,14 @@
 #define E_LIMIT (-34)
 #define E_OBJ (-41)
 #define E_NOEXS (-42)
+#define E_TMOUT (-50)
 
+#define TMO_POL (0)
 #define TMO_FEVR (-1)
 
 #define CFN_MAX_TSKID (32)
+#define CFN_MAX_MBXID (16)
+#define CFN_MAX_MPLID (16)
 #define TK_MAX_TSKPRI (16)
 
 typedef signed long W;
@@ -50,6 +56,22 @@ typedef struct {
   void *bufptr;
 } T_CTSK;
 typedef struct {
+  void *exinf;
+  ATR mbxatr;
+  UB dsname[8];
+} T_CMBX;
+typedef struct {
+  void *msgque;
+  int dummy;
+} T_MSG;
+typedef struct {
+  void *exinf;
+  ATR mplatr;
+  SZ mplsz;
+  UB dsname[8];
+  void *bufptr;
+} T_CMPL;
+typedef struct {
   ATR intatr;
   FP inthdr;
 } T_DINT;
@@ -68,6 +90,16 @@ ER tk_rsm_tsk(ID tskid);
 ER tk_dly_tsk(RELTIM dlytim);
 
 ID tk_get_tid(void);
+
+ID tk_cre_mbx(CONST T_CMBX *pk_cmbx);
+ER tk_del_mbx(ID mbxid);
+ER tk_snd_mbx(ID mbxid, T_MSG *pk_msg);
+ER tk_rcv_mbx(ID mbxid, T_MSG **ppk_msg, TMO tmout);
+
+ID tk_cre_mpl(CONST T_CMPL *pk_cmpl);
+ER tk_del_mpl(ID mplid);
+ER tk_get_mpl(ID mplid, SZ blksz, void **p_blk, TMO tmout);
+ER tk_rel_mpl(ID mplid, void *blk);
 
 ER tk_def_int(UINT intno, CONST T_DINT *pk_dint);
 void EnableInt(UINT intno, INT level);
