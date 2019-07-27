@@ -90,21 +90,25 @@ static void DeletePreviousMail(Inbox self) {
   self->got_mail = NULL;
 }
 
-static bool GetNextMail(Inbox self) {
-  if (tk_rcv_mbx(self->mbx_id, (T_MSG**)&self->got_mail, TMO_POL) != E_OK)
+static bool GetNextMail(Inbox self, TMO timeout) {
+  if (tk_rcv_mbx(self->mbx_id, (T_MSG**)&self->got_mail, timeout) != E_OK)
     self->got_mail = NULL;  // Just in case.
   return self->got_mail != NULL;
 }
 
 static void* ExtractMessage(Inbox self) { return self->got_mail + kHeaderSize; }
 
-void* Inbox_Get(Inbox self) {
+void* DeleteThenGet(Inbox self, TMO timeout) {
   if (!self) return NULL;
 
   DeletePreviousMail(self);
-  return GetNextMail(self) ? ExtractMessage(self) : NULL;
+  return GetNextMail(self, TMO_POL) ? ExtractMessage(self) : NULL;
 }
+
+void* Inbox_Get(Inbox self) { return DeleteThenGet(self, TMO_POL); }
 
 bool Inbox_Send(Inbox self, int message_size, const void* message) {
   return ComposeThenSend(self, message_size, message, TMO_FEVR);
 }
+
+void* Inbox_Receive(Inbox self) { return DeleteThenGet(self, TMO_FEVR); }
