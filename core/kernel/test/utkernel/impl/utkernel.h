@@ -25,6 +25,7 @@
 #define CFN_MAX_TSKID (32)
 #define CFN_MAX_MBXID (16)
 #define CFN_MAX_MPLID (16)
+#define CFN_MAX_ALMID (16)
 #define TK_MAX_TSKPRI (16)
 
 typedef signed long W;
@@ -72,6 +73,12 @@ typedef struct {
   void *bufptr;
 } T_CMPL;
 typedef struct {
+  void *exinf;
+  ATR almatr;
+  FP almhdr;
+  UB dsname[8];
+} T_CALM;
+typedef struct {
   ATR intatr;
   FP inthdr;
 } T_DINT;
@@ -100,6 +107,11 @@ ID tk_cre_mpl(CONST T_CMPL *pk_cmpl);
 ER tk_del_mpl(ID mplid);
 ER tk_get_mpl(ID mplid, SZ blksz, void **p_blk, TMO tmout);
 ER tk_rel_mpl(ID mplid, void *blk);
+
+ID tk_cre_alm(CONST T_CALM *pk_calm);
+ER tk_del_alm(ID almid);
+ER tk_sta_alm(ID almid, RELTIM almtim);
+ER tk_stp_alm(ID almid);
 
 ER tk_def_int(UINT intno, CONST T_DINT *pk_dint);
 void EnableInt(UINT intno, INT level);

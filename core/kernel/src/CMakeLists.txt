@@ -4,7 +4,9 @@ target_sources(surfes_core_kernel
   PRIVATE
     utkernel/inbox.c
     utkernel/isr.c
+    utkernel/one_shot_timer.c
     utkernel/task.c
+    utkernel/timer.c
     ${UTILITY_SOURCE_DIR}/infrastructures/instance_helper.c
     ${UTILITY_SOURCE_DIR}/infrastructures/runtime_error.c
 )
