@@ -16,5 +16,6 @@ Inbox Inbox_Create(int inbox_size);
 void Inbox_Destroy(Inbox* self);
 bool Inbox_Post(Inbox self, int message_size, const void* message);
 void* Inbox_Get(Inbox self);
+bool Inbox_Send(Inbox self, int message_size, const void* message);
 
 #endif  // CORE_KERNEL_INCLUDE_INBOX_H_

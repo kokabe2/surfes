@@ -52,9 +52,9 @@ static bool Validate(int message_size, const void* message) {
   return (message_size > 0) && message;
 }
 
-static void* NewMail(Inbox self, int message_size) {
+static void* NewMail(Inbox self, int message_size, TMO timeout) {
   void* mail;
-  return tk_get_mpl(self->mpl_id, kHeaderSize + message_size, &mail, TMO_POL) ==
+  return tk_get_mpl(self->mpl_id, kHeaderSize + message_size, &mail, timeout) ==
                  E_OK
              ? mail
              : NULL;
@@ -68,15 +68,20 @@ static void SendMail(Inbox self, void* mail) {
   tk_snd_mbx(self->mbx_id, (T_MSG*)mail);
 }
 
-bool Inbox_Post(Inbox self, int message_size, const void* message) {
+bool ComposeThenSend(Inbox self, int message_size, const void* message,
+                     TMO timeout) {
   if (!self || !Validate(message_size, message)) return false;
 
-  void* mail = NewMail(self, message_size);
+  void* mail = NewMail(self, message_size, TMO_POL);
   if (!mail) return false;
 
   EditMail(mail, message_size, message);
   SendMail(self, mail);
   return true;
+}
+
+bool Inbox_Post(Inbox self, int message_size, const void* message) {
+  return ComposeThenSend(self, message_size, message, TMO_POL);
 }
 
 static void DeletePreviousMail(Inbox self) {
@@ -98,4 +103,8 @@ void* Inbox_Get(Inbox self) {
 
   DeletePreviousMail(self);
   return GetNextMail(self) ? ExtractMessage(self) : NULL;
+}
+
+bool Inbox_Send(Inbox self, int message_size, const void* message) {
+  return ComposeThenSend(self, message_size, message, TMO_FEVR);
 }
