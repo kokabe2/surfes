@@ -30,15 +30,15 @@ static Isr NewInstance(int interrupt_number, IsrFunction function) {
   return self;
 }
 
+Isr Isr_Create(int interrupt_number, IsrFunction function) {
+  return NewInstance(interrupt_number, function);
+}
+
 static void Unregister(int interrupt_number) {
   T_DINT packet = {
       .intatr = TA_HLNG,
   };
   tk_def_int((UINT)interrupt_number, &packet);
-}
-
-Isr Isr_Create(int interrupt_number, IsrFunction function) {
-  return NewInstance(interrupt_number, function);
 }
 
 void Isr_Destroy(Isr* self) {
