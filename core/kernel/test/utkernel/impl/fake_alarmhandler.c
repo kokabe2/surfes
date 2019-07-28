@@ -14,7 +14,7 @@ typedef struct {
   void *exinf;
   ATR almatr;
   FP almhdr;
-  RELTIM almtim;
+  RELTIM lfttim;
   bool active;
 } AlarmHandlerControlBlockStruct;
 
@@ -24,7 +24,7 @@ static void InitBlock(ID almid) {
   control_blocks[almid].exinf = NULL;
   control_blocks[almid].almatr = ~0;
   control_blocks[almid].almhdr = NULL;
-  control_blocks[almid].almtim = 0;
+  control_blocks[almid].lfttim = 0;
   control_blocks[almid].active = false;
 }
 
@@ -44,8 +44,8 @@ FP fake_alarmhandler_getHandler(ID almid) {
   return control_blocks[almid].almhdr;
 }
 
-RELTIM fake_alarmhandler_getAlarmTime(ID almid) {
-  return control_blocks[almid].almtim;
+RELTIM fake_alarmhandler_getLeftTime(ID almid) {
+  return control_blocks[almid].lfttim;
 }
 
 bool fake_alarmhandler_isActive(ID almid) {
@@ -57,12 +57,12 @@ bool fake_alarmhandler_isCreated(ID almid) {
 }
 
 void fake_alarmhandler_countdown(ID almid, RELTIM time) {
-  if (control_blocks[almid].almtim <= time) {
-    control_blocks[almid].almtim = 0;
+  if (control_blocks[almid].lfttim <= time) {
+    control_blocks[almid].lfttim = 0;
     control_blocks[almid].almhdr(control_blocks[almid].exinf);
     control_blocks[almid].active = false;
   } else {
-    control_blocks[almid].almtim -= time;
+    control_blocks[almid].lfttim -= time;
   }
 }
 
@@ -94,11 +94,11 @@ ER tk_del_alm(ID almid) {
   return E_OK;
 }
 
-ER tk_sta_alm(ID almid, RELTIM almtim) {
+ER tk_sta_alm(ID almid, RELTIM lfttim) {
   if (almid < kLowestId || almid > kHighestId) return E_ID;
   if (!control_blocks[almid].almhdr) return E_NOEXS;
 
-  control_blocks[almid].almtim = almtim;
+  control_blocks[almid].lfttim = lfttim;
   control_blocks[almid].active = true;
 
   return E_OK;
@@ -108,7 +108,7 @@ ER tk_stp_alm(ID almid) {
   if (almid < kLowestId || almid > kHighestId) return E_ID;
   if (!control_blocks[almid].almhdr) return E_NOEXS;
 
-  control_blocks[almid].almtim = 0;
+  control_blocks[almid].lfttim = 0;
   control_blocks[almid].active = false;
 
   return E_OK;

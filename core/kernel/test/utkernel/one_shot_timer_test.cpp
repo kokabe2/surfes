@@ -37,7 +37,7 @@ TEST_F(OneShotTimerTest, Create) {
   EXPECT_EQ(TA_HLNG, fake_alarmhandler_getAttribute(0));
   EXPECT_EQ((FP)FakeFunction, fake_alarmhandler_getHandler(0));
   EXPECT_TRUE(fake_alarmhandler_isActive(0));
-  EXPECT_EQ(10, fake_alarmhandler_getAlarmTime(0));
+  EXPECT_EQ(10, fake_alarmhandler_getLeftTime(0));
 }
 
 TEST_F(OneShotTimerTest, CreateWithNullFunction) {
@@ -57,7 +57,7 @@ TEST_F(OneShotTimerTest, RunScheduledFunction) {
   EXPECT_TRUE(was_ran);
   EXPECT_EQ((void*)&kDummyParameter, given_parameter);
   EXPECT_FALSE(fake_alarmhandler_isActive(0));
-  EXPECT_EQ(0, fake_alarmhandler_getAlarmTime(0));
+  EXPECT_EQ(0, fake_alarmhandler_getLeftTime(0));
 }
 
 TEST_F(OneShotTimerTest, Destroy) {
@@ -85,7 +85,7 @@ TEST_F(OneShotTimerTest, Suspend) {
   Timer_Suspend(instance);
 
   EXPECT_FALSE(fake_alarmhandler_isActive(0));
-  EXPECT_EQ(0, fake_alarmhandler_getAlarmTime(0));
+  EXPECT_EQ(0, fake_alarmhandler_getLeftTime(0));
 }
 
 TEST_F(OneShotTimerTest, SuspendWithNull) {
@@ -100,18 +100,18 @@ TEST_F(OneShotTimerTest, Resume) {
   Timer_Resume(instance);
 
   EXPECT_TRUE(fake_alarmhandler_isActive(0));
-  EXPECT_EQ(10, fake_alarmhandler_getAlarmTime(0));
+  EXPECT_EQ(10, fake_alarmhandler_getLeftTime(0));
 }
 
 TEST_F(OneShotTimerTest, ResumeWhenNotSuspended) {
   fake_alarmhandler_countdown(0, 5);
-  EXPECT_EQ(5, fake_alarmhandler_getAlarmTime(0));
+  EXPECT_EQ(5, fake_alarmhandler_getLeftTime(0));
 
   Timer_Resume(instance);
 
   EXPECT_FALSE(was_ran);
   EXPECT_TRUE(fake_alarmhandler_isActive(0));
-  EXPECT_EQ(10, fake_alarmhandler_getAlarmTime(0));
+  EXPECT_EQ(10, fake_alarmhandler_getLeftTime(0));
 }
 
 TEST_F(OneShotTimerTest, ResumeWithNull) {
