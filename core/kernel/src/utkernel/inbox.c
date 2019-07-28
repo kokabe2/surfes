@@ -32,12 +32,14 @@ static bool CreateInbox(Inbox self, int inbox_size) {
          ((self->mpl_id = tk_cre_mpl(&mpl_packet)) >= 0);
 }
 
-Inbox Inbox_Create(int inbox_size) {
-  if (!IsValid(inbox_size)) return NULL;
-
+static Inbox NewInstance(int inbox_size) {
   Inbox self = (Inbox)InstanceHelper_New(sizeof(InboxStruct));
   if (self && !CreateInbox(self, inbox_size)) Inbox_Destroy(&self);
   return self;
+}
+
+Inbox Inbox_Create(int inbox_size) {
+  return IsValid(inbox_size) ? NewInstance(inbox_size) : NULL;
 }
 
 void Inbox_Destroy(Inbox* self) {
