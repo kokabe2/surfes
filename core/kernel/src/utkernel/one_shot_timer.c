@@ -40,10 +40,6 @@ static void UpdateBaseTimeToLeftTime(Timer self) {
   self->base_time = packet.lfttim;
 }
 
-static void ScheduleTimer(Timer self) {
-  tk_sta_alm(self->id, (RELTIM)self->base_time);
-}
-
 static void Resume(Timer self);
 static void Suspend(Timer self) {
   self->Suspend = NULL;
@@ -66,6 +62,10 @@ static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
   if (!CreateTimer(self)) InstanceHelper_Delete(self);
 
   return self;
+}
+
+static void ScheduleTimer(Timer self) {
+  tk_sta_alm(self->id, (RELTIM)self->base_time);
 }
 
 Timer OneShotTimer_Create(ScheduledFunction function, int time_in_milliseconds,
