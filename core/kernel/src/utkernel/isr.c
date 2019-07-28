@@ -12,17 +12,21 @@ typedef struct IsrStruct {
   int interrupt_number;
 } IsrStruct;
 
-static bool Register(int interrupt_number, IsrFunction function) {
+static bool Register(Isr self, IsrFunction function) {
   T_DINT packet = {
       .intatr = TA_HLNG,
       .inthdr = (FP)function,
   };
-  return tk_def_int((UINT)interrupt_number, &packet) == E_OK;
+  return tk_def_int((UINT)self->interrupt_number, &packet) == E_OK;
 }
 
-static Isr NewInstance(int interrupt_number) {
+static Isr NewInstance(int interrupt_number, IsrFunction function) {
   Isr self = (Isr)InstanceHelper_New(sizeof(IsrStruct));
-  if (self) self->interrupt_number = interrupt_number;
+  if (!self) return NULL;
+
+  self->interrupt_number = interrupt_number;
+  if (!Register(self, function)) InstanceHelper_Delete(&self);
+
   return self;
 }
 
@@ -34,10 +38,7 @@ static void Unregister(int interrupt_number) {
 }
 
 Isr Isr_Create(int interrupt_number, IsrFunction function) {
-  if (!Register(interrupt_number, function)) return NULL;
-  Isr self = NewInstance(interrupt_number);
-  if (!self) Unregister(interrupt_number);
-  return self;
+  return NewInstance(interrupt_number, function);
 }
 
 void Isr_Destroy(Isr* self) {
