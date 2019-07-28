@@ -38,14 +38,7 @@ static int ReversePriority(int priority) {
   return kTpHighestPriority - priority + kPriorityOffset;
 }
 
-static Task NewInstance(FunctionEntry entry) {
-  Task self = (Task)InstanceHelper_New(sizeof(TaskStruct));
-  if (self) self->Entry = entry;
-
-  return self;
-}
-
-static bool RunTask(Task self, int priority, int stack_size, int start_code) {
+static bool CreateTask(Task self, int priority, int stack_size) {
   T_CTSK packet = {
       .exinf = (void*)self,
       .tskatr = (TA_HLNG | TA_RNG0),
@@ -53,22 +46,28 @@ static bool RunTask(Task self, int priority, int stack_size, int start_code) {
       .itskpri = (PRI)ReversePriority(priority),
       .stksz = (SZ)stack_size,
   };
+  return (self->id = tk_cre_tsk(&packet)) >= 0;
+}
 
-  if ((self->id = tk_cre_tsk(&packet)) < 0) return false;
-  if (tk_sta_tsk(self->id, start_code) != E_OK) return false;
+static Task NewInstance(FunctionEntry entry, int priority, int stack_size,
+                        int start_code) {
+  Task self = (Task)InstanceHelper_New(sizeof(TaskStruct));
+  if (!self) return NULL;
 
-  return true;
+  self->Entry = entry;
+  if (CreateTask(self, priority, stack_size))
+    tk_sta_tsk(self->id, start_code);
+  else
+    InstanceHelper_Delete(&self);
+
+  return self;
 }
 
 Task Task_Create(FunctionEntry entry, int priority, int stack_size,
                  int start_code) {
-  if (!Validate(entry, priority, stack_size)) return NULL;
-
-  Task self = NewInstance(entry);
-  if (self && !RunTask(self, priority, stack_size, start_code))
-    InstanceHelper_Delete(&self);
-
-  return self;
+  return Validate(entry, priority, stack_size)
+             ? NewInstance(entry, priority, stack_size, start_code)
+             : NULL;
 }
 
 static bool IsMyself(int id) { return id == tk_get_tid(); }
