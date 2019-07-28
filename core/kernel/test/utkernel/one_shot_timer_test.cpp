@@ -112,6 +112,17 @@ TEST_F(OneShotTimerTest, ResumeWhenNotPauseed) {
   EXPECT_EQ(5, fake_alarmhandler_getLeftTime(0));
 }
 
+TEST_F(OneShotTimerTest, ResumeAfterStopped) {
+  fake_alarmhandler_countdown(0, 20);
+  was_ran = false;
+
+  Timer_Resume(instance);
+
+  EXPECT_FALSE(was_ran);
+  EXPECT_FALSE(fake_alarmhandler_isActive(0));
+  EXPECT_EQ(0, fake_alarmhandler_getLeftTime(0));
+}
+
 TEST_F(OneShotTimerTest, ResumeWithNull) {
   Timer_Resume(NULL);
 
