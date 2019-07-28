@@ -71,16 +71,17 @@ static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
   self->Destroy = Destroy;
   self->Pause = Pause;
 
-  if (!CreateTimer(self)) InstanceHelper_Delete(self);
+  if (CreateTimer(self))
+    ScheduleTimer(self);
+  else
+    InstanceHelper_Delete(self);
 
   return self;
 }
 
 Timer OneShotTimer_Create(ScheduledFunction function, int time_in_milliseconds,
                           void* parameter) {
-  if (!Validate(function, time_in_milliseconds)) return NULL;
-
-  Timer self = NewInstance(function, time_in_milliseconds, parameter);
-  if (self) ScheduleTimer(self);
-  return self;
+  return Validate(function, time_in_milliseconds)
+             ? NewInstance(function, time_in_milliseconds, parameter)
+             : NULL;
 }
