@@ -13,12 +13,18 @@ static bool Validate(ScheduledFunction function, int time_in_milliseconds) {
   return function && (time_in_milliseconds >= 0);
 }
 
-static bool CreateTimer(Timer self, ScheduledFunction function,
-                        void* parameter) {
+static void TimerEntry(void* exinf) {
+  Timer self = (Timer)exinf;
+  self->function(self->parameter);
+  self->Suspend = NULL;
+  self->Resume = NULL;
+}
+
+static bool CreateTimer(Timer self) {
   T_CALM packet = {
-      .exinf = parameter,
+      .exinf = self,
       .almatr = TA_HLNG,
-      .almhdr = function,
+      .almhdr = TimerEntry,
   };
   return (self->id = tk_cre_alm(&packet)) >= 0;
 }
@@ -28,26 +34,20 @@ static void Destroy(Timer* self) {
   InstanceHelper_Delete(self);
 }
 
-static bool UpdateBaseTimeToLeftTime(Timer self) {
+static void UpdateBaseTimeToLeftTime(Timer self) {
   T_RALM packet;
   tk_ref_alm(self->id, &packet);
-  if (packet.almstat == TALM_STP) return false;
-
   self->base_time = packet.lfttim;
-  return true;
 }
 
 static void ScheduleTimer(Timer self) {
   tk_sta_alm(self->id, (RELTIM)self->base_time);
 }
 
-static void Resume(Timer self) {
-  self->Resume = NULL;
-  ScheduleTimer(self);
-}
-
+static void Resume(Timer self);
 static void Suspend(Timer self) {
-  if (!UpdateBaseTimeToLeftTime(self)) return;
+  self->Suspend = NULL;
+  UpdateBaseTimeToLeftTime(self);
   tk_stp_alm(self->id);
   self->Resume = Resume;
 }
@@ -57,13 +57,13 @@ static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
   Timer self = (Timer)InstanceHelper_New(sizeof(TimerStruct));
   if (!self) return NULL;
 
-  if (CreateTimer(self, function, parameter)) {
-    self->base_time = time_in_milliseconds;
-    self->Destroy = Destroy;
-    self->Suspend = Suspend;
-  } else {
-    InstanceHelper_Delete(self);
-  }
+  self->base_time = time_in_milliseconds;
+  self->function = function;
+  self->parameter = parameter;
+  self->Destroy = Destroy;
+  self->Suspend = Suspend;
+
+  if (!CreateTimer(self)) InstanceHelper_Delete(self);
 
   return self;
 }
@@ -75,4 +75,10 @@ Timer OneShotTimer_Create(ScheduledFunction function, int time_in_milliseconds,
   Timer self = NewInstance(function, time_in_milliseconds, parameter);
   if (self) ScheduleTimer(self);
   return self;
+}
+
+static void Resume(Timer self) {
+  self->Resume = NULL;
+  ScheduleTimer(self);
+  self->Suspend = Suspend;
 }

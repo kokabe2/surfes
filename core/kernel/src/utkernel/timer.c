@@ -9,7 +9,7 @@ void Timer_Destroy(Timer* self) {
 }
 
 void Timer_Suspend(Timer self) {
-  if (self) self->Suspend(self);
+  if (self && self->Suspend) self->Suspend(self);
 }
 
 void Timer_Resume(Timer self) {
