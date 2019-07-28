@@ -20,7 +20,7 @@ static bool Register(Isr self, IsrFunction function) {
   return tk_def_int((UINT)self->interrupt_number, &packet) == E_OK;
 }
 
-static Isr NewInstance(int interrupt_number, IsrFunction function) {
+Isr Isr_Create(int interrupt_number, IsrFunction function) {
   Isr self = (Isr)InstanceHelper_New(sizeof(IsrStruct));
   if (!self) return NULL;
 
@@ -28,10 +28,6 @@ static Isr NewInstance(int interrupt_number, IsrFunction function) {
   if (!Register(self, function)) InstanceHelper_Delete(&self);
 
   return self;
-}
-
-Isr Isr_Create(int interrupt_number, IsrFunction function) {
-  return NewInstance(interrupt_number, function);
 }
 
 static void Unregister(Isr self) {
