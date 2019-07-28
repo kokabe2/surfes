@@ -32,10 +32,7 @@ class OneShotTimerTest : public ::testing::Test {
 
 TEST_F(OneShotTimerTest, Create) {
   EXPECT_TRUE(instance != NULL);
-  EXPECT_EQ((void*)&kDummyParameter,
-            fake_alarmhandler_getExtendedInformation(0));
   EXPECT_EQ(TA_HLNG, fake_alarmhandler_getAttribute(0));
-  EXPECT_EQ((FP)FakeFunction, fake_alarmhandler_getHandler(0));
   EXPECT_TRUE(fake_alarmhandler_isActive(0));
   EXPECT_EQ(10, fake_alarmhandler_getLeftTime(0));
 }

@@ -32,16 +32,8 @@ void fake_alarmhandler_init(void) {
   for (ID i = kLowestId; i <= kHighestId; ++i) InitBlock(i);
 }
 
-void *fake_alarmhandler_getExtendedInformation(ID almid) {
-  return control_blocks[almid].exinf;
-}
-
 ATR fake_alarmhandler_getAttribute(ID almid) {
   return control_blocks[almid].almatr;
-}
-
-FP fake_alarmhandler_getHandler(ID almid) {
-  return control_blocks[almid].almhdr;
 }
 
 RELTIM fake_alarmhandler_getLeftTime(ID almid) {
