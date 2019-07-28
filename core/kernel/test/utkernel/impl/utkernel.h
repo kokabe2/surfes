@@ -9,6 +9,11 @@
 #define TA_TFIFO 0x00000000
 #define TA_MFIFO 0x00000000
 #define TA_RNG0 0x00000000
+#define TA_STA 0x00000002
+#define TA_PHS 0x00000004
+
+#define TCYC_STP 0x00
+#define TCYC_STA 0x01
 
 #define TALM_STP 0x00
 #define TALM_STA 0x01
@@ -28,6 +33,7 @@
 #define CFN_MAX_TSKID (32)
 #define CFN_MAX_MBXID (16)
 #define CFN_MAX_MPLID (16)
+#define CFN_MAX_CYCID (16)
 #define CFN_MAX_ALMID (16)
 #define TK_MAX_TSKPRI (16)
 
@@ -77,6 +83,19 @@ typedef struct {
 } T_CMPL;
 typedef struct {
   void *exinf;
+  ATR cycatr;
+  FP cychdr;
+  RELTIM cyctim;
+  RELTIM cycphs;
+  UB dsname[8];
+} T_CCYC;
+typedef struct {
+  void *exinf;
+  RELTIM lfttim;
+  UINT cycstat;
+} T_RCYC;
+typedef struct {
+  void *exinf;
   ATR almatr;
   FP almhdr;
   UB dsname[8];
@@ -115,6 +134,12 @@ ID tk_cre_mpl(CONST T_CMPL *pk_cmpl);
 ER tk_del_mpl(ID mplid);
 ER tk_get_mpl(ID mplid, SZ blksz, void **p_blk, TMO tmout);
 ER tk_rel_mpl(ID mplid, void *blk);
+
+ID tk_cre_cyc(CONST T_CCYC *pk_ccyc);
+ER tk_del_cyc(ID cycid);
+ER tk_sta_cyc(ID cycid);
+ER tk_stp_cyc(ID cycid);
+ER tk_ref_cyc(ID cycid, T_RCYC *pk_rcyc);
 
 ID tk_cre_alm(CONST T_CALM *pk_calm);
 ER tk_del_alm(ID almid);

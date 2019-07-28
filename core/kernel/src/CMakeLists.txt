@@ -3,6 +3,7 @@ add_library(surfes_core_kernel "")
 target_sources(surfes_core_kernel
   PRIVATE
     utkernel/inbox.c
+    utkernel/interval_timer.c
     utkernel/isr.c
     utkernel/one_shot_timer.c
     utkernel/task.c
