@@ -2,8 +2,6 @@
 // This software is released under the MIT License, see LICENSE.
 #include "fake_int.h"
 
-#include "utkernel.h"
-
 #define N_INTNO 256
 
 typedef struct {

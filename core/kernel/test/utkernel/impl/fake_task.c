@@ -4,8 +4,6 @@
 
 #include <stddef.h>
 
-#include "utkernel.h"
-
 enum {
   kReservedId = 0,
   kLowestId,
