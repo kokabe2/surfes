@@ -11,7 +11,7 @@ typedef void (*DestroyFunction)(Timer*);
 
 typedef struct TimerStruct {
   int id;
-  int time_in_milliseconds;
+  int base_time;
   DestroyFunction Destroy;
   SuspendFunction Suspend;
   ResumeFunction Resume;

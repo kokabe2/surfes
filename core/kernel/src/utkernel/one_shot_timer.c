@@ -31,7 +31,7 @@ static void Destroy(Timer* self) {
 static void Suspend(Timer self) { tk_stp_alm(self->id); }
 
 static void ScheduleTimer(Timer self) {
-  tk_sta_alm(self->id, (RELTIM)self->time_in_milliseconds);
+  tk_sta_alm(self->id, (RELTIM)self->base_time);
 }
 
 static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
@@ -40,7 +40,7 @@ static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
   if (!self) return NULL;
 
   if (CreateTimer(self, function, parameter)) {
-    self->time_in_milliseconds = time_in_milliseconds;
+    self->base_time = time_in_milliseconds;
     self->Destroy = Destroy;
     self->Suspend = Suspend;
     self->Resume = ScheduleTimer;
