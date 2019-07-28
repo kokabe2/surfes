@@ -13,5 +13,5 @@ void Timer_Suspend(Timer self) {
 }
 
 void Timer_Resume(Timer self) {
-  if (self) self->Resume(self);
+  if (self && self->Resume) self->Resume(self);
 }

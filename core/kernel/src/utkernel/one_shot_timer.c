@@ -28,10 +28,28 @@ static void Destroy(Timer* self) {
   InstanceHelper_Delete(self);
 }
 
-static void Suspend(Timer self) { tk_stp_alm(self->id); }
+static bool UpdateBaseTimeToLeftTime(Timer self) {
+  T_RALM packet;
+  tk_ref_alm(self->id, &packet);
+  if (packet.almstat == TALM_STP) return false;
+
+  self->base_time = packet.lfttim;
+  return true;
+}
 
 static void ScheduleTimer(Timer self) {
   tk_sta_alm(self->id, (RELTIM)self->base_time);
+}
+
+static void Resume(Timer self) {
+  self->Resume = NULL;
+  ScheduleTimer(self);
+}
+
+static void Suspend(Timer self) {
+  if (!UpdateBaseTimeToLeftTime(self)) return;
+  tk_stp_alm(self->id);
+  self->Resume = Resume;
 }
 
 static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
@@ -43,7 +61,6 @@ static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
     self->base_time = time_in_milliseconds;
     self->Destroy = Destroy;
     self->Suspend = Suspend;
-    self->Resume = ScheduleTimer;
   } else {
     InstanceHelper_Delete(self);
   }

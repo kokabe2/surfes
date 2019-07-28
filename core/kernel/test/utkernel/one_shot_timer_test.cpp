@@ -92,23 +92,24 @@ TEST_F(OneShotTimerTest, SuspendWithNull) {
 }
 
 TEST_F(OneShotTimerTest, Resume) {
-  Timer_Suspend(instance);
-
-  Timer_Resume(instance);
-
-  EXPECT_TRUE(fake_alarmhandler_isActive(0));
-  EXPECT_EQ(10, fake_alarmhandler_getLeftTime(0));
-}
-
-TEST_F(OneShotTimerTest, ResumeWhenNotSuspended) {
   fake_alarmhandler_countdown(0, 5);
-  EXPECT_EQ(5, fake_alarmhandler_getLeftTime(0));
+  Timer_Suspend(instance);
 
   Timer_Resume(instance);
 
   EXPECT_FALSE(was_ran);
   EXPECT_TRUE(fake_alarmhandler_isActive(0));
-  EXPECT_EQ(10, fake_alarmhandler_getLeftTime(0));
+  EXPECT_EQ(5, fake_alarmhandler_getLeftTime(0));
+}
+
+TEST_F(OneShotTimerTest, ResumeWhenNotSuspended) {
+  fake_alarmhandler_countdown(0, 5);
+
+  Timer_Resume(instance);
+
+  EXPECT_FALSE(was_ran);
+  EXPECT_TRUE(fake_alarmhandler_isActive(0));
+  EXPECT_EQ(5, fake_alarmhandler_getLeftTime(0));
 }
 
 TEST_F(OneShotTimerTest, ResumeWithNull) {
