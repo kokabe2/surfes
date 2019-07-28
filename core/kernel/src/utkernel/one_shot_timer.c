@@ -13,22 +13,6 @@ static bool Validate(ScheduledFunction function, int time_in_milliseconds) {
   return function && (time_in_milliseconds >= 0);
 }
 
-static void TimerEntry(void* exinf) {
-  Timer self = (Timer)exinf;
-  self->function(self->parameter);
-  self->Pause = NULL;
-  self->Resume = NULL;
-}
-
-static bool CreateTimer(Timer self) {
-  T_CALM packet = {
-      .exinf = self,
-      .almatr = TA_HLNG,
-      .almhdr = TimerEntry,
-  };
-  return (self->id = tk_cre_alm(&packet)) >= 0;
-}
-
 static void Destroy(Timer* self) {
   tk_del_alm((*self)->id);
   InstanceHelper_Delete(self);
@@ -49,6 +33,33 @@ static void Pause(Timer self) {
   self->Resume = Resume;
 }
 
+static void ScheduleTimer(Timer self) {
+  tk_sta_alm(self->id, (RELTIM)self->base_time);
+}
+
+static void Resume(Timer self) {
+  // TODO(okabe): Use a critical section
+  self->Resume = NULL;
+  ScheduleTimer(self);
+  self->Pause = Pause;
+}
+
+static void TimerEntry(void* exinf) {
+  Timer self = (Timer)exinf;
+  self->function(self->parameter);
+  self->Pause = NULL;
+  self->Resume = NULL;
+}
+
+static bool CreateTimer(Timer self) {
+  T_CALM packet = {
+      .exinf = self,
+      .almatr = TA_HLNG,
+      .almhdr = TimerEntry,
+  };
+  return (self->id = tk_cre_alm(&packet)) >= 0;
+}
+
 static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
                          void* parameter) {
   Timer self = (Timer)InstanceHelper_New(sizeof(TimerStruct));
@@ -65,10 +76,6 @@ static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
   return self;
 }
 
-static void ScheduleTimer(Timer self) {
-  tk_sta_alm(self->id, (RELTIM)self->base_time);
-}
-
 Timer OneShotTimer_Create(ScheduledFunction function, int time_in_milliseconds,
                           void* parameter) {
   if (!Validate(function, time_in_milliseconds)) return NULL;
@@ -76,11 +83,4 @@ Timer OneShotTimer_Create(ScheduledFunction function, int time_in_milliseconds,
   Timer self = NewInstance(function, time_in_milliseconds, parameter);
   if (self) ScheduleTimer(self);
   return self;
-}
-
-static void Resume(Timer self) {
-  // TODO(okabe): Use a critical section
-  self->Resume = NULL;
-  ScheduleTimer(self);
-  self->Pause = Pause;
 }
