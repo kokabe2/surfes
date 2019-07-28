@@ -94,7 +94,7 @@ ER tk_del_alm(ID almid) {
   return E_OK;
 }
 
-ER tk_sta_alm(ID almid, RELTIM lfttim) {
+ER tk_sta_alm(ID almid, RELTIM almtim) {
   if (almid < kLowestId || almid > kHighestId) return E_ID;
   if (!control_blocks[almid].almhdr) return E_NOEXS;
 
