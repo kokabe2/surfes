@@ -49,6 +49,7 @@ bool fake_alarmhandler_isCreated(ID almid) {
 }
 
 void fake_alarmhandler_countdown(ID almid, RELTIM time) {
+  if (control_blocks[almid].almstat != TALM_STA) return;
   if (control_blocks[almid].lfttim <= time) {
     control_blocks[almid].lfttim = 0;
     control_blocks[almid].almhdr(control_blocks[almid].exinf);

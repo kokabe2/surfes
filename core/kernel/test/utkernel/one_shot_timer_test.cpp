@@ -80,7 +80,9 @@ TEST_F(OneShotTimerTest, DestroyWithNull) {
 
 TEST_F(OneShotTimerTest, Pause) {
   Timer_Pause(instance);
+  fake_alarmhandler_countdown(0, 20);
 
+  EXPECT_FALSE(was_ran);
   EXPECT_FALSE(fake_alarmhandler_isActive(0));
   EXPECT_EQ(0, fake_alarmhandler_getLeftTime(0));
 }
