@@ -126,6 +126,8 @@ TEST_F(OneShotTimerTest, ResumeAfterStopped) {
 }
 
 TEST_F(OneShotTimerTest, ResumeWithNull) {
+  Timer_Pause(instance);
+
   Timer_Resume(NULL);
 
   SUCCEED();
