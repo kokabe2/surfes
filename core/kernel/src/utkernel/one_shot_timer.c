@@ -42,6 +42,7 @@ static void UpdateBaseTimeToLeftTime(Timer self) {
 
 static void Resume(Timer self);
 static void Suspend(Timer self) {
+  // TODO(okabe): Use a critical section
   self->Suspend = NULL;
   UpdateBaseTimeToLeftTime(self);
   tk_stp_alm(self->id);
@@ -78,6 +79,7 @@ Timer OneShotTimer_Create(ScheduledFunction function, int time_in_milliseconds,
 }
 
 static void Resume(Timer self) {
+  // TODO(okabe): Use a critical section
   self->Resume = NULL;
   ScheduleTimer(self);
   self->Suspend = Suspend;
