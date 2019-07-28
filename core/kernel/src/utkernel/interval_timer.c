@@ -13,6 +13,26 @@ static bool Validate(ScheduledFunction function, int time_in_milliseconds) {
   return function && (time_in_milliseconds >= 0);
 }
 
+static void Destroy(Timer* self) {
+  tk_del_cyc((*self)->id);
+  InstanceHelper_Delete(self);
+}
+
+static void Resume(Timer self);
+static void Pause(Timer self) {
+  // TODO(okabe): Use a critical section
+  self->Pause = NULL;
+  tk_stp_cyc(self->id);
+  self->Resume = Resume;
+}
+
+static void Resume(Timer self) {
+  // TODO(okabe): Use a critical section
+  self->Resume = NULL;
+  tk_sta_cyc(self->id);
+  self->Pause = Pause;
+}
+
 static void TimerEntry(void* exinf) {
   Timer self = (Timer)exinf;
   self->function(self->parameter);
@@ -27,19 +47,6 @@ static bool CreateTimer(Timer self) {
       .cycphs = self->base_time,
   };
   return (self->id = tk_cre_cyc(&packet)) >= 0;
-}
-
-static void Destroy(Timer* self) {
-  tk_del_cyc((*self)->id);
-  InstanceHelper_Delete(self);
-}
-
-static void Resume(Timer self);
-static void Pause(Timer self) {
-  // TODO(okabe): Use a critical section
-  self->Pause = NULL;
-  tk_stp_cyc(self->id);
-  self->Resume = Resume;
 }
 
 static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
@@ -63,11 +70,4 @@ Timer IntervalTimer_Create(ScheduledFunction function, int time_in_milliseconds,
   return Validate(function, time_in_milliseconds)
              ? NewInstance(function, time_in_milliseconds, parameter)
              : NULL;
-}
-
-static void Resume(Timer self) {
-  // TODO(okabe): Use a critical section
-  self->Resume = NULL;
-  tk_sta_cyc(self->id);
-  self->Pause = Pause;
 }
