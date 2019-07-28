@@ -15,7 +15,7 @@ typedef struct {
   ATR almatr;
   FP almhdr;
   RELTIM lfttim;
-  bool active;
+  UINT almstat;
 } AlarmHandlerControlBlockStruct;
 
 static AlarmHandlerControlBlockStruct control_blocks[CFN_MAX_ALMID];
@@ -25,7 +25,7 @@ static void InitBlock(ID almid) {
   control_blocks[almid].almatr = ~0;
   control_blocks[almid].almhdr = NULL;
   control_blocks[almid].lfttim = 0;
-  control_blocks[almid].active = false;
+  control_blocks[almid].almstat = TALM_STP;
 }
 
 void fake_alarmhandler_init(void) {
@@ -49,7 +49,7 @@ RELTIM fake_alarmhandler_getLeftTime(ID almid) {
 }
 
 bool fake_alarmhandler_isActive(ID almid) {
-  return control_blocks[almid].active;
+  return control_blocks[almid].almstat == TALM_STA;
 }
 
 bool fake_alarmhandler_isCreated(ID almid) {
@@ -60,7 +60,7 @@ void fake_alarmhandler_countdown(ID almid, RELTIM time) {
   if (control_blocks[almid].lfttim <= time) {
     control_blocks[almid].lfttim = 0;
     control_blocks[almid].almhdr(control_blocks[almid].exinf);
-    control_blocks[almid].active = false;
+    control_blocks[almid].almstat = TALM_STP;
   } else {
     control_blocks[almid].lfttim -= time;
   }
@@ -98,8 +98,8 @@ ER tk_sta_alm(ID almid, RELTIM almtim) {
   if (almid < kLowestId || almid > kHighestId) return E_ID;
   if (!control_blocks[almid].almhdr) return E_NOEXS;
 
-  control_blocks[almid].lfttim = lfttim;
-  control_blocks[almid].active = true;
+  control_blocks[almid].lfttim = almtim;
+  control_blocks[almid].almstat = TALM_STA;
 
   return E_OK;
 }
@@ -109,7 +109,19 @@ ER tk_stp_alm(ID almid) {
   if (!control_blocks[almid].almhdr) return E_NOEXS;
 
   control_blocks[almid].lfttim = 0;
-  control_blocks[almid].active = false;
+  control_blocks[almid].almstat = TALM_STP;
+
+  return E_OK;
+}
+
+ER tk_ref_alm(ID almid, T_RALM *pk_ralm) {
+  if (almid < kLowestId || almid > kHighestId) return E_ID;
+  if (!control_blocks[almid].almhdr) return E_NOEXS;
+  if (!pk_ralm) return E_PAR;
+
+  pk_ralm->exinf = control_blocks[almid].exinf;
+  pk_ralm->lfttim = control_blocks[almid].lfttim;
+  pk_ralm->almstat = control_blocks[almid].almstat;
 
   return E_OK;
 }

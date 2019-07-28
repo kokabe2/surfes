@@ -10,6 +10,9 @@
 #define TA_MFIFO 0x00000000
 #define TA_RNG0 0x00000000
 
+#define TALM_STP 0x00
+#define TALM_STA 0x01
+
 #define E_OK (0)
 #define E_PAR (-17)
 #define E_ID (-18)
@@ -79,6 +82,11 @@ typedef struct {
   UB dsname[8];
 } T_CALM;
 typedef struct {
+  void *exinf;
+  RELTIM lfttim;
+  UINT almstat;
+} T_RALM;
+typedef struct {
   ATR intatr;
   FP inthdr;
 } T_DINT;
@@ -112,6 +120,7 @@ ID tk_cre_alm(CONST T_CALM *pk_calm);
 ER tk_del_alm(ID almid);
 ER tk_sta_alm(ID almid, RELTIM almtim);
 ER tk_stp_alm(ID almid);
+ER tk_ref_alm(ID almid, T_RALM *pk_ralm);
 
 ER tk_def_int(UINT intno, CONST T_DINT *pk_dint);
 void EnableInt(UINT intno, INT level);
