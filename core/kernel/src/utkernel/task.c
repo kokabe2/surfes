@@ -19,12 +19,6 @@ typedef struct TaskStruct {
   ResumeFunction Resume;
 } TaskStruct;
 
-static void TaskEntry(int start_code, void* exinf) {
-  Task self = (Task)exinf;
-  self->Entry(self, start_code);
-  tk_exd_tsk();
-}
-
 static bool Validate(FunctionEntry entry, int priority, int stack_size) {
   if (!entry) return false;
   if (priority < kTpLowestPriority || priority > kTpHighestPriority)
@@ -32,6 +26,12 @@ static bool Validate(FunctionEntry entry, int priority, int stack_size) {
   if (stack_size <= 0 || stack_size > kTssMaxSize) return false;
 
   return true;
+}
+
+static void TaskEntry(int start_code, void* exinf) {
+  Task self = (Task)exinf;
+  self->Entry(self, start_code);
+  tk_exd_tsk();
 }
 
 static int ReversePriority(int priority) {
