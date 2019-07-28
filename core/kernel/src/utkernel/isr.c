@@ -34,16 +34,16 @@ Isr Isr_Create(int interrupt_number, IsrFunction function) {
   return NewInstance(interrupt_number, function);
 }
 
-static void Unregister(int interrupt_number) {
+static void Unregister(Isr self) {
   T_DINT packet = {
       .intatr = TA_HLNG,
   };
-  tk_def_int((UINT)interrupt_number, &packet);
+  tk_def_int((UINT)self->interrupt_number, &packet);
 }
 
 void Isr_Destroy(Isr* self) {
   if (!self || !(*self)) return;
-  Unregister((*self)->interrupt_number);
+  Unregister(*self);
   InstanceHelper_Delete(self);
 }
 
