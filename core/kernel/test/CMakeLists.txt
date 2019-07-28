@@ -6,6 +6,7 @@ target_sources(gtests
     utkernel/interval_timer_test.cpp
     utkernel/isr_test.cpp
     utkernel/one_shot_timer_test.cpp
+    utkernel/system_time_test.cpp
     utkernel/task_test.cpp
     utkernel/impl/fake_alarmhandler.c
     utkernel/impl/fake_cyclichandler.c
@@ -13,6 +14,7 @@ target_sources(gtests
     utkernel/impl/fake_mailbox.c
     utkernel/impl/fake_memorypool.c
     utkernel/impl/fake_task.c
+    utkernel/impl/fake_time.c
 )
 target_include_directories(gtests
   PUBLIC

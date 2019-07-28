@@ -6,6 +6,7 @@ target_sources(surfes_core_kernel
     utkernel/interval_timer.c
     utkernel/isr.c
     utkernel/one_shot_timer.c
+    utkernel/system_time.c
     utkernel/task.c
     utkernel/timer.c
     ${UTILITY_SOURCE_DIR}/infrastructures/instance_helper.c

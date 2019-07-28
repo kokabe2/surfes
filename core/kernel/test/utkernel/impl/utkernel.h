@@ -82,6 +82,10 @@ typedef struct {
   void *bufptr;
 } T_CMPL;
 typedef struct {
+  W hi;
+  UW lo;
+} SYSTIM;
+typedef struct {
   void *exinf;
   ATR cycatr;
   FP cychdr;
@@ -134,6 +138,9 @@ ID tk_cre_mpl(CONST T_CMPL *pk_cmpl);
 ER tk_del_mpl(ID mplid);
 ER tk_get_mpl(ID mplid, SZ blksz, void **p_blk, TMO tmout);
 ER tk_rel_mpl(ID mplid, void *blk);
+
+ER tk_set_tim(CONST SYSTIM *pk_tim);
+ER tk_get_tim(SYSTIM *pk_tim);
 
 ID tk_cre_cyc(CONST T_CCYC *pk_ccyc);
 ER tk_del_cyc(ID cycid);
