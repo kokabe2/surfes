@@ -8,8 +8,8 @@ void Timer_Destroy(Timer* self) {
   if (self && *self) (*self)->Destroy(self);
 }
 
-void Timer_Suspend(Timer self) {
-  if (self && self->Suspend) self->Suspend(self);
+void Timer_Pause(Timer self) {
+  if (self && self->Pause) self->Pause(self);
 }
 
 void Timer_Resume(Timer self) {

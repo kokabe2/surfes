@@ -16,7 +16,7 @@ static bool Validate(ScheduledFunction function, int time_in_milliseconds) {
 static void TimerEntry(void* exinf) {
   Timer self = (Timer)exinf;
   self->function(self->parameter);
-  self->Suspend = NULL;
+  self->Pause = NULL;
   self->Resume = NULL;
 }
 
@@ -41,9 +41,9 @@ static void UpdateBaseTimeToLeftTime(Timer self) {
 }
 
 static void Resume(Timer self);
-static void Suspend(Timer self) {
+static void Pause(Timer self) {
   // TODO(okabe): Use a critical section
-  self->Suspend = NULL;
+  self->Pause = NULL;
   UpdateBaseTimeToLeftTime(self);
   tk_stp_alm(self->id);
   self->Resume = Resume;
@@ -58,7 +58,7 @@ static Timer NewInstance(ScheduledFunction function, int time_in_milliseconds,
   self->function = function;
   self->parameter = parameter;
   self->Destroy = Destroy;
-  self->Suspend = Suspend;
+  self->Pause = Pause;
 
   if (!CreateTimer(self)) InstanceHelper_Delete(self);
 
@@ -82,5 +82,5 @@ static void Resume(Timer self) {
   // TODO(okabe): Use a critical section
   self->Resume = NULL;
   ScheduleTimer(self);
-  self->Suspend = Suspend;
+  self->Pause = Pause;
 }

@@ -8,7 +8,7 @@ typedef struct TimerStruct* Timer;
 
 // Abstruct Timer Timer_Create();
 void Timer_Destroy(Timer* self);
-void Timer_Suspend(Timer self);
+void Timer_Pause(Timer self);
 void Timer_Resume(Timer self);
 
 #endif  // CORE_KERNEL_INCLUDE_TIMER_H_

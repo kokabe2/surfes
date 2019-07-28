@@ -5,7 +5,7 @@
 
 #include "timer.h"
 
-typedef void (*SuspendFunction)(Timer);
+typedef void (*PauseFunction)(Timer);
 typedef void (*ResumeFunction)(Timer);
 typedef void (*DestroyFunction)(Timer*);
 
@@ -15,7 +15,7 @@ typedef struct TimerStruct {
   ScheduledFunction function;
   void* parameter;
   DestroyFunction Destroy;
-  SuspendFunction Suspend;
+  PauseFunction Pause;
   ResumeFunction Resume;
 } TimerStruct;
 
