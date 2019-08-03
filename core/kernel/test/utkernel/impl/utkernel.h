@@ -11,6 +11,7 @@
 #define TA_RNG0 0x00000000
 #define TA_STA 0x00000002
 #define TA_PHS 0x00000004
+#define TA_USERBUF 0x00000020
 
 #define TCYC_STP 0x00
 #define TCYC_STA 0x01

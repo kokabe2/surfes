@@ -2,6 +2,8 @@
 // This software is released under the MIT License, see LICENSE.
 #include "fake_memorypool.h"
 
+#include <stddef.h>
+
 #include "instance_helper.h"
 
 enum {
@@ -14,6 +16,7 @@ typedef struct {
   ATR mplatr;
   SZ mplsz;
   SZ used_size;
+  void *bufptr;
 } MailboxControlBlockStruct;
 
 static MailboxControlBlockStruct memorypool_control_blocks[CFN_MAX_MPLID];
@@ -22,6 +25,7 @@ static void InitBlock(ID mplid) {
   memorypool_control_blocks[mplid].mplatr = ~0;
   memorypool_control_blocks[mplid].mplsz = 0;
   memorypool_control_blocks[mplid].used_size = 0;
+  memorypool_control_blocks[mplid].bufptr = NULL;
 }
 
 void fake_memorypool_init(void) {
@@ -58,6 +62,9 @@ ID tk_cre_mpl(CONST T_CMPL *pk_cmpl) {
 
   memorypool_control_blocks[mplid].mplatr = pk_cmpl->mplatr;
   memorypool_control_blocks[mplid].mplsz = pk_cmpl->mplsz;
+  if (pk_cmpl->mplatr & TA_USERBUF)
+    memorypool_control_blocks[mplid].bufptr = pk_cmpl->bufptr;
+
   return mplid;
 }
 
@@ -67,6 +74,11 @@ ER tk_del_mpl(ID mplid) {
 
   InitBlock(mplid);
   return E_OK;
+}
+
+static void *getBlockFromUserBuffer(ID mplid) {
+  return memorypool_control_blocks[mplid].bufptr +
+         memorypool_control_blocks[mplid].used_size;
 }
 
 ER tk_get_mpl(ID mplid, SZ blksz, void **p_blk, TMO tmout) {
@@ -79,11 +91,14 @@ ER tk_get_mpl(ID mplid, SZ blksz, void **p_blk, TMO tmout) {
       memorypool_control_blocks[mplid].mplsz)
     return E_TMOUT;
 
-  void *block = InstanceHelper_New(actual_size);
+  void *block = memorypool_control_blocks[mplid].mplatr & TA_USERBUF
+                    ? getBlockFromUserBuffer(mplid)
+                    : InstanceHelper_New(actual_size);
   W *block_size = (W *)block;
   *block_size = actual_size;
   *p_blk = (void *)(block + sizeof(W));
   memorypool_control_blocks[mplid].used_size += actual_size;
+
   return E_OK;
 }
 
@@ -95,6 +110,7 @@ ER tk_rel_mpl(ID mplid, void *blk) {
   void *block = (void *)(blk - sizeof(W));
   W *block_size = (W *)block;
   memorypool_control_blocks[mplid].used_size -= *block_size;
-  InstanceHelper_Delete(&block);
+  if (!(memorypool_control_blocks[mplid].mplatr & TA_USERBUF))
+    InstanceHelper_Delete(&block);
   return E_OK;
 }

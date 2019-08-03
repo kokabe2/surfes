@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_library(surfes_core_kernel "")
 target_sources(surfes_core_kernel
   PRIVATE
+    utkernel/heap.c
     utkernel/inbox.c
     utkernel/interval_timer.c
     utkernel/isr.c

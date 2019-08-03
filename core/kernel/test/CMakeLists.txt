@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
+    utkernel/heap_test.cpp
     utkernel/inbox_test.cpp
     utkernel/interval_timer_test.cpp
     utkernel/isr_test.cpp
