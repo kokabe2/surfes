@@ -66,7 +66,7 @@ TEST_F(InboxTest, Post) {
       0, memcmp(dummy_message,
                 (void*)((uintptr_t)fake_mailbox_getLastMail(0) + sizeof(T_MSG)),
                 sizeof(dummy_message)));
-  EXPECT_EQ(sizeof(T_MSG) + sizeof(dummy_message),
+  EXPECT_EQ(sizeof(W) + sizeof(T_MSG) + sizeof(dummy_message),
             fake_memorypool_getUsedSize(0));
 }
 
@@ -77,7 +77,7 @@ TEST_F(InboxTest, PostWithMessageSizeMoreThanFreeSize) {
       Inbox_Post(instance, sizeof(dummy_message), (void*)dummy_message));
   EXPECT_FALSE(
       Inbox_Post(instance, sizeof(dummy_message), (void*)dummy_message));
-  EXPECT_EQ(sizeof(T_MSG) + sizeof(dummy_message),
+  EXPECT_EQ(sizeof(W) + sizeof(T_MSG) + sizeof(dummy_message),
             fake_memorypool_getUsedSize(0));
 }
 
@@ -113,7 +113,7 @@ TEST_F(InboxTest, GetAfterGet) {
   Inbox_Post(instance, sizeof(dummy_message), (void*)dummy_message);
   void* message = Inbox_Get(instance);
 
-  EXPECT_EQ(sizeof(T_MSG) + sizeof(dummy_message),
+  EXPECT_EQ(sizeof(W) + sizeof(T_MSG) + sizeof(dummy_message),
             fake_memorypool_getUsedSize(0));
   EXPECT_EQ(NULL, Inbox_Get(instance));
   EXPECT_EQ(0, fake_memorypool_getUsedSize(0));

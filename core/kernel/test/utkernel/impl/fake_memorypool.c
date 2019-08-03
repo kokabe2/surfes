@@ -73,15 +73,17 @@ ER tk_get_mpl(ID mplid, SZ blksz, void **p_blk, TMO tmout) {
   if (mplid < kLowestId || mplid > kHighestId) return E_ID;
   if (!memorypool_control_blocks[mplid].mplsz) return E_NOEXS;
   if (tmout < TMO_FEVR) return E_PAR;
-  if ((memorypool_control_blocks[mplid].used_size + blksz) >
+
+  int actual_size = blksz + sizeof(W);
+  if ((memorypool_control_blocks[mplid].used_size + actual_size) >
       memorypool_control_blocks[mplid].mplsz)
     return E_TMOUT;
 
-  void *block = InstanceHelper_New(blksz + sizeof(W));
+  void *block = InstanceHelper_New(actual_size);
   W *block_size = (W *)block;
-  *block_size = blksz;
+  *block_size = actual_size;
   *p_blk = (void *)(block + sizeof(W));
-  memorypool_control_blocks[mplid].used_size += blksz;
+  memorypool_control_blocks[mplid].used_size += actual_size;
   return E_OK;
 }
 
