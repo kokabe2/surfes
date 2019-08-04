@@ -29,21 +29,23 @@ List List_Create(comparator function) {
   return self;
 }
 
+static bool IsEmpty(List self) { return self->head == NULL; }
+
 static ListNode FirstNode(List self) { return self->head; }
 
 void DeleteAllNodes(List self) {
   ListNode node = FirstNode(self);
-  while (node) {
+  do {
     ListNode next = node->next;
     InstanceHelper_Delete(&node);
     node = next;
-  }
+  } while (node);
 }
 
 void List_Destroy(List* self) {
   if (!self || !*self) return;
 
-  DeleteAllNodes(*self);
+  if (!IsEmpty(*self)) DeleteAllNodes(*self);
   InstanceHelper_Delete(self);
 }
 
@@ -71,25 +73,24 @@ static ListNode LastNode(List self) {
 
 void* List_First(List self) {
   if (!self) return NULL;
-
-  ListNode node = FirstNode(self);
-  return node ? node->item : NULL;
+  return IsEmpty(self) ? NULL : FirstNode(self)->item;
 }
 
 void* List_Last(List self) {
   if (!self) return NULL;
-
-  ListNode node = LastNode(self);
-  return node ? node->item : NULL;
+  return IsEmpty(self) ? NULL : LastNode(self)->item;
 }
+
+static void AddFirst(List self, ListNode node) { self->head = node; }
+
+static void AddLast(List self, ListNode node) { LastNode(self)->next = node; }
 
 void List_Add(List self, void* item) {
   if (!self) return;
 
   ListNode node = NewNode(item);
-  ListNode last = LastNode(self);
-  if (last)
-    last->next = node;
+  if (IsEmpty(self))
+    AddFirst(self, node);
   else
-    self->head = node;
+    AddLast(self, node);
 }
