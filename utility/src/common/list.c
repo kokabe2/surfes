@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2019 Ken Okabe
+// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "list.h"
 
@@ -33,19 +33,20 @@ static bool IsEmpty(List self) { return self->head == NULL; }
 
 static ListNode FirstNode(List self) { return self->head; }
 
+static void AddFirst(List self, ListNode node) { self->head = node; }
+
 void DeleteAllNodes(List self) {
+  while (!IsEmpty(self)) {
   ListNode node = FirstNode(self);
-  do {
-    ListNode next = node->next;
+    AddFirst(self, node->next);
     InstanceHelper_Delete(&node);
-    node = next;
-  } while (node);
+  }
 }
 
 void List_Destroy(List* self) {
   if (!self || !*self) return;
 
-  if (!IsEmpty(*self)) DeleteAllNodes(*self);
+  DeleteAllNodes(*self);
   InstanceHelper_Delete(self);
 }
 
@@ -80,8 +81,6 @@ void* List_Last(List self) {
   if (!self) return NULL;
   return IsEmpty(self) ? NULL : LastNode(self)->item;
 }
-
-static void AddFirst(List self, ListNode node) { self->head = node; }
 
 static void AddLast(List self, ListNode node) { LastNode(self)->next = node; }
 
