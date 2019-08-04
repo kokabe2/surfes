@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
+    common/list_test.cpp
     domains/sif_file_test.cpp
     domains/sif_file_validator_test.cpp
     infrastructures/instance_helper_test.cpp
