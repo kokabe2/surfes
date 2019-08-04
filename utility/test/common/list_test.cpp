@@ -104,3 +104,19 @@ TEST_F(ListTest, GetWithIndexLessThanZero) {
 TEST_F(ListTest, FirstWithNull) { EXPECT_EQ(NULL, List_First(NULL)); }
 
 TEST_F(ListTest, LastWithNull) { EXPECT_EQ(NULL, List_Last(NULL)); }
+
+TEST_F(ListTest, Clear) {
+  List_Add(instance, NULL);
+  List_Add(instance, NULL);
+  EXPECT_EQ(2, List_Count(instance));
+
+  List_Clear(instance);
+
+  EXPECT_EQ(0, List_Count(instance));
+}
+
+TEST_F(ListTest, ClearWithNull) {
+  List_Clear(NULL);
+
+  SUCCEED();
+}
