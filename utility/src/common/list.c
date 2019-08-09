@@ -35,10 +35,15 @@ inline static ListNode getFirst(List self) { return self->head; }
 
 inline static void UpdateFirst(List self, ListNode node) { self->head = node; }
 
-void DeleteAllNodes(List self) {
-  while (!IsEmpty(self)) {
+static ListNode PopFirst(List self) {
     ListNode node = getFirst(self);
     UpdateFirst(self, node->next);
+  return node;
+}
+
+void DeleteAllNodes(List self) {
+  while (!IsEmpty(self)) {
+    ListNode node = PopFirst(self);
     InstanceHelper_Delete(&node);
   }
 }
