@@ -82,8 +82,7 @@ void* List_First(List self) {
 }
 
 void* List_Last(List self) {
-  if (!self) return NULL;
-  return IsEmpty(self) ? NULL : getLast(self)->item;
+  return (self && !IsEmpty(self)) ? getLast(self)->item : NULL;
 }
 
 static void AddLast(List self, ListNode node) { getLast(self)->next = node; }
