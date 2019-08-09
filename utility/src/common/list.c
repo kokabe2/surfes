@@ -17,12 +17,6 @@ typedef struct ListStruct {
   comparator Compare;
 } ListStruct;
 
-static ListNode NewNode(void* item) {
-  ListNode node = (ListNode)InstanceHelper_New(sizeof(ListNodeStruct));
-  if (node) node->item = item;
-  return node;
-}
-
 List List_Create(comparator function) {
   List self = (List)InstanceHelper_New(sizeof(ListStruct));
   if (self) self->Compare = function;
@@ -83,6 +77,12 @@ void* List_First(List self) {
 
 void* List_Last(List self) {
   return (self && !IsEmpty(self)) ? getLast(self)->item : NULL;
+}
+
+static ListNode NewNode(void* item) {
+  ListNode node = (ListNode)InstanceHelper_New(sizeof(ListNodeStruct));
+  if (node) node->item = item;
+  return node;
 }
 
 static void AddLast(List self, ListNode node) { getLast(self)->next = node; }
