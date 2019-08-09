@@ -29,11 +29,11 @@ List List_Create(comparator function) {
   return self;
 }
 
-static bool IsEmpty(List self) { return self->head == NULL; }
+inline static bool IsEmpty(List self) { return self->head == NULL; }
 
-static ListNode getFirst(List self) { return self->head; }
+inline static ListNode getFirst(List self) { return self->head; }
 
-static void AddFirst(List self, ListNode node) { self->head = node; }
+inline static void AddFirst(List self, ListNode node) { self->head = node; }
 
 void DeleteAllNodes(List self) {
   while (!IsEmpty(self)) {
