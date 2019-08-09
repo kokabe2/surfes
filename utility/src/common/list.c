@@ -71,7 +71,7 @@ void* List_Get(List self, int index) {
   return NULL;
 }
 
-static ListNode LastNode(List self) {
+static ListNode getLast(List self) {
   for (ListNode node = getFirst(self); node; node = node->next)
     if (node->next == NULL) return node;
   return NULL;
@@ -84,10 +84,10 @@ void* List_First(List self) {
 
 void* List_Last(List self) {
   if (!self) return NULL;
-  return IsEmpty(self) ? NULL : LastNode(self)->item;
+  return IsEmpty(self) ? NULL : getLast(self)->item;
 }
 
-static void AddLast(List self, ListNode node) { LastNode(self)->next = node; }
+static void AddLast(List self, ListNode node) { getLast(self)->next = node; }
 
 void List_Add(List self, void* item) {
   if (!self) return;
