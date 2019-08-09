@@ -78,8 +78,7 @@ static ListNode getLast(List self) {
 }
 
 void* List_First(List self) {
-  if (!self) return NULL;
-  return IsEmpty(self) ? NULL : getFirst(self)->item;
+  return (self && !IsEmpty(self)) ? getFirst(self)->item : NULL;
 }
 
 void* List_Last(List self) {
