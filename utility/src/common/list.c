@@ -33,12 +33,12 @@ inline static bool IsEmpty(List self) { return self->head == NULL; }
 
 inline static ListNode getFirst(List self) { return self->head; }
 
-inline static void AddFirst(List self, ListNode node) { self->head = node; }
+inline static void UpdateFirst(List self, ListNode node) { self->head = node; }
 
 void DeleteAllNodes(List self) {
   while (!IsEmpty(self)) {
     ListNode node = getFirst(self);
-    AddFirst(self, node->next);
+    UpdateFirst(self, node->next);
     InstanceHelper_Delete(&node);
   }
 }
@@ -89,7 +89,7 @@ void List_Add(List self, void* item) {
 
   ListNode node = NewNode(item);
   if (IsEmpty(self))
-    AddFirst(self, node);
+    UpdateFirst(self, node);
   else
     AddLast(self, node);
 }
