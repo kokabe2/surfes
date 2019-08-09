@@ -85,7 +85,9 @@ static ListNode NewNode(void* item) {
   return node;
 }
 
-static void AddLast(List self, ListNode node) { getLast(self)->next = node; }
+inline static void AddLast(List self, ListNode node) {
+  getLast(self)->next = node;
+}
 
 void List_Add(List self, void* item) {
   if (!self) return;
