@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2019 Ken Okabe
+// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "list.h"
 
@@ -31,13 +31,13 @@ List List_Create(comparator function) {
 
 static bool IsEmpty(List self) { return self->head == NULL; }
 
-static ListNode FirstNode(List self) { return self->head; }
+static ListNode getFirst(List self) { return self->head; }
 
 static void AddFirst(List self, ListNode node) { self->head = node; }
 
 void DeleteAllNodes(List self) {
   while (!IsEmpty(self)) {
-    ListNode node = FirstNode(self);
+    ListNode node = getFirst(self);
     AddFirst(self, node->next);
     InstanceHelper_Delete(&node);
   }
@@ -54,27 +54,27 @@ int List_Count(List self) {
   if (!self) return 0;
 
   int count = 0;
-  for (ListNode node = FirstNode(self); node; node = node->next) ++count;
+  for (ListNode node = getFirst(self); node; node = node->next) ++count;
   return count;
 }
 
 void* List_Get(List self, int index) {
   if (!self || (index < 0)) return NULL;
 
-  for (ListNode node = FirstNode(self); node; node = node->next, --index)
+  for (ListNode node = getFirst(self); node; node = node->next, --index)
     if (index == 0) return node->item;
   return NULL;
 }
 
 static ListNode LastNode(List self) {
-  for (ListNode node = FirstNode(self); node; node = node->next)
+  for (ListNode node = getFirst(self); node; node = node->next)
     if (node->next == NULL) return node;
   return NULL;
 }
 
 void* List_First(List self) {
   if (!self) return NULL;
-  return IsEmpty(self) ? NULL : FirstNode(self)->item;
+  return IsEmpty(self) ? NULL : getFirst(self)->item;
 }
 
 void* List_Last(List self) {
