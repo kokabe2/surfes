@@ -7,7 +7,7 @@ extern "C" {
 }
 
 namespace {
-bool CompareInteger(void* v1, void* v2) {
+int CompareInteger(void* v1, void* v2) {
   int* i1 = (int*)v1;
   int* i2 = (int*)v2;
   return *i1 == *i2;

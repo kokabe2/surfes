@@ -3,9 +3,7 @@
 #ifndef UTILITY_INCLUDE_LIST_H_
 #define UTILITY_INCLUDE_LIST_H_
 
-#include <stdbool.h>
-
-typedef bool (*comparator)(void*, void*);
+typedef int (*comparator)(void*, void*);
 typedef struct ListStruct* List;
 
 List List_Create(comparator function);

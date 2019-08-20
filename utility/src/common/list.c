@@ -1,8 +1,9 @@
-// Copyright(c) 2019 Ken Okabe
+﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "list.h"
 
-#include "stddef.h"
+#include <stdbool.h>
+#include <stddef.h>
 
 #include "instance_helper.h"
 
@@ -30,8 +31,8 @@ inline static ListNode getFirst(List self) { return self->head; }
 inline static void UpdateFirst(List self, ListNode node) { self->head = node; }
 
 static ListNode PopFirst(List self) {
-    ListNode node = getFirst(self);
-    UpdateFirst(self, node->next);
+  ListNode node = getFirst(self);
+  UpdateFirst(self, node->next);
   return node;
 }
 
