@@ -16,11 +16,15 @@ typedef struct ListNodeStruct {
 typedef struct ListStruct {
   ListNode head;
   comparator Compare;
+  ListNode* tail;
 } ListStruct;
 
 List List_Create(comparator function) {
   List self = (List)InstanceHelper_New(sizeof(ListStruct));
-  if (self) self->Compare = function;
+  if (self) {
+    self->Compare = function;
+    self->tail = &self->head;
+  }
   return self;
 }
 
@@ -86,18 +90,16 @@ static ListNode NewNode(void* item) {
   return node;
 }
 
-inline static void AddLast(List self, ListNode node) {
-  getLast(self)->next = node;
+static void AddToTail(List self, ListNode node) {
+  *self->tail = node;
+  self->tail = &node->next;
 }
 
 void List_Add(List self, void* item) {
   if (!self) return;
 
   ListNode node = NewNode(item);
-  if (IsEmpty(self))
-    UpdateFirst(self, node);
-  else
-    AddLast(self, node);
+  if (node) AddToTail(self, node);
 }
 
 void List_Clear(List self) {
