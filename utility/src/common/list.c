@@ -17,6 +17,7 @@ typedef struct ListStruct {
   ListNode head;
   comparator Compare;
   ListNode* tail;
+  int count;
 } ListStruct;
 
 List List_Create(comparator function) {
@@ -28,7 +29,7 @@ List List_Create(comparator function) {
   return self;
 }
 
-inline static bool IsEmpty(List self) { return self->head == NULL; }
+inline static bool IsEmpty(List self) { return self->count == 0; }
 
 inline static ListNode getFirst(List self) { return self->head; }
 
@@ -37,6 +38,7 @@ inline static void UpdateFirst(List self, ListNode node) { self->head = node; }
 static ListNode PopFirst(List self) {
   ListNode node = getFirst(self);
   UpdateFirst(self, node->next);
+  self->count--;
   return node;
 }
 
@@ -54,26 +56,14 @@ void List_Destroy(List* self) {
   InstanceHelper_Delete(self);
 }
 
-int List_Count(List self) {
-  if (!self) return 0;
-
-  int count = 0;
-  for (ListNode node = getFirst(self); node; node = node->next) ++count;
-  return count;
-}
+int List_Count(List self) { return self ? self->count : 0; }
 
 void* List_Get(List self, int index) {
-  if (!self || (index < 0)) return NULL;
+  if (!self || (index < 0) || (index >= self->count)) return NULL;
 
-  for (ListNode node = getFirst(self); node; node = node->next, --index)
-    if (index == 0) return node->item;
-  return NULL;
-}
-
-static ListNode getLast(List self) {
-  for (ListNode node = getFirst(self); node; node = node->next)
-    if (node->next == NULL) return node;
-  return NULL;
+  ListNode node = getFirst(self);
+  for (int i = 0; i < index; ++i) node = node->next;
+  return node->item;
 }
 
 void* List_First(List self) {
@@ -81,7 +71,7 @@ void* List_First(List self) {
 }
 
 void* List_Last(List self) {
-  return (self && !IsEmpty(self)) ? getLast(self)->item : NULL;
+  return (self && !IsEmpty(self)) ? List_Get(self, self->count - 1) : NULL;
 }
 
 static ListNode NewNode(void* item) {
@@ -93,6 +83,7 @@ static ListNode NewNode(void* item) {
 static void AddToTail(List self, ListNode node) {
   *self->tail = node;
   self->tail = &node->next;
+  self->count++;
 }
 
 void List_Add(List self, void* item) {
