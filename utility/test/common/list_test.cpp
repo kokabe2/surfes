@@ -10,7 +10,7 @@ namespace {
 int CompareInteger(void* v1, void* v2) {
   int* i1 = (int*)v1;
   int* i2 = (int*)v2;
-  return *i1 == *i2;
+  return *i1 - *i2;
 }
 }  // namespace
 
@@ -119,4 +119,39 @@ TEST_F(ListTest, ClearWithNull) {
   List_Clear(NULL);
 
   SUCCEED();
+}
+
+TEST_F(ListTest, Find) {
+  int item0 = 128;
+  int item1 = -6;
+  List_Add(instance, &item0);
+  List_Add(instance, &item1);
+  int match = item1;
+
+  EXPECT_EQ(&item1, (int*)List_Find(instance, &match));
+}
+
+TEST_F(ListTest, FindWithNotAddedItem) {
+  int match = 0;
+
+  EXPECT_EQ(NULL, (int*)List_Find(instance, &match));
+}
+
+TEST_F(ListTest, FindWithNullInstance) {
+  int match;
+
+  EXPECT_EQ(NULL, List_Find(NULL, &match));
+}
+
+TEST_F(ListTest, FindWithNullItem) {
+  EXPECT_EQ(NULL, List_Find(instance, NULL));
+}
+
+TEST_F(ListTest, FindIfComparatorIsNotSet) {
+  List list = List_Create(NULL);
+  int item = 256;
+  List_Add(list, &item);
+
+  EXPECT_EQ(NULL, List_Find(list, &item));
+  List_Destroy(&list);
 }

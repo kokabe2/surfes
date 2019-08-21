@@ -96,3 +96,15 @@ void List_Add(List self, void* item) {
 void List_Clear(List self) {
   if (self) DeleteAllNodes(self);
 }
+
+static bool Equals(List self, void* item, void* match) {
+  return self->Compare(item, match) == 0;
+}
+
+void* List_Find(List self, void* match) {
+  if (!self || !self->Compare || !match) return NULL;
+
+  for (ListNode node = getFirst(self); node; node = node->next)
+    if (Equals(self, node->item, match)) return node->item;
+  return NULL;
+}
