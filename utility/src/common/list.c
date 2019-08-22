@@ -108,3 +108,29 @@ void* List_Find(List self, void* match) {
     if (Equals(self, node->item, match)) return node->item;
   return NULL;
 }
+
+inline static bool IsLast(List self, int index) {
+  return (self->count - 1) == index;
+}
+
+static ListNode PopNode(List self, int index) {
+  ListNode node = getFirst(self);
+  ListNode* next = &self->head;
+  for (int i = 0; i < index; ++i, node = node->next) next = &node->next;
+  *next = node->next;
+  if (IsLast(self, index)) self->tail = &node->next;
+  self->count--;
+  return node;
+}
+
+static void* PopItem(ListNode node) {
+  void* item = node->item;
+  InstanceHelper_Delete(&node);
+  return item;
+}
+
+void* List_Pop(List self, int index) {
+  if (!self || (index < 0) || (index >= self->count)) return NULL;
+  ListNode node = PopNode(self, index);
+  return PopItem(node);
+}

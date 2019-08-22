@@ -155,3 +155,52 @@ TEST_F(ListTest, FindIfComparatorIsNotSet) {
   EXPECT_EQ(NULL, List_Find(list, &item));
   List_Destroy(&list);
 }
+
+TEST_F(ListTest, PopFromListHasOneItem) {
+  int item = 1;
+  List_Add(instance, &item);
+
+  EXPECT_EQ(&item, List_Pop(instance, 0));
+  EXPECT_EQ(0, List_Count(instance));
+}
+
+TEST_F(ListTest, Pop) {
+  int item0 = -42;
+  int item1 = 256;
+  int item2 = 3141;
+  List_Add(instance, &item0);
+  List_Add(instance, &item1);
+  List_Add(instance, &item2);
+
+  EXPECT_EQ(&item1, List_Pop(instance, 1));
+  EXPECT_EQ(&item2, List_Pop(instance, 1));
+  EXPECT_EQ(1, List_Count(instance));
+}
+
+TEST_F(ListTest, PopWithNull) { EXPECT_EQ(NULL, List_Pop(NULL, 0)); }
+
+TEST_F(ListTest, PopWithIndexLessThanZero) {
+  EXPECT_EQ(NULL, List_Pop(instance, -1));
+}
+
+TEST_F(ListTest, PopWithIndexMoreThanAdded) {
+  int item = 1;
+  List_Add(instance, &item);
+
+  EXPECT_EQ(NULL, List_Pop(instance, 1));
+}
+
+TEST_F(ListTest, PopThenAdd) {
+  int item0 = -42;
+  int item1 = 256;
+  int item2 = 3141;
+  List_Add(instance, &item0);
+  List_Add(instance, &item1);
+  List_Add(instance, &item2);
+  List_Pop(instance, 0);
+
+  List_Add(instance, &item0);
+
+  EXPECT_EQ(&item0, List_Pop(instance, 2));
+  EXPECT_EQ(2, List_Count(instance));
+}

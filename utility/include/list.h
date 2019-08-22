@@ -15,7 +15,7 @@ void* List_Last(List self);
 void List_Add(List self, void* item);
 void List_Clear(List self);
 void* List_Find(List self, void* match);
-// void List_Pop(List self, int index);
+void* List_Pop(List self, int index);
 // void List_Extend(List self, List items);
 // void List_Insert(List self, int index,  void* item);
 // void List_Remove(List self,  void* item);
