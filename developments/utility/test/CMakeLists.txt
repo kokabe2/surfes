@@ -3,6 +3,7 @@ add_executable(gtests "")
 target_sources(gtests
   PRIVATE
     common/list_test.cpp
+    common/spy_runtime_error.c
     domains/sif_file_test.cpp
     domains/sif_file_validator_test.cpp
     infrastructures/instance_helper_test.cpp
@@ -11,7 +12,6 @@ target_sources(gtests
     infrastructures/mock_io_data.cpp
     infrastructures/mock_io_data_test.cpp
     infrastructures/ssd_driver_test.cpp
-    infrastructures/spy_runtime_error.c
     services/modular_sum_test.cpp
     services/sjis_code_converter_test.cpp
 )

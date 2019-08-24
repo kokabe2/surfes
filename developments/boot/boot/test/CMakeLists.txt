@@ -9,8 +9,8 @@ target_sources(gtests
     systems/reboot_system_test.cpp
     systems/system_executor_factory_impl_test.cpp
     systems/user_system_test.cpp
+    ${UTILITY_TEST_DIR}/common/spy_runtime_error.c
     ${UTILITY_TEST_DIR}/infrastructures/mock_io_data.cpp
-    ${UTILITY_TEST_DIR}/infrastructures/spy_runtime_error.c
 )
 target_include_directories(gtests
   PUBLIC
