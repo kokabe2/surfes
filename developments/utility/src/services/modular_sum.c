@@ -19,13 +19,9 @@ static uint32_t Sum(const uint32_t *data, int size) {
 }
 
 uint32_t ModularSum_Verify(const uint32_t *data, int size) {
-  if (!IsValid(size)) return 1;
-
-  return Sum(data, size);
+  return IsValid(size) ? Sum(data, size) : ~0;
 }
 
 uint32_t ModularSum_Calculate(const uint32_t *data, int size) {
-  if (!IsValid(size)) return 0;
-
-  return ~Sum(data, size) + 1;
+  return IsValid(size) ? ~Sum(data, size) + 1 : 0;
 }
