@@ -18,16 +18,8 @@ typedef struct SsdDriverStruct {
   char encoding;
 } SsdDriverStruct;
 
-static bool IsInvalidAddress(uint8_t* io_address) {
-  if (io_address) return false;
-
-  return true;
-}
-
-static bool IsInvalidDecoder(ssdDecoder decoder) {
-  if (decoder) return false;
-
-  return true;
+static bool Validate(uint8_t* io_address, ssdDecoder decoder) {
+  return io_address && decoder;
 }
 
 static uint8_t ConvertToBitFrom(int segment_number) {
@@ -41,16 +33,14 @@ static SsdDriver NewInstance(uint8_t* io_address, ssdDecoder decoder) {
     self->base.decoder = ConvertToBitFrom;
     self->decoder = decoder;
   }
-
   return self;
 }
 
 SsdDriver SsdDriver_Create(uint8_t* io_address, ssdDecoder decoder) {
-  if (IsInvalidAddress(io_address) || IsInvalidDecoder(decoder)) return NULL;
+  if (!Validate(io_address, decoder)) return NULL;
 
   SsdDriver self = NewInstance(io_address, decoder);
   if (self) LedDriver_TurnAllOff(&self->base);
-
   return self;
 }
 
