@@ -9,16 +9,22 @@ enum {
   kNonsenseCode = 0,
 };
 
+inline static bool WithinFirstByteRange(uint8_t c) {
+  return (c >= 0x81 && c <= 0x9F) || (c >= 0xE0 && c <= 0xEF);
+}
+
 static uint8_t getFisrtByte(uint16_t code) {
   uint8_t c = (uint8_t)(code >> 8);
-  if ((c >= 0x81 && c <= 0x9F) || (c >= 0xE0 && c <= 0xEF)) return c;
-  return kNonsenseByte;
+  return WithinFirstByteRange(c) ? c : kNonsenseByte;
+}
+
+inline static bool WithinSecondtByteRange(uint8_t c) {
+  return c >= 0x40 && c <= 0xFC && c != 0x7F;
 }
 
 static uint8_t getSecondByte(uint16_t code) {
   uint8_t c = (uint8_t)code;
-  if (c >= 0x40 && c <= 0xFC && c != 0x7F) return c;
-  return kNonsenseByte;
+  return WithinSecondtByteRange(c) ? c : kNonsenseByte;
 }
 
 static bool Validate(uint8_t first_byte, uint8_t second_byte) {
