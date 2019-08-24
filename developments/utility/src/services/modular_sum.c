@@ -4,9 +4,11 @@
 
 #include <stdbool.h>
 
-static bool IsMultiplesOfFour(int size) { return (size % 4) == 0; }
+inline static bool IsMultiplesOfFour(int size) { return (size % 4) == 0; }
 
-static bool IsValid(int size) { return size > 0 && IsMultiplesOfFour(size); }
+inline static bool IsValid(int size) {
+  return size > 0 && IsMultiplesOfFour(size);
+}
 
 static uint32_t Sum(const uint32_t *data, int size) {
   uint32_t sum = 0;
