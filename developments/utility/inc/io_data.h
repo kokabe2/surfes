@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef UTILITY_INCLUDE_IO_DATA_H_
-#define UTILITY_INCLUDE_IO_DATA_H_
+#ifndef DEVELOPMENTS_UTILITY_INC_IO_DATA_H_
+#define DEVELOPMENTS_UTILITY_INC_IO_DATA_H_
 
 #include <stdint.h>
 
@@ -14,4 +14,4 @@ uint8_t IoData_Read8bit(ioAddress offset);
 uint16_t IoData_Read16bit(ioAddress offset);
 uint32_t IoData_Read32bit(ioAddress offset);
 
-#endif  // UTILITY_INCLUDE_IO_DATA_H_
+#endif  // DEVELOPMENTS_UTILITY_INC_IO_DATA_H_

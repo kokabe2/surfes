@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef UTILITY_INCLUDE_LED_DRIVER_H_
-#define UTILITY_INCLUDE_LED_DRIVER_H_
+#ifndef DEVELOPMENTS_UTILITY_INC_LED_DRIVER_H_
+#define DEVELOPMENTS_UTILITY_INC_LED_DRIVER_H_
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -18,4 +18,4 @@ void LedDriver_TurnAllOff(LedDriver self);
 bool LedDriver_IsOn(LedDriver self, int led_number);
 bool LedDriver_IsOff(LedDriver self, int led_number);
 
-#endif  // UTILITY_INCLUDE_LED_DRIVER_H_
+#endif  // DEVELOPMENTS_UTILITY_INC_LED_DRIVER_H_

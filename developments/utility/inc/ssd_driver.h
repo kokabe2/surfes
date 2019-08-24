@@ -1,7 +1,7 @@
 // Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef UTILITY_INCLUDE_SSD_DRIVER_H_
-#define UTILITY_INCLUDE_SSD_DRIVER_H_
+#ifndef DEVELOPMENTS_UTILITY_INC_SSD_DRIVER_H_
+#define DEVELOPMENTS_UTILITY_INC_SSD_DRIVER_H_
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -20,4 +20,4 @@ bool SsdDriver_IsOff(SsdDriver self, int segment_number);
 void SsdDriver_Set(SsdDriver self, char encoding);
 char SsdDriver_Get(SsdDriver self);
 
-#endif  // UTILITY_INCLUDE_SSD_DRIVER_H_
+#endif  // DEVELOPMENTS_UTILITY_INC_SSD_DRIVER_H_

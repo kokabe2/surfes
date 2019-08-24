@@ -1,7 +1,7 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef UTILITY_INCLUDE_LIST_H_
-#define UTILITY_INCLUDE_LIST_H_
+#ifndef DEVELOPMENTS_UTILITY_INC_LIST_H_
+#define DEVELOPMENTS_UTILITY_INC_LIST_H_
 
 typedef int (*comparator)(void*, void*);
 typedef struct ListStruct* List;
@@ -22,4 +22,4 @@ void* List_Pop(List self, int index);
 // void List_Reverse(List self);
 // void List_Sort(List self);
 
-#endif  // UTILITY_INCLUDE_LIST_H_
+#endif  // DEVELOPMENTS_UTILITY_INC_LIST_H_
