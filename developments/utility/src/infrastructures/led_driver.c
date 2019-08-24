@@ -58,9 +58,7 @@ static void ClearLedImageBit(LedDriver self, int led_number) {
 }
 
 void LedDriver_TurnOff(LedDriver self, int led_number) {
-  if (!self || !IsValid(led_number)) return;
-
-  ClearLedImageBit(self, led_number);
+  if (self && IsValid(led_number)) ClearLedImageBit(self, led_number);
 }
 
 static void SetAllLedImageBits(LedDriver self) {
