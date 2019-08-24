@@ -89,11 +89,3 @@ TEST_F(SifFileValidatorTest, ValidateImperfectFile) {
   EXPECT_EQ(kSfveChecksumError,
             SifFileValidator_Validate(dummy_file.file_address));
 }
-
-TEST_F(SifFileValidatorTest, ValidateFileThatFileSizeIsNotMultiplesOfFour) {
-  dummy_file.file_size = 209;
-  UpdateChecksum();
-
-  EXPECT_EQ(kSfveChecksumError,
-            SifFileValidator_Validate(dummy_file.file_address));
-}
