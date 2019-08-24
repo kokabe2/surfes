@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 
-enum SifIdentification {
+enum SifIdentificationIndex {
   kSifIdMagicNumber0 = 0,
   kSifIdMagicNumber1,
   kSifIdMagicNumber2,
