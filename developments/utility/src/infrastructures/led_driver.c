@@ -7,7 +7,6 @@
 #include <stdlib.h>
 
 #include "instance_helper.h"
-#include "runtime_error.h"
 
 enum {
   kFirstLed = 1,
@@ -17,14 +16,12 @@ enum {
 static bool IsInvalidAddress(uint8_t* io_address) {
   if (io_address) return false;
 
-  RUNTIME_ERROR("LED Driver: null I/O address", 0);
   return true;
 }
 
 static bool IsInvalidDecoder(ledDecoder decoder) {
   if (decoder) return false;
 
-  RUNTIME_ERROR("LED Driver: null decode function", 0);
   return true;
 }
 
@@ -57,14 +54,12 @@ void LedDriver_Destroy(LedDriver* self) {
 static bool IsInvalid(LedDriver self) {
   if (self) return false;
 
-  RUNTIME_ERROR("LED Driver: null instance", 0);
   return true;
 }
 
 static bool IsLedOutOfBounds(int led_number) {
   if (led_number >= kFirstLed && led_number <= kLastLed) return false;
 
-  RUNTIME_ERROR("LED Driver: out-of-bounds LED", led_number);
   return true;
 }
 
