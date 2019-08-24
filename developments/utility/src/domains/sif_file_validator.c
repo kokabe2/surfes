@@ -5,34 +5,23 @@
 #include <stdbool.h>
 
 #include "modular_sum.h"
-#include "runtime_error.h"
 #include "sif_header.h"
 
 static bool IsSifFile(SifHeader header) {
   uint8_t magic_number[] = {0x7F, 'S', 'I', 'F'};
   for (int i = 0; i < sizeof(magic_number); ++i)
-    if (header->identification[i] != magic_number[i]) {
-      RUNTIME_ERROR("SIF File Validator: non SIF file", i);
-      return false;
-    }
-
+    if (header->identification[i] != magic_number[i]) return false;
   return true;
 }
 
 static bool IsValidClass(SifHeader header) {
   if (header->identification[kSiiClass] == kSc32) return true;
   if (header->identification[kSiiClass] == kSc64) return true;
-
-  RUNTIME_ERROR("SIF File Validator: invalid SIF class",
-                header->identification[kSiiClass]);
   return false;
 }
 
 static bool IsValidVersion(SifHeader header) {
   if (header->identification[kSiiVersion] == kSvCurrent) return true;
-
-  RUNTIME_ERROR("SIF File Validator: invalid SIF version",
-                header->identification[kSiiVersion]);
   return false;
 }
 
@@ -45,15 +34,11 @@ static uint16_t headerSize(uint8_t sif_class) {
 static bool IsValidHeaderSize(SifHeader header) {
   uint8_t sif_class = header->identification[kSiiClass];
   if (header->header_size == headerSize(sif_class)) return true;
-
-  RUNTIME_ERROR("SIF File Validator: invalid header size", header->header_size);
   return false;
 }
 
 static bool IsValidFileSize(SifHeader header) {
   if (header->file_size >= header->header_size) return true;
-
-  RUNTIME_ERROR("SIF File Validator: invalid file size", header->file_size);
   return false;
 }
 
