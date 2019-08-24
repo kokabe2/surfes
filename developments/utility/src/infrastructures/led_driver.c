@@ -41,10 +41,8 @@ void LedDriver_Destroy(LedDriver* self) {
   InstanceHelper_Delete(self);
 }
 
-static bool IsLedOutOfBounds(int led_number) {
-  if (led_number >= kFirstLed && led_number <= kLastLed) return false;
-
-  return true;
+static bool IsValid(int led_number) {
+  return (led_number >= kFirstLed) && (led_number <= kLastLed);
 }
 
 static void SetLedImageBit(LedDriver self, int led_number) {
@@ -52,7 +50,7 @@ static void SetLedImageBit(LedDriver self, int led_number) {
 }
 
 void LedDriver_TurnOn(LedDriver self, int led_number) {
-  if (!self || IsLedOutOfBounds(led_number)) return;
+  if (!self || !IsValid(led_number)) return;
 
   SetLedImageBit(self, led_number);
 }
@@ -62,7 +60,7 @@ static void ClearLedImageBit(LedDriver self, int led_number) {
 }
 
 void LedDriver_TurnOff(LedDriver self, int led_number) {
-  if (!self || IsLedOutOfBounds(led_number)) return;
+  if (!self || !IsValid(led_number)) return;
 
   ClearLedImageBit(self, led_number);
 }
@@ -94,7 +92,7 @@ static bool IsLedImageBitOn(LedDriver self, int led_number) {
 }
 
 bool LedDriver_IsOn(LedDriver self, int led_number) {
-  if (!self || IsLedOutOfBounds(led_number)) return false;
+  if (!self || !IsValid(led_number)) return false;
 
   return IsLedImageBitOn(self, led_number);
 }
