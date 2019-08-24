@@ -40,21 +40,14 @@ TEST_F(LedDriverTest, CreateMultipleInstance) {
 }
 
 TEST_F(LedDriverTest, CreateWithNullAddress) {
-  LedDriver_Destroy(&instance);
-
-  instance = LedDriver_Create(NULL, Decode);
-
-  EXPECT_EQ(NULL, instance);
+  EXPECT_EQ(NULL, LedDriver_Create(NULL, Decode));
 }
 
 TEST_F(LedDriverTest, CreateWithNullDecoder) {
-  LedDriver_Destroy(&instance);
+  uint8_t leds = 0x01;
 
-  virtual_leds = 0xFB;
-  instance = LedDriver_Create(&virtual_leds, NULL);
-
-  EXPECT_EQ(NULL, instance);
-  EXPECT_EQ(0xFB, virtual_leds) << "Shall not be changed";
+  EXPECT_EQ(NULL, LedDriver_Create(&leds, NULL));
+  EXPECT_EQ(0x01, leds) << "Shall not be changed";
 }
 
 TEST_F(LedDriverTest, Destroy) {
@@ -67,20 +60,16 @@ TEST_F(LedDriverTest, Destroy) {
 }
 
 TEST_F(LedDriverTest, DestroyWithNull) {
-  LedDriver_TurnAllOn(instance);
-
   LedDriver_Destroy(NULL);
 
-  EXPECT_EQ(0xFB, virtual_leds) << "Shall not be changed";
+  SUCCEED();
 }
 
-TEST_F(LedDriverTest, DestroyMoreThanOnce) {
+TEST_F(LedDriverTest, DestroyAfterDestroy) {
+  LedDriver_Destroy(&instance);
   LedDriver_Destroy(&instance);
 
-  LedDriver_Destroy(&instance);
-
-  EXPECT_EQ(NULL, instance) << "Shall not be changed";
-  EXPECT_EQ(0x20, virtual_leds) << "Shall not be changed";
+  SUCCEED();
 }
 
 TEST_F(LedDriverTest, TurnAllOn) {
@@ -89,10 +78,10 @@ TEST_F(LedDriverTest, TurnAllOn) {
   EXPECT_EQ(0xFB, virtual_leds) << "All LEDs shall be on";
 }
 
-TEST_F(LedDriverTest, TurnAllOnWithNullInstance) {
+TEST_F(LedDriverTest, TurnAllOnWithNull) {
   LedDriver_TurnAllOn(NULL);
 
-  EXPECT_EQ(0x20, virtual_leds) << "Shall not be changed";
+  SUCCEED();
 }
 
 TEST_F(LedDriverTest, TurnAllOff) {
@@ -103,12 +92,10 @@ TEST_F(LedDriverTest, TurnAllOff) {
   EXPECT_EQ(0x20, virtual_leds) << "All LEDs Shall be off";
 }
 
-TEST_F(LedDriverTest, TurnAllOffWithNullInstance) {
-  LedDriver_TurnAllOn(instance);
-
+TEST_F(LedDriverTest, TurnAllOffWithNull) {
   LedDriver_TurnAllOff(NULL);
 
-  EXPECT_EQ(0xFB, virtual_leds) << "Shall not be changed";
+  SUCCEED();
 }
 
 TEST_F(LedDriverTest, TurnOn) {
@@ -146,10 +133,10 @@ TEST_F(LedDriverTest, TurnOnWithInvalidLedNumber) {
   EXPECT_EQ(0x20, virtual_leds) << "Shall not be changed";
 }
 
-TEST_F(LedDriverTest, TurnOnWithNullInstance) {
+TEST_F(LedDriverTest, TurnOnWithNull) {
   LedDriver_TurnOn(NULL, 1);
 
-  EXPECT_EQ(0x20, virtual_leds) << "Shall not be changed";
+  SUCCEED();
 }
 
 TEST_F(LedDriverTest, TurnOff) {
@@ -197,12 +184,10 @@ TEST_F(LedDriverTest, TurnOffWithInvalidLedNumber) {
   EXPECT_EQ(0xFB, virtual_leds) << "Shall not be changed";
 }
 
-TEST_F(LedDriverTest, TurnOffWithNullInstance) {
-  LedDriver_TurnAllOn(instance);
-
+TEST_F(LedDriverTest, TurnOffWithNull) {
   LedDriver_TurnOff(NULL, 1);
 
-  EXPECT_EQ(0xFB, virtual_leds) << "Shall not be changed";
+  SUCCEED();
 }
 
 TEST_F(LedDriverTest, IsOn) {
@@ -226,11 +211,10 @@ TEST_F(LedDriverTest, IsOnWithInvalidLedNumber) {
   EXPECT_FALSE(LedDriver_IsOn(instance, 3));
 }
 
-TEST_F(LedDriverTest, IsOnWithNullInstance) {
-  EXPECT_FALSE(LedDriver_IsOn(NULL, 5));
-}
+TEST_F(LedDriverTest, IsOnWithNull) { EXPECT_FALSE(LedDriver_IsOn(NULL, 5)); }
 
 TEST_F(LedDriverTest, IsOff) { EXPECT_TRUE(LedDriver_IsOff(instance, 4)); }
+
 TEST_F(LedDriverTest, IsOffAfterTurnOn) {
   LedDriver_TurnOn(instance, 8);
 
@@ -252,8 +236,4 @@ TEST_F(LedDriverTest, IsOffWithInvalidLedNumber) {
   EXPECT_TRUE(LedDriver_IsOff(instance, 6));
 }
 
-TEST_F(LedDriverTest, IsOffWithNullInstance) {
-  LedDriver_TurnAllOn(instance);
-
-  EXPECT_TRUE(LedDriver_IsOff(NULL, 1));
-}
+TEST_F(LedDriverTest, IsOffWithNull) { EXPECT_TRUE(LedDriver_IsOff(NULL, 1)); }
