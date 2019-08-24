@@ -74,33 +74,10 @@ TEST_F(SsdDriverTest, Destroy) {
   EXPECT_EQ(0x00, virtual_ssd) << "All segments Shall be off";
 }
 
-TEST_F(SsdDriverTest, DestroyWithNull) {
-  LedDriver_TurnAllOn(instance);
-
-  LedDriver_Destroy(NULL);
-
-  EXPECT_EQ(0xFF, virtual_ssd) << "Shall not be changed";
-}
-
-TEST_F(SsdDriverTest, DestroyMoreThanOnce) {
-  LedDriver_Destroy(&instance);
-
-  LedDriver_Destroy(&instance);
-
-  EXPECT_EQ(NULL, instance) << "Shall not be changed";
-  EXPECT_EQ(0x00, virtual_ssd) << "Shall not be changed";
-}
-
 TEST_F(SsdDriverTest, TurnAllOn) {
   LedDriver_TurnAllOn(instance);
 
   EXPECT_EQ(0xFF, virtual_ssd) << "All segments shall be on";
-}
-
-TEST_F(SsdDriverTest, TurnAllOnWithNullInstance) {
-  LedDriver_TurnAllOn(NULL);
-
-  EXPECT_EQ(0x00, virtual_ssd) << "Shall not be changed";
 }
 
 TEST_F(SsdDriverTest, TurnAllOff) {
@@ -109,14 +86,6 @@ TEST_F(SsdDriverTest, TurnAllOff) {
   LedDriver_TurnAllOff(instance);
 
   EXPECT_EQ(0x00, virtual_ssd) << "All segments Shall be off";
-}
-
-TEST_F(SsdDriverTest, TurnAllOffWithNullInstance) {
-  LedDriver_TurnAllOn(instance);
-
-  LedDriver_TurnAllOff(NULL);
-
-  EXPECT_EQ(0xFF, virtual_ssd) << "Shall not be changed";
 }
 
 TEST_F(SsdDriverTest, TurnOn) {
@@ -137,21 +106,6 @@ TEST_F(SsdDriverTest, TurnOnUpperAndLowerBounds) {
   LedDriver_TurnOn(instance, 8);
 
   EXPECT_EQ(0x81, virtual_ssd) << "Specified segments shall be on";
-}
-
-TEST_F(SsdDriverTest, TurnOnOutOfBounds) {
-  LedDriver_TurnOn(instance, 0);
-  LedDriver_TurnOn(instance, 9);
-  LedDriver_TurnOn(instance, -1);
-  LedDriver_TurnOn(instance, 3141);
-
-  EXPECT_EQ(0x00, virtual_ssd) << "Shall not be changed";
-}
-
-TEST_F(SsdDriverTest, TurnOnWithNullInstance) {
-  LedDriver_TurnOn(NULL, 1);
-
-  EXPECT_EQ(0x00, virtual_ssd) << "Shall not be changed";
 }
 
 TEST_F(SsdDriverTest, TurnOff) {
@@ -180,67 +134,13 @@ TEST_F(SsdDriverTest, TurnOffUpperAndLowerBounds) {
   EXPECT_EQ(0x7E, virtual_ssd) << "Specified segments shall be off";
 }
 
-TEST_F(SsdDriverTest, TurnOffOutOfBounds) {
-  LedDriver_TurnAllOn(instance);
-
-  LedDriver_TurnOff(instance, 0);
-  LedDriver_TurnOff(instance, 9);
-  LedDriver_TurnOff(instance, -1);
-  LedDriver_TurnOff(instance, 3141);
-
-  EXPECT_EQ(0xFF, virtual_ssd) << "Shall not be changed";
-}
-
-TEST_F(SsdDriverTest, TurnOffWithNullInstance) {
-  LedDriver_TurnAllOn(instance);
-
-  LedDriver_TurnOff(NULL, 1);
-
-  EXPECT_EQ(0xFF, virtual_ssd) << "Shall not be changed";
-}
-
 TEST_F(SsdDriverTest, IsOn) {
   LedDriver_TurnOn(instance, 2);
 
   EXPECT_TRUE(LedDriver_IsOn(instance, 2));
 }
 
-TEST_F(SsdDriverTest, IsOnBeforeTurnOn) {
-  EXPECT_FALSE(LedDriver_IsOn(instance, 4));
-}
-
-TEST_F(SsdDriverTest, IsOnOutOfBounds) {
-  EXPECT_FALSE(LedDriver_IsOn(instance, 0));
-  EXPECT_FALSE(LedDriver_IsOn(instance, 9));
-  EXPECT_FALSE(LedDriver_IsOn(instance, -1));
-  EXPECT_FALSE(LedDriver_IsOn(instance, 3141));
-}
-
-TEST_F(SsdDriverTest, IsOnWithNullInstance) {
-  EXPECT_FALSE(LedDriver_IsOn(NULL, 5));
-}
-
 TEST_F(SsdDriverTest, IsOff) { EXPECT_TRUE(LedDriver_IsOff(instance, 4)); }
-TEST_F(SsdDriverTest, IsOffAfterTurnOn) {
-  LedDriver_TurnOn(instance, 8);
-
-  EXPECT_FALSE(LedDriver_IsOff(instance, 8));
-}
-
-TEST_F(SsdDriverTest, IsOffOutOfBounds) {
-  LedDriver_TurnAllOn(instance);
-
-  EXPECT_TRUE(LedDriver_IsOff(instance, 0));
-  EXPECT_TRUE(LedDriver_IsOff(instance, 9));
-  EXPECT_TRUE(LedDriver_IsOff(instance, -1));
-  EXPECT_TRUE(LedDriver_IsOff(instance, 3141));
-}
-
-TEST_F(SsdDriverTest, IsOffWithNullInstance) {
-  LedDriver_TurnAllOn(instance);
-
-  EXPECT_TRUE(LedDriver_IsOff(NULL, 1));
-}
 
 TEST_F(SsdDriverTest, Set) {
   LedDriver_TurnAllOn(instance);
