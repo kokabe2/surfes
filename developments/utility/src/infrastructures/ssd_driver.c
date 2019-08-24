@@ -3,7 +3,6 @@
 #include "ssd_driver.h"
 
 #include <stddef.h>
-#include <stdlib.h>
 
 #include "instance_helper.h"
 #include "led_driver.h"

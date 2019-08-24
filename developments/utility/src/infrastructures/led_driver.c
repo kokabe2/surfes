@@ -4,7 +4,6 @@
 #include "led_driver_private.h"
 
 #include <stddef.h>
-#include <stdlib.h>
 
 #include "instance_helper.h"
 
