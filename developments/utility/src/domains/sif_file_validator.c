@@ -3,15 +3,15 @@
 #include "sif_file_validator.h"
 
 #include <stdbool.h>
+#include <string.h>
 
 #include "modular_sum.h"
 #include "sif_header.h"
 
 static bool IsSifFile(SifHeader header) {
-  uint8_t magic_number[] = {0x7F, 'S', 'I', 'F'};
-  for (int i = 0; i < sizeof(magic_number); ++i)
-    if (header->identification[i] != magic_number[i]) return false;
-  return true;
+  const uint8_t kMagicNumber[] = {0x7F, 'S', 'I', 'F'};
+  return memcmp(header->identification, kMagicNumber, sizeof(kMagicNumber)) ==
+         0;
 }
 
 static bool IsValidClass(SifHeader header) {
