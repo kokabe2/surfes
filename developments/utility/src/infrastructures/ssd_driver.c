@@ -22,7 +22,7 @@ static bool Validate(uint8_t* io_address, ssdDecoder decoder) {
   return io_address && decoder;
 }
 
-static uint8_t ConvertToBitFrom(int segment_number) {
+static uint8_t ConvertToBit(int segment_number) {
   return 1 << (segment_number - 1);
 }
 
@@ -30,7 +30,7 @@ static SsdDriver NewInstance(uint8_t* io_address, ssdDecoder decoder) {
   SsdDriver self = (SsdDriver)InstanceHelper_New(sizeof(SsdDriverStruct));
   if (self) {
     self->base.io_address = io_address;
-    self->base.decoder = ConvertToBitFrom;
+    self->base.decoder = ConvertToBit;
     self->decoder = decoder;
   }
   return self;
