@@ -23,16 +23,15 @@ static bool IsValidVersion(SifHeader header) {
   return header->identification[kSiiVersion] == kSvCurrent;
 }
 
-static uint16_t headerSize(uint8_t sif_class) {
-  uint16_t header_size[] = {kShdsHeaderSizeInClass32, kShdsHeaderSizeInClass64};
-
-  return header_size[sif_class - 1];
+static uint16_t headerSizeOf(uint8_t sif_class) {
+  const uint16_t kHeaderSize[] = {kShdsHeaderSizeInClass32,
+                                  kShdsHeaderSizeInClass64};
+  return kHeaderSize[sif_class - 1];
 }
 
 static bool IsValidHeaderSize(SifHeader header) {
   uint8_t sif_class = header->identification[kSiiClass];
-  if (header->header_size == headerSize(sif_class)) return true;
-  return false;
+  return header->header_size == headerSizeOf(sif_class);
 }
 
 static bool IsValidFileSize(SifHeader header) {
