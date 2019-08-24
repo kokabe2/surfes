@@ -6,9 +6,7 @@
 
 static bool IsMultiplesOfFour(int size) { return (size % 4) == 0; }
 
-static bool IsInvalid(int size) {
-  return !(size > 0 && IsMultiplesOfFour(size));
-}
+static bool IsValid(int size) { return size > 0 && IsMultiplesOfFour(size); }
 
 static uint32_t Sum(const uint32_t *data, int size) {
   uint32_t sum = 0;
@@ -19,13 +17,13 @@ static uint32_t Sum(const uint32_t *data, int size) {
 }
 
 uint32_t ModularSum_Verify(const uint32_t *data, int size) {
-  if (IsInvalid(size)) return 1;
+  if (!IsValid(size)) return 1;
 
   return Sum(data, size);
 }
 
 uint32_t ModularSum_Calculate(const uint32_t *data, int size) {
-  if (IsInvalid(size)) return 0;
+  if (!IsValid(size)) return 0;
 
   return ~Sum(data, size) + 1;
 }
