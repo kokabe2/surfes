@@ -45,7 +45,7 @@ enum SifMachine {
   kSmRx = 0x11,
 };
 
-enum SifSize {
+enum SifHeaderDataSize {
   kSifIdentificationSize = 16,
   kSifDscriptionSize = 128,
   kSifHeaderSizeInClass32 = 192,
