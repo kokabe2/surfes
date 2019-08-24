@@ -18,16 +18,16 @@ endif()
 
 set(CORE_KERNEL_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
 set(CORE_KERNEL_UTKERNEL_DIR ${CMAKE_CURRENT_LIST_DIR}/test/utkernel)
-set(UTILITY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/src)
-set(UTILITY_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/test)
-set(UTILITY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/include)
+set(UTILITY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../utility/src)
+set(UTILITY_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/../utility/test)
+set(UTILITY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../utility/include)
 
 add_subdirectory(src)
 
 include(cmake/googletest.cmake)
 fetch_googletest(
   ${PROJECT_SOURCE_DIR}/cmake
-  ${PROJECT_SOURCE_DIR}/../../thirdparty/google/googletest
+  ${PROJECT_SOURCE_DIR}/../thirdparty/google/googletest
 )
 
 enable_testing()
