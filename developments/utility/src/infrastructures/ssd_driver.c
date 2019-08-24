@@ -71,19 +71,13 @@ bool SsdDriver_IsOff(SsdDriver self, int segment_number) {
   return LedDriver_IsOff(&self->base, segment_number);
 }
 
-static bool IsInvalid(SsdDriver self) {
-  if (self) return false;
-
-  return true;
-}
-
 static void SetSsdImageBit(SsdDriver self, char encoding) {
   *self->base.io_address = self->decoder(encoding);
   self->encoding = encoding;
 }
 
 void SsdDriver_Set(SsdDriver self, char encoding) {
-  if (IsInvalid(self)) return;
+  if (!self) return;
 
   SetSsdImageBit(self, encoding);
 }
@@ -91,7 +85,7 @@ void SsdDriver_Set(SsdDriver self, char encoding) {
 static char GetSsdEncoding(SsdDriver self) { return self->encoding; }
 
 char SsdDriver_Get(SsdDriver self) {
-  if (IsInvalid(self)) return kNonsenseEncoding;
+  if (!self) return kNonsenseEncoding;
 
   return GetSsdEncoding(self);
 }
