@@ -13,7 +13,7 @@ enum LedNumber {
   kLastLed = 8,
 };
 
-static bool Validate(uint8_t* io_address, ledDecoder decoder) {
+inline static bool Validate(uint8_t* io_address, ledDecoder decoder) {
   return io_address && decoder;
 }
 
@@ -41,11 +41,11 @@ void LedDriver_Destroy(LedDriver* self) {
   InstanceHelper_Delete(self);
 }
 
-static bool IsValid(int led_number) {
+inline static bool IsValid(int led_number) {
   return (led_number >= kFirstLed) && (led_number <= kLastLed);
 }
 
-static void SetLedImageBit(LedDriver self, int led_number) {
+inline static void SetLedImageBit(LedDriver self, int led_number) {
   *self->io_address |= self->decoder(led_number);
 }
 
@@ -53,7 +53,7 @@ void LedDriver_TurnOn(LedDriver self, int led_number) {
   if (self && IsValid(led_number)) SetLedImageBit(self, led_number);
 }
 
-static void ClearLedImageBit(LedDriver self, int led_number) {
+inline static void ClearLedImageBit(LedDriver self, int led_number) {
   *self->io_address &= ~self->decoder(led_number);
 }
 
@@ -77,7 +77,7 @@ void LedDriver_TurnAllOff(LedDriver self) {
   if (self) ClearAllLedImageBits(self);
 }
 
-static bool IsLedImageBitOn(LedDriver self, int led_number) {
+inline static bool IsLedImageBitOn(LedDriver self, int led_number) {
   return (*self->io_address & self->decoder(led_number)) != 0;
 }
 
