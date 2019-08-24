@@ -50,9 +50,7 @@ static void SetLedImageBit(LedDriver self, int led_number) {
 }
 
 void LedDriver_TurnOn(LedDriver self, int led_number) {
-  if (!self || !IsValid(led_number)) return;
-
-  SetLedImageBit(self, led_number);
+  if (self && IsValid(led_number)) SetLedImageBit(self, led_number);
 }
 
 static void ClearLedImageBit(LedDriver self, int led_number) {
