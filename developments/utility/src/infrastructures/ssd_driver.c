@@ -18,11 +18,11 @@ typedef struct SsdDriverStruct {
   char encoding;
 } SsdDriverStruct;
 
-static bool Validate(uint8_t* io_address, ssdDecoder decoder) {
+inline static bool Validate(uint8_t* io_address, ssdDecoder decoder) {
   return io_address && decoder;
 }
 
-static uint8_t ConvertToBit(int segment_number) {
+inline static uint8_t ConvertToBit(int segment_number) {
   return 1 << (segment_number - 1);
 }
 
@@ -71,7 +71,7 @@ bool SsdDriver_IsOff(SsdDriver self, int segment_number) {
   return LedDriver_IsOff(&self->base, segment_number);
 }
 
-static void SetSsdImageBit(SsdDriver self, char encoding) {
+inline static void SetSsdImageBit(SsdDriver self, char encoding) {
   *self->base.io_address = self->decoder(encoding);
   self->encoding = encoding;
 }
