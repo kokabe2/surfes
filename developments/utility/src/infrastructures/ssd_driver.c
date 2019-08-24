@@ -80,10 +80,6 @@ void SsdDriver_Set(SsdDriver self, char encoding) {
   if (self) SetSsdImageBit(self, encoding);
 }
 
-static char GetSsdEncoding(SsdDriver self) { return self->encoding; }
-
 char SsdDriver_Get(SsdDriver self) {
-  if (!self) return kNonsenseEncoding;
-
-  return GetSsdEncoding(self);
+  return self ? self->encoding : kNonsenseEncoding;
 }
