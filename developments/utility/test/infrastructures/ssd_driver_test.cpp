@@ -13,9 +13,8 @@ const uint8_t kSsdDecodings[] = {
 };
 
 uint8_t Decode(char encoding) {
-  if (encoding >= '0' && encoding <= 'F') return kSsdDecodings[encoding - '0'];
-
-  return 0;
+  return (encoding >= '0' && encoding <= 'F') ? kSsdDecodings[encoding - '0']
+                                              : 0;
 }
 }  // namespace
 
@@ -43,26 +42,18 @@ TEST_F(SsdDriverTest, CreateMultipleInstance) {
 
   EXPECT_TRUE(second_instance != NULL);
   EXPECT_EQ(0x00, second_ssd) << "All segments Shall be off";
-  EXPECT_EQ(0x00, virtual_ssd) << "Shall not be changed";
   LedDriver_Destroy(&second_instance);
 }
 
 TEST_F(SsdDriverTest, CreateWithNullAddress) {
-  LedDriver_Destroy(&instance);
-
-  instance = SsdDriver_Create(NULL, Decode);
-
-  EXPECT_EQ(NULL, instance);
+  EXPECT_EQ(NULL, SsdDriver_Create(NULL, Decode));
 }
 
 TEST_F(SsdDriverTest, CreateWithNullDecoder) {
-  LedDriver_Destroy(&instance);
+  uint8_t ssd = 0x01;
 
-  virtual_ssd = 0x18;
-  instance = SsdDriver_Create(&virtual_ssd, NULL);
-
-  EXPECT_EQ(NULL, instance);
-  EXPECT_EQ(0x18, virtual_ssd) << "Shall not be changed";
+  EXPECT_EQ(NULL, SsdDriver_Create(&ssd, NULL));
+  EXPECT_EQ(0x01, ssd) << "Shall not be changed";
 }
 
 TEST_F(SsdDriverTest, Destroy) {
@@ -143,8 +134,6 @@ TEST_F(SsdDriverTest, IsOn) {
 TEST_F(SsdDriverTest, IsOff) { EXPECT_TRUE(LedDriver_IsOff(instance, 4)); }
 
 TEST_F(SsdDriverTest, Set) {
-  LedDriver_TurnAllOn(instance);
-
   SsdDriver_Set(instance, '0');
 
   EXPECT_EQ(0x3F, virtual_ssd) << "Only decoded segments shall be on";
@@ -152,18 +141,17 @@ TEST_F(SsdDriverTest, Set) {
 
 TEST_F(SsdDriverTest, SetThenTurnOn) {
   SsdDriver_Set(instance, 'F');
+
   LedDriver_TurnOn(instance, 2);
 
   EXPECT_EQ(0x73, virtual_ssd)
       << "Decoded segments and specified segment shall be on";
 }
 
-TEST_F(SsdDriverTest, SetWithNullInstance) {
-  SsdDriver_Set(instance, '0');
-
+TEST_F(SsdDriverTest, SetWithNull) {
   SsdDriver_Set(NULL, '1');
 
-  EXPECT_EQ(0x3F, virtual_ssd) << "Shall not be changed";
+  SUCCEED();
 }
 
 TEST_F(SsdDriverTest, Get) {
@@ -175,11 +163,7 @@ TEST_F(SsdDriverTest, Get) {
 TEST_F(SsdDriverTest, GetBeforeSet) {
   LedDriver_TurnOn(instance, 1);
 
-  EXPECT_EQ(0, SsdDriver_Get(NULL));
+  EXPECT_EQ(0, SsdDriver_Get(instance));
 }
 
-TEST_F(SsdDriverTest, GetWithNullInstance) {
-  SsdDriver_Set(instance, '0');
-
-  EXPECT_EQ(0, SsdDriver_Get(NULL));
-}
+TEST_F(SsdDriverTest, GetWithNull) { EXPECT_EQ(0, SsdDriver_Get(NULL)); }
