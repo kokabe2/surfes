@@ -35,8 +35,7 @@ static bool IsValidHeaderSize(SifHeader header) {
 }
 
 static bool IsValidFileSize(SifHeader header) {
-  if (header->file_size >= header->header_size) return true;
-  return false;
+  return header->file_size >= header->header_size;
 }
 
 static bool HasNoDataCorruption(SifHeader header) {
