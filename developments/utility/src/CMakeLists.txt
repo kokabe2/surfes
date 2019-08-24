@@ -15,5 +15,5 @@ target_sources(surfes_utility
 target_include_directories(surfes_utility
   PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}
-    ${CMAKE_CURRENT_LIST_DIR}/../include
+    ${ITS_INCLUDE_DIR}
 )
