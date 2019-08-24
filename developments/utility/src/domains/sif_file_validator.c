@@ -64,16 +64,22 @@ static bool IsValidFileSize(SifHeader header) {
   return false;
 }
 
-typedef bool (*validator)(SifHeader);
-static const validator kValidators[] = {
-    IsSifFile,         IsValidClass,    IsValidVersion,
-    IsValidHeaderSize, IsValidFileSize, HasNoDataCorruption,
+static const struct {
+  bool (*Validate)(SifHeader);
+  int error_code;
+} kValidators[] = {
+    {IsSifFile, kSfveMagicNumberError},
+    {IsValidClass, kSfveClassError},
+    {IsValidVersion, kSfveVersionError},
+    {IsValidHeaderSize, kSfveHeaderSizeError},
+    {IsValidFileSize, kSfveFileSizeError},
+    {HasNoDataCorruption, kSfveChecksumError},
 };
 int SifFileValidator_Validate(uintptr_t file_address) {
   SifHeader header = (SifHeader)file_address;
   int num_of_validators = sizeof(kValidators) / sizeof(kValidators[0]);
   for (int i = 0; i < num_of_validators; ++i)
-    if (!kValidators[i](header)) return i + 1;
+    if (!kValidators[i].Validate(header)) return kValidators[i].error_code;
 
   return 0;
 }
