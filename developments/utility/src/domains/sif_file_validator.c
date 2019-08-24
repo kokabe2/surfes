@@ -44,7 +44,7 @@ static bool IsValidVersion(SifHeader header) {
 }
 
 static uint16_t headerSize(uint8_t sif_class) {
-  uint16_t header_size[] = {kSifHeaderSizeInClass32, kSifHeaderSizeInClass64};
+  uint16_t header_size[] = {kShdsHeaderSizeInClass32, kShdsHeaderSizeInClass64};
 
   return header_size[sif_class - 1];
 }

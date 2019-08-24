@@ -46,14 +46,14 @@ enum SifMachine {
 };
 
 enum SifHeaderDataSize {
-  kSifIdentificationSize = 16,
-  kSifDscriptionSize = 128,
-  kSifHeaderSizeInClass32 = 192,
-  kSifHeaderSizeInClass64 = 208,
+  kShdsIdentificationSize = 16,
+  kShdsDscriptionSize = 128,
+  kShdsHeaderSizeInClass32 = 192,
+  kShdsHeaderSizeInClass64 = 208,
 };
 
 typedef struct {
-  uint8_t identification[kSifIdentificationSize];
+  uint8_t identification[kShdsIdentificationSize];
   uint16_t type;
   uint16_t machine;
   uint32_t flags;
@@ -66,7 +66,7 @@ typedef struct {
   uintptr_t open_function_address;
   uintptr_t close_function_address;
   uintptr_t entry_point;
-  uint8_t description[kSifDscriptionSize];
+  uint8_t description[kShdsDscriptionSize];
 } SifHeaderStruct, *SifHeader;
 
 typedef int (*openFunction)(void);
