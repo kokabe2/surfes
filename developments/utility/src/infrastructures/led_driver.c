@@ -78,13 +78,12 @@ void LedDriver_TurnAllOff(LedDriver self) {
 }
 
 static bool IsLedImageBitOn(LedDriver self, int led_number) {
-  return *self->io_address & self->decoder(led_number);
+  return (*self->io_address & self->decoder(led_number)) != 0;
 }
 
 bool LedDriver_IsOn(LedDriver self, int led_number) {
-  if (!self || !IsValid(led_number)) return false;
-
-  return IsLedImageBitOn(self, led_number);
+  return (self && IsValid(led_number)) ? IsLedImageBitOn(self, led_number)
+                                       : false;
 }
 
 bool LedDriver_IsOff(LedDriver self, int led_number) {
