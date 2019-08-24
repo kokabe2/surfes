@@ -20,8 +20,7 @@ static bool IsValidClass(SifHeader header) {
 }
 
 static bool IsValidVersion(SifHeader header) {
-  if (header->identification[kSiiVersion] == kSvCurrent) return true;
-  return false;
+  return header->identification[kSiiVersion] == kSvCurrent;
 }
 
 static uint16_t headerSize(uint8_t sif_class) {
