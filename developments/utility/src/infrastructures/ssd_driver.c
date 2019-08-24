@@ -77,9 +77,7 @@ static void SetSsdImageBit(SsdDriver self, char encoding) {
 }
 
 void SsdDriver_Set(SsdDriver self, char encoding) {
-  if (!self) return;
-
-  SetSsdImageBit(self, encoding);
+  if (self) SetSsdImageBit(self, encoding);
 }
 
 static char GetSsdEncoding(SsdDriver self) { return self->encoding; }
