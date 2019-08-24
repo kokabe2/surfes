@@ -8,7 +8,6 @@
 #include "instance_helper.h"
 #include "led_driver.h"
 #include "led_driver_private.h"
-#include "runtime_error.h"
 
 enum {
   kNonsenseEncoding = 0,
@@ -23,14 +22,12 @@ typedef struct SsdDriverStruct {
 static bool IsInvalidAddress(uint8_t* io_address) {
   if (io_address) return false;
 
-  RUNTIME_ERROR("SSD Driver: null I/O address", 0);
   return true;
 }
 
 static bool IsInvalidDecoder(ssdDecoder decoder) {
   if (decoder) return false;
 
-  RUNTIME_ERROR("SSD Driver: null decode function", 0);
   return true;
 }
 
@@ -88,7 +85,6 @@ bool SsdDriver_IsOff(SsdDriver self, int segment_number) {
 static bool IsInvalid(SsdDriver self) {
   if (self) return false;
 
-  RUNTIME_ERROR("SSD Driver: null instance", 0);
   return true;
 }
 

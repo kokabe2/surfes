@@ -3,7 +3,6 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "spy_runtime_error.h"
 #include "ssd_driver.h"
 }
 
@@ -28,7 +27,6 @@ class SsdDriverTest : public ::testing::Test {
   virtual void SetUp() {
     virtual_ssd = 0xFF;
     instance = SsdDriver_Create(&virtual_ssd, Decode);
-    SpyRuntimeError_Reset();
   }
 
   virtual void TearDown() { SsdDriver_Destroy(&instance); }
@@ -55,7 +53,6 @@ TEST_F(SsdDriverTest, CreateWithNullAddress) {
   instance = SsdDriver_Create(NULL, Decode);
 
   EXPECT_EQ(NULL, instance);
-  EXPECT_STREQ("SSD Driver: null I/O address", SpyRuntimeError_GetLastError());
 }
 
 TEST_F(SsdDriverTest, CreateWithNullDecoder) {
@@ -66,8 +63,6 @@ TEST_F(SsdDriverTest, CreateWithNullDecoder) {
 
   EXPECT_EQ(NULL, instance);
   EXPECT_EQ(0x18, virtual_ssd) << "Shall not be changed";
-  EXPECT_STREQ("SSD Driver: null decode function",
-               SpyRuntimeError_GetLastError());
 }
 
 TEST_F(SsdDriverTest, Destroy) {
@@ -269,7 +264,6 @@ TEST_F(SsdDriverTest, SetWithNullInstance) {
   SsdDriver_Set(NULL, '1');
 
   EXPECT_EQ(0x3F, virtual_ssd) << "Shall not be changed";
-  EXPECT_STREQ("SSD Driver: null instance", SpyRuntimeError_GetLastError());
 }
 
 TEST_F(SsdDriverTest, Get) {
@@ -288,5 +282,4 @@ TEST_F(SsdDriverTest, GetWithNullInstance) {
   SsdDriver_Set(instance, '0');
 
   EXPECT_EQ(0, SsdDriver_Get(NULL));
-  EXPECT_STREQ("SSD Driver: null instance", SpyRuntimeError_GetLastError());
 }
