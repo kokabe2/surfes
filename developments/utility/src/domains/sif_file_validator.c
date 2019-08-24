@@ -27,19 +27,19 @@ static bool IsSifFile(SifHeader header) {
 }
 
 static bool IsValidClass(SifHeader header) {
-  if (header->identification[kSifIdClass] == kSc32) return true;
-  if (header->identification[kSifIdClass] == kSc64) return true;
+  if (header->identification[kSiiClass] == kSc32) return true;
+  if (header->identification[kSiiClass] == kSc64) return true;
 
   RUNTIME_ERROR("SIF File Validator: invalid SIF class",
-                header->identification[kSifIdClass]);
+                header->identification[kSiiClass]);
   return false;
 }
 
 static bool IsValidVersion(SifHeader header) {
-  if (header->identification[kSifIdVersion] == kSvCurrent) return true;
+  if (header->identification[kSiiVersion] == kSvCurrent) return true;
 
   RUNTIME_ERROR("SIF File Validator: invalid SIF version",
-                header->identification[kSifIdVersion]);
+                header->identification[kSiiVersion]);
   return false;
 }
 
@@ -50,7 +50,7 @@ static uint16_t headerSize(uint8_t sif_class) {
 }
 
 static bool IsValidHeaderSize(SifHeader header) {
-  uint8_t sif_class = header->identification[kSifIdClass];
+  uint8_t sif_class = header->identification[kSiiClass];
   if (header->header_size == headerSize(sif_class)) return true;
 
   RUNTIME_ERROR("SIF File Validator: invalid header size", header->header_size);

@@ -6,14 +6,14 @@
 #include <stdint.h>
 
 enum SifIdentificationIndex {
-  kSifIdMagicNumber0 = 0,
-  kSifIdMagicNumber1,
-  kSifIdMagicNumber2,
-  kSifIdMagicNumber3,
-  kSifIdClass,
-  kSifIdData,
-  kSifIdVersion,
-  kSifIdPadding,
+  kSiiMagicNumber0 = 0,
+  kSiiMagicNumber1,
+  kSiiMagicNumber2,
+  kSiiMagicNumber3,
+  kSiiClass,
+  kSiiData,
+  kSiiVersion,
+  kSiiPadding,
 };
 
 enum SifClass {

@@ -53,18 +53,18 @@ TEST_F(SifFileValidatorTest, ValidateFile) {
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasWrongMagicNumber) {
-  dummy_file.identification[kSifIdMagicNumber2] = 0;
+  dummy_file.identification[kSiiMagicNumber2] = 0;
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
   EXPECT_EQ(kSfvMagicNumberError, error);
   EXPECT_STREQ("SIF File Validator: non SIF file",
                SpyRuntimeError_GetLastError());
-  EXPECT_EQ(kSifIdMagicNumber2, SpyRuntimeError_GetLastParameter());
+  EXPECT_EQ(kSiiMagicNumber2, SpyRuntimeError_GetLastParameter());
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasInvalidClass) {
-  dummy_file.identification[kSifIdClass] = kScNone;
+  dummy_file.identification[kSiiClass] = kScNone;
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
@@ -75,7 +75,7 @@ TEST_F(SifFileValidatorTest, ValidateFileHasInvalidClass) {
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasInvalidVersion) {
-  dummy_file.identification[kSifIdVersion] = kSvNone;
+  dummy_file.identification[kSiiVersion] = kSvNone;
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
