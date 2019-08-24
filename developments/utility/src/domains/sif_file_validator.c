@@ -15,9 +15,8 @@ static bool IsSifFile(SifHeader header) {
 }
 
 static bool IsValidClass(SifHeader header) {
-  if (header->identification[kSiiClass] == kSc32) return true;
-  if (header->identification[kSiiClass] == kSc64) return true;
-  return false;
+  return (header->identification[kSiiClass] == kSc32) ||
+         (header->identification[kSiiClass] == kSc64);
 }
 
 static bool IsValidVersion(SifHeader header) {
