@@ -14,6 +14,11 @@ typedef struct SifFileStruct {
   closeFunction Close;
 } SifFileStruct;
 
+static int CallOpenIfNeeded(SifHeader header) {
+  openFunction Open = (openFunction)header->open_function_address;
+  return Open ? Open() : 0;
+}
+
 static SifFile NewInstance(SifHeader header) {
   SifFile self = (SifFile)InstanceHelper_New(sizeof(SifFileStruct));
   if (self) {
@@ -21,15 +26,7 @@ static SifFile NewInstance(SifHeader header) {
     self->entry_point = header->entry_point;
     self->Close = (closeFunction)header->close_function_address;
   }
-
   return self;
-}
-
-static int CallOpenIfNeeded(SifHeader header) {
-  openFunction Open = (openFunction)header->open_function_address;
-  if (Open) return Open();
-
-  return 0;
 }
 
 SifFile SifFile_Open(uintptr_t file_address) {
