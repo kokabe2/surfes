@@ -6,13 +6,13 @@
 #include <stdint.h>
 
 enum SifFileValidationError {
-  kSfvNoError = 0,
-  kSfvMagicNumberError,
-  kSfvClassError,
-  kSfvVersionError,
-  kSfvHeaderSizeError,
-  kSfvFileSizeError,
-  kSfvChecksumError,
+  kSfveNoError = 0,
+  kSfveMagicNumberError,
+  kSfveClassError,
+  kSfveVersionError,
+  kSfveHeaderSizeError,
+  kSfveFileSizeError,
+  kSfveChecksumError,
 };
 
 int SifFileValidator_Validate(uintptr_t file_address);

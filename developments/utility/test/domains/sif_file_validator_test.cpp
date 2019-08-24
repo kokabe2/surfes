@@ -49,7 +49,7 @@ class SifFileValidatorTest : public ::testing::Test {
 TEST_F(SifFileValidatorTest, ValidateFile) {
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
-  EXPECT_EQ(kSfvNoError, error);
+  EXPECT_EQ(kSfveNoError, error);
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasWrongMagicNumber) {
@@ -57,7 +57,7 @@ TEST_F(SifFileValidatorTest, ValidateFileHasWrongMagicNumber) {
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
-  EXPECT_EQ(kSfvMagicNumberError, error);
+  EXPECT_EQ(kSfveMagicNumberError, error);
   EXPECT_STREQ("SIF File Validator: non SIF file",
                SpyRuntimeError_GetLastError());
   EXPECT_EQ(kSiiMagicNumber2, SpyRuntimeError_GetLastParameter());
@@ -68,7 +68,7 @@ TEST_F(SifFileValidatorTest, ValidateFileHasInvalidClass) {
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
-  EXPECT_EQ(kSfvClassError, error);
+  EXPECT_EQ(kSfveClassError, error);
   EXPECT_STREQ("SIF File Validator: invalid SIF class",
                SpyRuntimeError_GetLastError());
   EXPECT_EQ(kScNone, SpyRuntimeError_GetLastParameter());
@@ -79,7 +79,7 @@ TEST_F(SifFileValidatorTest, ValidateFileHasInvalidVersion) {
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
-  EXPECT_EQ(kSfvVersionError, error);
+  EXPECT_EQ(kSfveVersionError, error);
   EXPECT_STREQ("SIF File Validator: invalid SIF version",
                SpyRuntimeError_GetLastError());
   EXPECT_EQ(kSvNone, SpyRuntimeError_GetLastParameter());
@@ -90,7 +90,7 @@ TEST_F(SifFileValidatorTest, ValidateFileHasInvalidHeaderSize) {
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
-  EXPECT_EQ(kSfvHeaderSizeError, error);
+  EXPECT_EQ(kSfveHeaderSizeError, error);
   EXPECT_STREQ("SIF File Validator: invalid header size",
                SpyRuntimeError_GetLastError());
   EXPECT_EQ(200, SpyRuntimeError_GetLastParameter());
@@ -101,7 +101,7 @@ TEST_F(SifFileValidatorTest, ValidateFileThatFileSizeIsLessThanHeaderSize) {
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
-  EXPECT_EQ(kSfvFileSizeError, error);
+  EXPECT_EQ(kSfveFileSizeError, error);
   EXPECT_STREQ("SIF File Validator: invalid file size",
                SpyRuntimeError_GetLastError());
   EXPECT_EQ(204, SpyRuntimeError_GetLastParameter());
@@ -112,7 +112,7 @@ TEST_F(SifFileValidatorTest, ValidateImperfectFile) {
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
-  EXPECT_EQ(kSfvChecksumError, error);
+  EXPECT_EQ(kSfveChecksumError, error);
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileThatFileSizeIsNotMultiplesOfFour) {
@@ -121,5 +121,5 @@ TEST_F(SifFileValidatorTest, ValidateFileThatFileSizeIsNotMultiplesOfFour) {
 
   int error = SifFileValidator_Validate(dummy_file.file_address);
 
-  EXPECT_EQ(kSfvChecksumError, error);
+  EXPECT_EQ(kSfveChecksumError, error);
 }
