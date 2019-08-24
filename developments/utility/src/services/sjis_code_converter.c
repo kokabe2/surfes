@@ -45,7 +45,7 @@ static bool FirstHalfOfOddSequence(uint8_t second_byte) {
   return second_byte <= 0x7E;
 }
 
-static uint8_t ToJisInSecondByte(uint8_t first_byte, uint8_t second_byte) {
+static uint8_t ToJisInSecondByte(uint8_t second_byte) {
   int subtrahend = OddSequence(second_byte) ? 0x20 : 0x7E;
   int offset = FirstHalfOfOddSequence(second_byte) ? 1 : 0;
   return second_byte - subtrahend + offset;
@@ -61,6 +61,6 @@ uint16_t SjisCodeConverter_ToJis(uint16_t code) {
   if (!Validate(first_byte, second_byte)) return kNonsenseCode;
 
   uint8_t jis_first_byte = ToJisInFirstByte(first_byte, second_byte);
-  uint8_t jis_second_byte = ToJisInSecondByte(first_byte, second_byte);
+  uint8_t jis_second_byte = ToJisInSecondByte(second_byte);
   return Format(jis_first_byte, jis_second_byte);
 }
