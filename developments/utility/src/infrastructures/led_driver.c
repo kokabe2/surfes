@@ -70,14 +70,11 @@ void LedDriver_TurnAllOn(LedDriver self) {
 }
 
 static void ClearAllLedImageBits(LedDriver self) {
-  for (int i = kFirstLed; i <= kLastLed; i++)
-    *self->io_address &= ~self->decoder(i);
+  for (int i = kFirstLed; i <= kLastLed; i++) ClearLedImageBit(self, i);
 }
 
 void LedDriver_TurnAllOff(LedDriver self) {
-  if (!self) return;
-
-  ClearAllLedImageBits(self);
+  if (self) ClearAllLedImageBits(self);
 }
 
 static bool IsLedImageBitOn(LedDriver self, int led_number) {
