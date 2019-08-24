@@ -13,16 +13,8 @@ enum LedNumber {
   kLastLed = 8,
 };
 
-static bool IsInvalidAddress(uint8_t* io_address) {
-  if (io_address) return false;
-
-  return true;
-}
-
-static bool IsInvalidDecoder(ledDecoder decoder) {
-  if (decoder) return false;
-
-  return true;
+static bool Validate(uint8_t* io_address, ledDecoder decoder) {
+  return io_address && decoder;
 }
 
 static LedDriver NewInstance(uint8_t* io_address, ledDecoder decoder) {
@@ -31,16 +23,14 @@ static LedDriver NewInstance(uint8_t* io_address, ledDecoder decoder) {
     self->io_address = io_address;
     self->decoder = decoder;
   }
-
   return self;
 }
 
 LedDriver LedDriver_Create(uint8_t* io_address, ledDecoder decoder) {
-  if (IsInvalidAddress(io_address) || IsInvalidDecoder(decoder)) return NULL;
+  if (!Validate(io_address, decoder)) return NULL;
 
   LedDriver self = NewInstance(io_address, decoder);
   if (self) LedDriver_TurnAllOff(self);
-
   return self;
 }
 
