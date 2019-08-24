@@ -45,64 +45,55 @@ class SifFileValidatorTest : public ::testing::Test {
 };
 
 TEST_F(SifFileValidatorTest, ValidateFile) {
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfveNoError, error);
+  EXPECT_EQ(kSfveNoError, SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasWrongMagicNumber) {
   dummy_file.identification[kSiiMagicNumber2] = 0;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfveMagicNumberError, error);
+  EXPECT_EQ(kSfveMagicNumberError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasInvalidClass) {
   dummy_file.identification[kSiiClass] = kScNone;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfveClassError, error);
+  EXPECT_EQ(kSfveClassError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasInvalidVersion) {
   dummy_file.identification[kSiiVersion] = kSvNone;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfveVersionError, error);
+  EXPECT_EQ(kSfveVersionError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasInvalidHeaderSize) {
   dummy_file.header_size = 200;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfveHeaderSizeError, error);
+  EXPECT_EQ(kSfveHeaderSizeError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileThatFileSizeIsLessThanHeaderSize) {
   dummy_file.file_size = 204;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfveFileSizeError, error);
+  EXPECT_EQ(kSfveFileSizeError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateImperfectFile) {
   dummy_file.checksum = 0;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfveChecksumError, error);
+  EXPECT_EQ(kSfveChecksumError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileThatFileSizeIsNotMultiplesOfFour) {
   dummy_file.file_size = 209;
   UpdateChecksum();
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfveChecksumError, error);
+  EXPECT_EQ(kSfveChecksumError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
