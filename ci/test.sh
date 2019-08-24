@@ -10,9 +10,9 @@ test_package () {
     ctest
 }
 
-cd ${SCRIPT_DIR}/../boot/boot && test_package
-cd ${SCRIPT_DIR}/../boot/registry && test_package
-cd ${SCRIPT_DIR}/../core/boot && test_package
-cd ${SCRIPT_DIR}/../core/kernel && test_package
-cd ${SCRIPT_DIR}/../updater/boot && test_package
-cd ${SCRIPT_DIR}/../utility && test_package
+cd ${SCRIPT_DIR}/../developments/boot/boot && test_package
+cd ${SCRIPT_DIR}/../developments/boot/registry && test_package
+cd ${SCRIPT_DIR}/../developments/core/boot && test_package
+cd ${SCRIPT_DIR}/../developments/core/kernel && test_package
+cd ${SCRIPT_DIR}/../developments/updater/boot && test_package
+cd ${SCRIPT_DIR}/../developments/utility && test_package
