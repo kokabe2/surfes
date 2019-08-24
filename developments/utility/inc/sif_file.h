@@ -3,7 +3,7 @@
 #ifndef DEVELOPMENTS_UTILITY_INC_SIF_FILE_H_
 #define DEVELOPMENTS_UTILITY_INC_SIF_FILE_H_
 
-#include "sif_header.h"
+#include <stdint.h>
 
 typedef struct SifFileStruct* SifFile;
 

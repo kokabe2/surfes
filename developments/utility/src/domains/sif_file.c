@@ -6,6 +6,7 @@
 
 #include "instance_helper.h"
 #include "sif_file_validator.h"
+#include "sif_header.h"
 
 typedef struct SifFileStruct {
   uint64_t version;
