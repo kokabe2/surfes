@@ -8,13 +8,6 @@
 #include "runtime_error.h"
 #include "sif_header.h"
 
-static bool HasNoDataCorruption(SifHeader header) {
-  if (ModularSum_Verify((uint32_t*)header->file_address, header->file_size))
-    return false;
-
-  return true;
-}
-
 static bool IsSifFile(SifHeader header) {
   uint8_t magic_number[] = {0x7F, 'S', 'I', 'F'};
   for (int i = 0; i < sizeof(magic_number); ++i)
@@ -62,6 +55,13 @@ static bool IsValidFileSize(SifHeader header) {
 
   RUNTIME_ERROR("SIF File Validator: invalid file size", header->file_size);
   return false;
+}
+
+static bool HasNoDataCorruption(SifHeader header) {
+  if (ModularSum_Verify((uint32_t*)header->file_address, header->file_size))
+    return false;
+
+  return true;
 }
 
 static const struct {
