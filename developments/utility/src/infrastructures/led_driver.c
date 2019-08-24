@@ -62,14 +62,11 @@ void LedDriver_TurnOff(LedDriver self, int led_number) {
 }
 
 static void SetAllLedImageBits(LedDriver self) {
-  for (int i = kFirstLed; i <= kLastLed; i++)
-    *self->io_address |= self->decoder(i);
+  for (int i = kFirstLed; i <= kLastLed; ++i) SetLedImageBit(self, i);
 }
 
 void LedDriver_TurnAllOn(LedDriver self) {
-  if (!self) return;
-
-  SetAllLedImageBits(self);
+  if (self) SetAllLedImageBits(self);
 }
 
 static void ClearAllLedImageBits(LedDriver self) {
