@@ -39,10 +39,8 @@ static bool IsValidFileSize(SifHeader header) {
 }
 
 static bool HasNoDataCorruption(SifHeader header) {
-  if (ModularSum_Verify((uint32_t*)header->file_address, header->file_size))
-    return false;
-
-  return true;
+  return ModularSum_Verify((uint32_t*)header->file_address,
+                           header->file_size) == 0;
 }
 
 static const struct {
