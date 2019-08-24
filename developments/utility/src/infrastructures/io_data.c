@@ -32,6 +32,21 @@ void IoData_Add32bit(ioAddress offset, uint32_t data) {
   *address |= data;
 }
 
+void IoData_Remove8bit(ioAddress offset, uint8_t data) {
+  uint8_t volatile *address = (uint8_t *)offset;
+  *address &= ~data;
+}
+
+void IoData_Remove16bit(ioAddress offset, uint16_t data) {
+  uint16_t volatile *address = (uint16_t *)offset;
+  *address &= ~data;
+}
+
+void IoData_Remove32bit(ioAddress offset, uint32_t data) {
+  uint32_t volatile *address = (uint32_t *)offset;
+  *address &= ~data;
+}
+
 uint8_t IoData_Read8bit(ioAddress offset) { return *(uint8_t *)offset; }
 
 uint16_t IoData_Read16bit(ioAddress offset) { return *(uint16_t *)offset; }
