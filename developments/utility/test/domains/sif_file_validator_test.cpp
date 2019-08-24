@@ -9,7 +9,7 @@ extern "C" {
 }
 
 namespace {
-SifHeaderStruct dummy_file_template = {
+const SifHeaderStruct kDummyFileTemplate = {
     {0x7F, 'S', 'I', 'F', kSc64, kSd2Lsb, kSvCurrent},
     kStData,
     kSmRx,
@@ -32,7 +32,7 @@ class SifFileValidatorTest : public ::testing::Test {
   SifHeaderStruct dummy_file;
 
   virtual void SetUp() {
-    dummy_file = dummy_file_template;
+    dummy_file = kDummyFileTemplate;
     dummy_file.file_address = reinterpret_cast<uintptr_t>(&dummy_file);
     UpdateChecksum();
   }
