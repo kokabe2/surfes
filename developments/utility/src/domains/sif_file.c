@@ -50,7 +50,5 @@ void SifFile_Close(SifFile* self) {
 uint64_t SifFile_getVersion(SifFile self) { return self ? self->version : 0; }
 
 uintptr_t SifFile_getEntryPoint(SifFile self) {
-  if (self) return self->entry_point;
-
-  return 0;
+  return self ? self->entry_point : 0;
 }
