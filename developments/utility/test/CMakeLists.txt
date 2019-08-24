@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
+    common/instance_helper_test.cpp
     common/list_test.cpp
     common/spy_runtime_error.c
     domains/sif_file_test.cpp
     domains/sif_file_validator_test.cpp
-    infrastructures/instance_helper_test.cpp
     infrastructures/led_driver_test.cpp
     infrastructures/micro_time_test.cpp
     infrastructures/mock_io_data.cpp

@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_library(surfes_utility "")
 target_sources(surfes_utility
   PRIVATE
+    common/instance_helper.c
     common/list.c
     domains/sif_file.c
     domains/sif_file_validator.c
-    infrastructures/instance_helper.c
     infrastructures/led_driver.c
     infrastructures/micro_time.c
     infrastructures/ssd_driver.c

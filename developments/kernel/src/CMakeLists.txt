@@ -10,7 +10,7 @@ target_sources(surfes_core_kernel
     utkernel/system_time.c
     utkernel/task.c
     utkernel/timer.c
-    ${UTILITY_SOURCE_DIR}/infrastructures/instance_helper.c
+    ${UTILITY_SOURCE_DIR}/common/instance_helper.c
     ${UTILITY_TEST_DIR}/common/spy_runtime_error.c
 )
 target_include_directories(surfes_core_kernel
