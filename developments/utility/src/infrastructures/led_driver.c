@@ -8,7 +8,7 @@
 
 #include "instance_helper.h"
 
-enum {
+enum LedNumber {
   kFirstLed = 1,
   kLastLed = 8,
 };
