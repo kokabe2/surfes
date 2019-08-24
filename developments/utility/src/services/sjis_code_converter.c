@@ -27,13 +27,15 @@ static uint8_t getSecondByte(uint16_t code) {
   return WithinSecondtByteRange(c) ? c : kNonsenseByte;
 }
 
-static bool Validate(uint8_t first_byte, uint8_t second_byte) {
+inline static bool Validate(uint8_t first_byte, uint8_t second_byte) {
   return (first_byte != kNonsenseByte) && (second_byte != kNonsenseByte);
 }
 
-static bool FirstHalf(uint8_t first_byte) { return first_byte <= 0x9F; }
+inline static bool FirstHalf(uint8_t first_byte) { return first_byte <= 0x9F; }
 
-static bool OddSequence(uint8_t second_byte) { return second_byte <= 0x9E; }
+inline static bool OddSequence(uint8_t second_byte) {
+  return second_byte <= 0x9E;
+}
 
 static uint8_t ToJisInFirstByte(uint8_t first_byte, uint8_t second_byte) {
   int subtrahend = FirstHalf(first_byte) ? 0x70 : 0xB0;
@@ -41,7 +43,7 @@ static uint8_t ToJisInFirstByte(uint8_t first_byte, uint8_t second_byte) {
   return (first_byte - subtrahend) * 2 + offset;
 }
 
-static bool FirstHalfOfOddSequence(uint8_t second_byte) {
+inline static bool FirstHalfOfOddSequence(uint8_t second_byte) {
   return second_byte <= 0x7E;
 }
 
@@ -51,7 +53,7 @@ static uint8_t ToJisInSecondByte(uint8_t second_byte) {
   return second_byte - subtrahend + offset;
 }
 
-static uint16_t Format(uint8_t first_byte, uint8_t second_byte) {
+inline static uint16_t Format(uint8_t first_byte, uint8_t second_byte) {
   return (first_byte << 8) + second_byte;
 }
 
