@@ -7,7 +7,7 @@
 
 #include "gtest/gtest.h"
 
-enum { kIoDataRead, kIoDataWrite, NoExpectedValue = -1 };
+enum ExpectedKindOfFunction { kIoDataRead, kIoDataWrite, NoExpectedValue = -1 };
 
 typedef struct Expectation {
   int kind;
