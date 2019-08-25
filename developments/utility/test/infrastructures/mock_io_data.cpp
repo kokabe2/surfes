@@ -63,7 +63,7 @@ void MockIoData_Destroy(void) {
   if (!its_expectations) return;
 
   free(its_expectations);
-  its_expectations = NULL;
+  its_expectations = nullptr;
 }
 
 static void Fail(const char* message) {
