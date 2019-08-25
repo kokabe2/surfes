@@ -125,7 +125,7 @@ static void FailWhenNoUnusedExpectations(const char* format) {
   if (get_expectation_count < set_expectation_count) return;
 
   char message[100];
-  int size = sizeof(message) - 1;
+  int size = sizeof message;
   int offset = snprintf(message, size, "R/W %d: No more expectations but was ",
                         get_expectation_count + 1);
   snprintf(message + offset, size - offset, format, its_actual.offset,
