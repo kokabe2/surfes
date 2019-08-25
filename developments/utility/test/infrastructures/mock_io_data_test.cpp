@@ -56,6 +56,18 @@ TEST_F(MockIoDataTest, TooManyReadExpectations) {
       "MockIoData_ExpectReadThenReturn: Too many expectations");
 }
 
+TEST_F(MockIoDataTest, TooManyWrites) {
+  EXPECT_FATAL_FAILURE(
+      IoData_Write8bit(0x10000, 0x12),
+      "(1): No more expectations but was IoData_Write(0x10000, 0x12)");
+}
+
+TEST_F(MockIoDataTest, TooManyReads) {
+  EXPECT_FATAL_FAILURE(
+      IoData_Read8bit(0x10000),
+      "(1): No more expectations but was IoData_Read(0x10000)");
+}
+
 TEST_F(MockIoDataTest, WriteWhenReadExpected) {
   MockIoData_ExpectReadThenReturn(0, 1);
   EXPECT_FATAL_FAILURE(IoData_Write8bit(0, 0),
@@ -89,17 +101,6 @@ TEST_F(MockIoDataTest, MismatchedReadAddress) {
   EXPECT_FATAL_FAILURE(IoData_Read8bit(0x10000),
                        "Expected IoData_Read(0x1000) returns 0xaa;\n\t        "
                        "But was IoData_Read(0x10000)");
-}
-
-TEST_F(MockIoDataTest, TooManyReads) {
-  EXPECT_FATAL_FAILURE(IoData_Read8bit(0x10000),
-                       "No more expectations but was IoData_Read(0x10000)");
-}
-
-TEST_F(MockIoDataTest, TooManyWrites) {
-  EXPECT_FATAL_FAILURE(
-      IoData_Write8bit(0x10000, 0x12),
-      "No more expectations but was IoData_Write(0x10000, 0x12)");
 }
 
 TEST_F(MockIoDataTest, NotAllExpectationsUsed) {
