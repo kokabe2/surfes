@@ -46,7 +46,7 @@ static int get_expectation_count;
 static int max_expectation_count;
 static bool was_failure_already_reported = false;
 static Expectation its_expected;
-static Expectation actual;
+static Expectation its_actual;
 
 void MockIoData_Create(int expectation_count) {
   if (expectation_count <= 0) return;
@@ -126,8 +126,8 @@ void MockIoData_VerifyCompletion(void) {
 static void SetExpectedAndActual(ioAddress offset, ioData data) {
   its_expected.offset = its_expectations[get_expectation_count].offset;
   its_expected.data = its_expectations[get_expectation_count].data;
-  actual.offset = offset;
-  actual.data = data;
+  its_actual.offset = offset;
+  its_actual.data = data;
 }
 
 static void FailWhenNoUnusedExpectations(const char* format) {
@@ -137,7 +137,8 @@ static void FailWhenNoUnusedExpectations(const char* format) {
   int size = sizeof(message) - 1;
   int offset = snprintf(message, size, kReportNoMoreExpectations,
                         get_expectation_count + 1);
-  snprintf(message + offset, size - offset, format, actual.offset, actual.data);
+  snprintf(message + offset, size - offset, format, its_actual.offset,
+           its_actual.data);
   Fail(message);
 }
 
@@ -147,7 +148,8 @@ static void FailExpectation(const char* expectationFailMessage) {
   int offset = snprintf(message, size, kReportExpectationNumber,
                         get_expectation_count + 1);
   snprintf(message + offset, size - offset, expectationFailMessage,
-           its_expected.offset, its_expected.data, actual.offset, actual.data);
+           its_expected.offset, its_expected.data, its_actual.offset,
+           its_actual.data);
   Fail(message);
 }
 
