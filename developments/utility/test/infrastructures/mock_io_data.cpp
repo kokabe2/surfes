@@ -67,7 +67,7 @@ static void ReportFailIfNeeded(const char* message) {
 static int FailWhenNotCreated(void) {
   if (its_expectations) return 0;
 
-  ReportFailIfNeeded("MockIoData not initialized, call MockIoData_Create()");
+  ReportFailIfNeeded("MockIoData is not created, call MockIoData_Create()");
   return -1;
 }
 

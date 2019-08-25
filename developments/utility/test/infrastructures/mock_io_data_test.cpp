@@ -14,21 +14,31 @@ class MockIoDataTest : public ::testing::Test {
 TEST_F(MockIoDataTest, CanMatchExpectation) {
   MockIoData_ExpectReadThenReturn(1, 2);
   MockIoData_ExpectWrite(1, 2);
+
   IoData_Write8bit(1, IoData_Read8bit(1));
+
+  SUCCEED();
 }
 
-TEST_F(MockIoDataTest, WriteWhenReadExpectedFails) {
-  MockIoData_ExpectReadThenReturn(0, 1);
-  EXPECT_FATAL_FAILURE(IoData_Write8bit(0, 0),
-                       "Expected IoData_Read(0x0) would return 0x1)\n\t        "
-                       "But was IoData_Write(0x0, 0x0)");
+TEST_F(MockIoDataTest, CreateWithCountZeroOrLess) {
+  MockIoData_Destroy();
+
+  MockIoData_Create(0);
+
+  EXPECT_FATAL_FAILURE(MockIoData_ExpectWrite(0, 0),
+                       "MockIoData is not created, call MockIoData_Create()");
 }
 
-TEST_F(MockIoDataTest, ReadWhenWriteExpectedFails) {
-  MockIoData_ExpectWrite(0, 1);
-  EXPECT_FATAL_FAILURE(IoData_Read8bit(0),
-                       "Expected IoData_Write(0x0, 0x1)\n\t        "
-                       "But was IoData_Read(0x0)");
+TEST_F(MockIoDataTest, ExpectWriteBeforeCreate) {
+  MockIoData_Destroy();
+  EXPECT_FATAL_FAILURE(MockIoData_ExpectWrite(0, 0),
+                       "MockIoData is not created, call MockIoData_Create()");
+}
+
+TEST_F(MockIoDataTest, ExpectReadBeforeCreate) {
+  MockIoData_Destroy();
+  EXPECT_FATAL_FAILURE(MockIoData_ExpectReadThenReturn(0, 0),
+                       "MockIoData is not created, call MockIoData_Create()");
 }
 
 TEST_F(MockIoDataTest, TooManyWriteExpectations) {
@@ -46,25 +56,18 @@ TEST_F(MockIoDataTest, TooManyReadExpectations) {
       "MockIoData_ExpectReadThenReturn: Too many expectations");
 }
 
-TEST_F(MockIoDataTest, NotInitializedTheRead) {
-  MockIoData_Destroy();
-  EXPECT_FATAL_FAILURE(MockIoData_ExpectReadThenReturn(0, 0),
-                       "MockIoData not initialized, call MockIoData_Create()");
+TEST_F(MockIoDataTest, WriteWhenReadExpected) {
+  MockIoData_ExpectReadThenReturn(0, 1);
+  EXPECT_FATAL_FAILURE(IoData_Write8bit(0, 0),
+                       "Expected IoData_Read(0x0) would return 0x1)\n\t        "
+                       "But was IoData_Write(0x0, 0x0)");
 }
 
-TEST_F(MockIoDataTest, NotInitializedTheWrite) {
-  MockIoData_Destroy();
-  EXPECT_FATAL_FAILURE(MockIoData_ExpectWrite(0, 0),
-                       "MockIoData not initialized, call MockIoData_Create()");
-}
-
-TEST_F(MockIoDataTest, CreateWithCountLessThanOne) {
-  MockIoData_Destroy();
-
-  MockIoData_Create(0);
-
-  EXPECT_FATAL_FAILURE(MockIoData_ExpectWrite(0, 0),
-                       "MockIoData not initialized, call MockIoData_Create()");
+TEST_F(MockIoDataTest, ReadWhenWriteExpected) {
+  MockIoData_ExpectWrite(0, 1);
+  EXPECT_FATAL_FAILURE(IoData_Read8bit(0),
+                       "Expected IoData_Write(0x0, 0x1)\n\t        "
+                       "But was IoData_Read(0x0)");
 }
 
 TEST_F(MockIoDataTest, MismatchedWriteAddress) {
