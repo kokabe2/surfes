@@ -167,7 +167,7 @@ static int ExpectedDataIsNot(ioData data) { return its_expected.data != data; }
 static void IoData_Write(ioAddress offset, ioData data) {
   if (FailWhenNotInitialized()) return;
 
-  SetExpectedAndActual(offset, (ioData)data);
+  SetExpectedAndActual(offset, data);
   FailWhenNoUnusedExpectations(kReportWriteButOutOfExpectations);
   FailWhen(ExpectationIsNot(kIoDataWrite), kReportExpectReadWasWrite);
   FailWhen(ExpectedAddressIsNot(offset), kReportWriteDoesNotMatch);
