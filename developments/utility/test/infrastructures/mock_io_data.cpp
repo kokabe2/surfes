@@ -30,8 +30,6 @@ static const char* kReportWriteDoesNotMatch =
 static const char* kReportWriteButOutOfExpectations =
     "IoData_Write(0x%x, 0x%x)";
 static const char* kReportReadButOutOfExpectations = "IoData_Read(0x%x)";
-static const char* kReportNoMoreExpectations =
-    "R/W %d: No more expectations but was ";
 static const char* kReportExpectationNumber = "R/W %d: ";
 
 static Expectation* its_expectations = nullptr;
@@ -130,7 +128,7 @@ static void FailWhenNoUnusedExpectations(const char* format) {
 
   char message[100];
   int size = sizeof(message) - 1;
-  int offset = snprintf(message, size, kReportNoMoreExpectations,
+  int offset = snprintf(message, size, "R/W %d: No more expectations but was ",
                         get_expectation_count + 1);
   snprintf(message + offset, size - offset, format, its_actual.offset,
            its_actual.data);
