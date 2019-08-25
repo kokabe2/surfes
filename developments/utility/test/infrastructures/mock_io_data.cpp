@@ -40,7 +40,7 @@ static const char* kReportNoMoreExpectations =
     "R/W %d: No more expectations but was ";
 static const char* kReportExpectationNumber = "R/W %d: ";
 
-static Expectation* expectations = nullptr;
+static Expectation* its_expectations = nullptr;
 static int set_expectation_count;
 static int get_expectation_count;
 static int max_expectation_count;
@@ -51,7 +51,8 @@ static Expectation actual;
 void MockIoData_Create(int expectation_count) {
   if (expectation_count <= 0) return;
 
-  expectations = (Expectation*)calloc(expectation_count, sizeof(Expectation));
+  its_expectations =
+      (Expectation*)calloc(expectation_count, sizeof(Expectation));
   set_expectation_count = 0;
   get_expectation_count = 0;
   max_expectation_count = expectation_count;
@@ -59,10 +60,10 @@ void MockIoData_Create(int expectation_count) {
 }
 
 void MockIoData_Destroy(void) {
-  if (!expectations) return;
+  if (!its_expectations) return;
 
-  free(expectations);
-  expectations = NULL;
+  free(its_expectations);
+  its_expectations = NULL;
 }
 
 static void Fail(const char* message) {
@@ -73,7 +74,7 @@ static void Fail(const char* message) {
 }
 
 static int FailWhenNotInitialized(void) {
-  if (expectations) return 0;
+  if (its_expectations) return 0;
 
   Fail(kReportMockIoDataNotInitialized);
   return -1;
@@ -88,9 +89,9 @@ static int FailWhenNoRoomForExpectations(const char* message) {
 }
 
 static void RecordExpectation(int kind, ioAddress offset, ioData data) {
-  expectations[set_expectation_count].kind = kind;
-  expectations[set_expectation_count].offset = offset;
-  expectations[set_expectation_count].data = data;
+  its_expectations[set_expectation_count].kind = kind;
+  its_expectations[set_expectation_count].offset = offset;
+  its_expectations[set_expectation_count].data = data;
   set_expectation_count++;
 }
 
@@ -123,8 +124,8 @@ void MockIoData_VerifyCompletion(void) {
 }
 
 static void SetExpectedAndActual(ioAddress offset, ioData data) {
-  expected.offset = expectations[get_expectation_count].offset;
-  expected.data = expectations[get_expectation_count].data;
+  expected.offset = its_expectations[get_expectation_count].offset;
+  expected.data = its_expectations[get_expectation_count].data;
   actual.offset = offset;
   actual.data = data;
 }
@@ -155,7 +156,7 @@ static void FailWhen(int condition, const char* expectationFailMessage) {
 }
 
 static int ExpectationIsNot(int kind) {
-  return kind != expectations[get_expectation_count].kind;
+  return kind != its_expectations[get_expectation_count].kind;
 }
 
 static int ExpectedAddressIsNot(ioAddress offset) {
@@ -194,7 +195,7 @@ static ioData IoData_Read(ioAddress offset) {
   FailWhenNoUnusedExpectations(kReportReadButOutOfExpectations);
   FailWhen(ExpectationIsNot(kIoDataRead), kReportExpectWriteWasRead);
   FailWhen(ExpectedAddressIsNot(offset), kReportReadWrongAddress);
-  return expectations[get_expectation_count++].data;
+  return its_expectations[get_expectation_count++].data;
 }
 
 uint8_t IoData_Read8bit(ioAddress offset) {
