@@ -45,7 +45,7 @@ static int set_expectation_count;
 static int get_expectation_count;
 static int max_expectation_count;
 static bool was_failure_already_reported = false;
-static Expectation expected;
+static Expectation its_expected;
 static Expectation actual;
 
 void MockIoData_Create(int expectation_count) {
@@ -124,8 +124,8 @@ void MockIoData_VerifyCompletion(void) {
 }
 
 static void SetExpectedAndActual(ioAddress offset, ioData data) {
-  expected.offset = its_expectations[get_expectation_count].offset;
-  expected.data = its_expectations[get_expectation_count].data;
+  its_expected.offset = its_expectations[get_expectation_count].offset;
+  its_expected.data = its_expectations[get_expectation_count].data;
   actual.offset = offset;
   actual.data = data;
 }
@@ -147,7 +147,7 @@ static void FailExpectation(const char* expectationFailMessage) {
   int offset = snprintf(message, size, kReportExpectationNumber,
                         get_expectation_count + 1);
   snprintf(message + offset, size - offset, expectationFailMessage,
-           expected.offset, expected.data, actual.offset, actual.data);
+           its_expected.offset, its_expected.data, actual.offset, actual.data);
   Fail(message);
 }
 
@@ -160,10 +160,10 @@ static int ExpectationIsNot(int kind) {
 }
 
 static int ExpectedAddressIsNot(ioAddress offset) {
-  return offset != expected.offset;
+  return offset != its_expected.offset;
 }
 
-static int ExpectedDataIsNot(ioData data) { return expected.data != data; }
+static int ExpectedDataIsNot(ioData data) { return its_expected.data != data; }
 
 static void IoData_Write(ioAddress offset, ioData data) {
   if (FailWhenNotInitialized()) return;
