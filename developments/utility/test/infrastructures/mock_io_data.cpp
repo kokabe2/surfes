@@ -42,7 +42,7 @@ static Expectation* its_expectations = nullptr;
 static int set_expectation_count;
 static int get_expectation_count;
 static int max_expectation_count;
-static bool was_failure_already_reported = false;
+static bool failure_already_reported = false;
 static Expectation its_expected;
 static Expectation its_actual;
 
@@ -54,7 +54,7 @@ void MockIoData_Create(int expectation_count) {
   set_expectation_count = 0;
   get_expectation_count = 0;
   max_expectation_count = expectation_count;
-  was_failure_already_reported = false;
+  failure_already_reported = false;
 }
 
 void MockIoData_Destroy(void) {
@@ -65,9 +65,9 @@ void MockIoData_Destroy(void) {
 }
 
 static void Fail(const char* message) {
-  if (was_failure_already_reported) return;
+  if (failure_already_reported) return;
 
-  was_failure_already_reported = true;
+  failure_already_reported = true;
   FAIL() << message;
 }
 
@@ -117,7 +117,7 @@ static void FailWhenNotAllExpectationsUsed(void) {
 }
 
 void MockIoData_VerifyCompletion(void) {
-  if (was_failure_already_reported) return;
+  if (failure_already_reported) return;
 
   FailWhenNotAllExpectationsUsed();
 }
