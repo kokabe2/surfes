@@ -29,8 +29,6 @@ static const char* kReportWriteDoesNotMatch =
     "\t        But was IoData_Write(0x%x, 0x%x)";
 static const char* kReportTooManyReadExpectations =
     "MockIoData_ExpectReadThenReturn: Too many expectations";
-static const char* kReportMockIoDataNotInitialized =
-    "MockIoData not initialized, call MockIoData_Create()";
 static const char* kReportWriteButOutOfExpectations =
     "IoData_Write(0x%x, 0x%x)";
 static const char* kReportReadButOutOfExpectations = "IoData_Read(0x%x)";
@@ -74,7 +72,7 @@ static void RepotFailIfNeeded(const char* message) {
 static int FailWhenNotCreated(void) {
   if (its_expectations) return 0;
 
-  RepotFailIfNeeded(kReportMockIoDataNotInitialized);
+  RepotFailIfNeeded("MockIoData not initialized, call MockIoData_Create()");
   return -1;
 }
 
