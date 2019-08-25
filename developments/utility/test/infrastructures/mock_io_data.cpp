@@ -71,9 +71,12 @@ static int FailWhenNotCreated(void) {
   return -1;
 }
 
-static int FailWhenNoRoomForExpectations(const char* message) {
+static int FailWhenNoRoomForExpectations(const char* function_name) {
   if (set_expectation_count < max_expectation_count) return 0;
 
+  char message[100];
+  int size = sizeof message;
+  snprintf(message, size, "%s%s", function_name, ": Too many expectations");
   ReportFailIfNeeded(message);
   return -1;
 }
@@ -87,17 +90,13 @@ static void RecordExpectation(int kind, ioAddress offset, ioData data) {
 
 void MockIoData_ExpectWrite(ioAddress offset, ioData data) {
   if (FailWhenNotCreated()) return;
-  if (FailWhenNoRoomForExpectations(
-          "MockIoData_ExpectWrite: Too many expectations"))
-    return;
+  if (FailWhenNoRoomForExpectations("MockIoData_ExpectWrite")) return;
   RecordExpectation(kIoDataWrite, offset, data);
 }
 
 void MockIoData_ExpectReadThenReturn(ioAddress offset, ioData to_return) {
   if (FailWhenNotCreated()) return;
-  if (FailWhenNoRoomForExpectations(
-          "MockIoData_ExpectReadThenReturn: Too many expectations"))
-    return;
+  if (FailWhenNoRoomForExpectations("MockIoData_ExpectReadThenReturn")) return;
   RecordExpectation(kIoDataRead, offset, to_return);
 }
 
