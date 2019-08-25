@@ -1,19 +1,19 @@
 ﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
-#ifndef UTILITY_INCLUDE_SIF_HEADER_H_
-#define UTILITY_INCLUDE_SIF_HEADER_H_
+#ifndef DEVELOPMENTS_UTILITY_INC_SIF_HEADER_H_
+#define DEVELOPMENTS_UTILITY_INC_SIF_HEADER_H_
 
 #include <stdint.h>
 
-enum SifIdentification {
-  kSifIdMagicNumber0 = 0,
-  kSifIdMagicNumber1,
-  kSifIdMagicNumber2,
-  kSifIdMagicNumber3,
-  kSifIdClass,
-  kSifIdData,
-  kSifIdVersion,
-  kSifIdPadding,
+enum SifIdentificationIndex {
+  kSiiMagicNumber0 = 0,
+  kSiiMagicNumber1,
+  kSiiMagicNumber2,
+  kSiiMagicNumber3,
+  kSiiClass,
+  kSiiData,
+  kSiiVersion,
+  kSiiPadding,
 };
 
 enum SifClass {
@@ -45,15 +45,15 @@ enum SifMachine {
   kSmRx = 0x11,
 };
 
-enum SifSize {
-  kSifIdentificationSize = 16,
-  kSifDscriptionSize = 128,
-  kSifHeaderSizeInClass32 = 192,
-  kSifHeaderSizeInClass64 = 208,
+enum SifHeaderDataSize {
+  kShdsIdentificationSize = 16,
+  kShdsDscriptionSize = 128,
+  kShdsHeaderSizeInClass32 = 192,
+  kShdsHeaderSizeInClass64 = 208,
 };
 
 typedef struct {
-  uint8_t identification[kSifIdentificationSize];
+  uint8_t identification[kShdsIdentificationSize];
   uint16_t type;
   uint16_t machine;
   uint32_t flags;
@@ -66,10 +66,10 @@ typedef struct {
   uintptr_t open_function_address;
   uintptr_t close_function_address;
   uintptr_t entry_point;
-  uint8_t description[kSifDscriptionSize];
+  uint8_t description[kShdsDscriptionSize];
 } SifHeaderStruct, *SifHeader;
 
 typedef int (*openFunction)(void);
 typedef void (*closeFunction)(void);
 
-#endif  // UTILITY_INCLUDE_SIF_HEADER_H_
+#endif  // DEVELOPMENTS_UTILITY_INC_SIF_HEADER_H_

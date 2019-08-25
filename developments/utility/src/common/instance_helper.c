@@ -5,20 +5,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "runtime_error.h"
-
-static bool IsInvalid(int size) {
-  if (size > 0) return false;
-
-  RUNTIME_ERROR("Instance Helper: size is zero or less", size);
-  return true;
-}
-
-void* InstanceHelper_New(int size) {
-  if (IsInvalid(size)) return NULL;
-
-  return calloc(1, size);
-}
+void* InstanceHelper_New(int size) { return size > 0 ? calloc(1, size) : NULL; }
 
 void InstanceHelper_Del(void** instance) {
   if (!instance || !*instance) return;

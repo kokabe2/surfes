@@ -4,7 +4,6 @@
 
 extern "C" {
 #include "instance_helper.h"
-#include "spy_runtime_error.h"
 }
 
 typedef struct {
@@ -16,7 +15,6 @@ class InstanceHelperTest : public ::testing::Test {
   InstanceHelperDummy instance;
 
   virtual void SetUp() {
-    SpyRuntimeError_Reset();
     instance = (InstanceHelperDummy)InstanceHelper_New(
         sizeof(InstanceHelperDummyStruct));
   }
@@ -31,15 +29,9 @@ TEST_F(InstanceHelperTest, Create) {
   EXPECT_EQ(0, memcmp(instance, &expected, sizeof(InstanceHelperDummyStruct)));
 }
 
-TEST_F(InstanceHelperTest, CreateWithSizeLessThanOne) {
-  InstanceHelper_Delete(&instance);
-
-  instance = (InstanceHelperDummy)InstanceHelper_New(0);
-
-  EXPECT_EQ(NULL, instance);
-  EXPECT_STREQ("Instance Helper: size is zero or less",
-               SpyRuntimeError_GetLastError());
-  EXPECT_EQ(0, SpyRuntimeError_GetLastParameter());
+TEST_F(InstanceHelperTest, CreateWithSizeZeroOrLess) {
+  EXPECT_EQ(NULL, InstanceHelper_New(0));
+  EXPECT_EQ(NULL, InstanceHelper_New(-128));
 }
 
 TEST_F(InstanceHelperTest, Delete) {
@@ -54,9 +46,9 @@ TEST_F(InstanceHelperTest, DeleteWithNull) {
   SUCCEED();
 }
 
-TEST_F(InstanceHelperTest, DeleteMoreThanOnce) {
+TEST_F(InstanceHelperTest, DeleteAfterDelete) {
   InstanceHelper_Delete(&instance);
   InstanceHelper_Delete(&instance);
 
-  EXPECT_EQ(NULL, instance);
+  SUCCEED();
 }

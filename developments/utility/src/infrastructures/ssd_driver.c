@@ -3,12 +3,9 @@
 #include "ssd_driver.h"
 
 #include <stddef.h>
-#include <stdlib.h>
 
 #include "instance_helper.h"
-#include "led_driver.h"
 #include "led_driver_private.h"
-#include "runtime_error.h"
 
 enum {
   kNonsenseEncoding = 0,
@@ -18,95 +15,45 @@ typedef struct SsdDriverStruct {
   LedDriverStruct base;
   ssdDecoder decoder;
   char encoding;
-} SsdDriverStruct;
+} SsdDriverStruct, *SsdDriver;
 
-static bool IsInvalidAddress(uint8_t* io_address) {
-  if (io_address) return false;
-
-  RUNTIME_ERROR("SSD Driver: null I/O address", 0);
-  return true;
+inline static bool Validate(uint8_t* io_address, ssdDecoder decoder) {
+  return io_address && decoder;
 }
 
-static bool IsInvalidDecoder(ssdDecoder decoder) {
-  if (decoder) return false;
-
-  RUNTIME_ERROR("SSD Driver: null decode function", 0);
-  return true;
-}
-
-static uint8_t ConvertToBitFrom(int segment_number) {
+inline static uint8_t ConvertToBit(int segment_number) {
   return 1 << (segment_number - 1);
 }
 
-static SsdDriver NewInstance(uint8_t* io_address, ssdDecoder decoder) {
+static LedDriver NewInstance(uint8_t* io_address, ssdDecoder decoder) {
   SsdDriver self = (SsdDriver)InstanceHelper_New(sizeof(SsdDriverStruct));
   if (self) {
     self->base.io_address = io_address;
-    self->base.decoder = ConvertToBitFrom;
+    self->base.decoder = ConvertToBit;
     self->decoder = decoder;
   }
+  return (LedDriver)self;
+}
 
+LedDriver SsdDriver_Create(uint8_t* io_address, ssdDecoder decoder) {
+  if (!Validate(io_address, decoder)) return NULL;
+
+  LedDriver self = NewInstance(io_address, decoder);
+  if (self) LedDriver_TurnAllOff(self);
   return self;
 }
 
-SsdDriver SsdDriver_Create(uint8_t* io_address, ssdDecoder decoder) {
-  if (IsInvalidAddress(io_address) || IsInvalidDecoder(decoder)) return NULL;
+inline static SsdDriver downcast(LedDriver self) { return (SsdDriver)self; }
 
-  SsdDriver self = NewInstance(io_address, decoder);
-  if (self) LedDriver_TurnAllOff(&self->base);
-
-  return self;
-}
-
-void SsdDriver_Destroy(SsdDriver* self) {
-  if (!self || !*self) return;
-
-  LedDriver_TurnAllOff(&(*self)->base);
-  InstanceHelper_Delete(self);
-}
-
-void SsdDriver_TurnOn(SsdDriver self, int segment_number) {
-  LedDriver_TurnOn(&self->base, segment_number);
-}
-
-void SsdDriver_TurnOff(SsdDriver self, int segment_number) {
-  LedDriver_TurnOff(&self->base, segment_number);
-}
-
-void SsdDriver_TurnAllOn(SsdDriver self) { LedDriver_TurnAllOn(&self->base); }
-
-void SsdDriver_TurnAllOff(SsdDriver self) { LedDriver_TurnAllOff(&self->base); }
-
-bool SsdDriver_IsOn(SsdDriver self, int segment_number) {
-  return LedDriver_IsOn(&self->base, segment_number);
-}
-
-bool SsdDriver_IsOff(SsdDriver self, int segment_number) {
-  return LedDriver_IsOff(&self->base, segment_number);
-}
-
-static bool IsInvalid(SsdDriver self) {
-  if (self) return false;
-
-  RUNTIME_ERROR("SSD Driver: null instance", 0);
-  return true;
-}
-
-static void SetSsdImageBit(SsdDriver self, char encoding) {
+inline static void SetSsdImageBit(SsdDriver self, char encoding) {
   *self->base.io_address = self->decoder(encoding);
   self->encoding = encoding;
 }
 
-void SsdDriver_Set(SsdDriver self, char encoding) {
-  if (IsInvalid(self)) return;
-
-  SetSsdImageBit(self, encoding);
+void SsdDriver_Set(LedDriver self, char encoding) {
+  if (self) SetSsdImageBit(downcast(self), encoding);
 }
 
-static char GetSsdEncoding(SsdDriver self) { return self->encoding; }
-
-char SsdDriver_Get(SsdDriver self) {
-  if (IsInvalid(self)) return kNonsenseEncoding;
-
-  return GetSsdEncoding(self);
+char SsdDriver_Get(LedDriver self) {
+  return self ? downcast(self)->encoding : kNonsenseEncoding;
 }

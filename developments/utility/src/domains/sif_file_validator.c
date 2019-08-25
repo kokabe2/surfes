@@ -3,77 +3,62 @@
 #include "sif_file_validator.h"
 
 #include <stdbool.h>
+#include <string.h>
 
 #include "modular_sum.h"
-#include "runtime_error.h"
 #include "sif_header.h"
 
-static bool HasNoDataCorruption(SifHeader header) {
-  if (ModularSum_Verify((uint32_t*)header->file_address, header->file_size))
-    return false;
-
-  return true;
-}
-
 static bool IsSifFile(SifHeader header) {
-  uint8_t magic_number[] = {0x7F, 'S', 'I', 'F'};
-  for (int i = 0; i < sizeof(magic_number); ++i)
-    if (header->identification[i] != magic_number[i]) {
-      RUNTIME_ERROR("SIF File Validator: non SIF file", i);
-      return false;
-    }
-
-  return true;
+  const uint8_t kMagicNumber[] = {0x7F, 'S', 'I', 'F'};
+  return memcmp(header->identification, kMagicNumber, sizeof(kMagicNumber)) ==
+         0;
 }
 
 static bool IsValidClass(SifHeader header) {
-  if (header->identification[kSifIdClass] == kSc32) return true;
-  if (header->identification[kSifIdClass] == kSc64) return true;
-
-  RUNTIME_ERROR("SIF File Validator: invalid SIF class",
-                header->identification[kSifIdClass]);
-  return false;
+  return (header->identification[kSiiClass] == kSc32) ||
+         (header->identification[kSiiClass] == kSc64);
 }
 
 static bool IsValidVersion(SifHeader header) {
-  if (header->identification[kSifIdVersion] == kSvCurrent) return true;
-
-  RUNTIME_ERROR("SIF File Validator: invalid SIF version",
-                header->identification[kSifIdVersion]);
-  return false;
+  return header->identification[kSiiVersion] == kSvCurrent;
 }
 
-static uint16_t headerSize(uint8_t sif_class) {
-  uint16_t header_size[] = {kSifHeaderSizeInClass32, kSifHeaderSizeInClass64};
-
-  return header_size[sif_class - 1];
+static uint16_t headerSizeOf(uint8_t sif_class) {
+  const uint16_t kHeaderSize[] = {kShdsHeaderSizeInClass32,
+                                  kShdsHeaderSizeInClass64};
+  return kHeaderSize[sif_class - 1];
 }
 
 static bool IsValidHeaderSize(SifHeader header) {
-  uint8_t sif_class = header->identification[kSifIdClass];
-  if (header->header_size == headerSize(sif_class)) return true;
-
-  RUNTIME_ERROR("SIF File Validator: invalid header size", header->header_size);
-  return false;
+  uint8_t sif_class = header->identification[kSiiClass];
+  return header->header_size == headerSizeOf(sif_class);
 }
 
 static bool IsValidFileSize(SifHeader header) {
-  if (header->file_size >= header->header_size) return true;
-
-  RUNTIME_ERROR("SIF File Validator: invalid file size", header->file_size);
-  return false;
+  return header->file_size >= header->header_size;
 }
 
-typedef bool (*validator)(SifHeader);
-static const validator kValidators[] = {
-    IsSifFile,         IsValidClass,    IsValidVersion,
-    IsValidHeaderSize, IsValidFileSize, HasNoDataCorruption,
+static bool HasNoDataCorruption(SifHeader header) {
+  return ModularSum_Verify((uint32_t*)header->file_address,
+                           header->file_size) == 0;
+}
+
+static const struct {
+  bool (*Validate)(SifHeader);
+  int error_code;
+} kValidators[] = {
+    {IsSifFile, kSfveMagicNumberError},
+    {IsValidClass, kSfveClassError},
+    {IsValidVersion, kSfveVersionError},
+    {IsValidHeaderSize, kSfveHeaderSizeError},
+    {IsValidFileSize, kSfveFileSizeError},
+    {HasNoDataCorruption, kSfveChecksumError},
 };
 int SifFileValidator_Validate(uintptr_t file_address) {
   SifHeader header = (SifHeader)file_address;
   int num_of_validators = sizeof(kValidators) / sizeof(kValidators[0]);
   for (int i = 0; i < num_of_validators; ++i)
-    if (!kValidators[i](header)) return i + 1;
+    if (!kValidators[i].Validate(header)) return kValidators[i].error_code;
 
   return 0;
 }

@@ -7,7 +7,7 @@
 
 #include "gtest/gtest.h"
 
-enum { kIoDataRead, kIoDataWrite, NoExpectedValue = -1 };
+enum ExpectedKindOfFunction { kIoDataRead, kIoDataWrite, NoExpectedValue = -1 };
 
 typedef struct Expectation {
   int kind;
@@ -27,127 +27,117 @@ static const char* kReportExpectReadWasWrite =
 static const char* kReportWriteDoesNotMatch =
     "Expected IoData_Write(0x%x, 0x%x)\n"
     "\t        But was IoData_Write(0x%x, 0x%x)";
-static const char* kReportTooManyWriteExpectations =
-    "MockIoData_ExpectWrite: Too many expectations";
-static const char* kReportTooManyReadExpectations =
-    "MockIoData_ExpectReadThenReturn: Too many expectations";
-static const char* kReportMockIoDataNotInitialized =
-    "MockIoData not initialized, call MockIoData_Create()";
-static const char* kReportWriteButOutOfExpectations =
-    "IoData_Write(0x%x, 0x%x)";
-static const char* kReportReadButOutOfExpectations = "IoData_Read(0x%x)";
-static const char* kReportNoMoreExpectations =
-    "R/W %d: No more expectations but was ";
-static const char* kReportExpectationNumber = "R/W %d: ";
 
-static Expectation* expectations = nullptr;
+static Expectation* its_expectations = nullptr;
 static int set_expectation_count;
 static int get_expectation_count;
 static int max_expectation_count;
-static bool was_failure_already_reported = false;
-static Expectation expected;
-static Expectation actual;
+static bool failure_already_reported = false;
+static Expectation its_expected;
+static Expectation its_actual;
 
 void MockIoData_Create(int expectation_count) {
   if (expectation_count <= 0) return;
 
-  expectations = (Expectation*)calloc(expectation_count, sizeof(Expectation));
+  its_expectations =
+      (Expectation*)calloc(expectation_count, sizeof(Expectation));
   set_expectation_count = 0;
   get_expectation_count = 0;
   max_expectation_count = expectation_count;
-  was_failure_already_reported = 0;
+  failure_already_reported = false;
 }
 
 void MockIoData_Destroy(void) {
-  if (!expectations) return;
+  if (!its_expectations) return;
 
-  free(expectations);
-  expectations = NULL;
+  free(its_expectations);
+  its_expectations = nullptr;
 }
 
-static void Fail(const char* message) {
-  if (was_failure_already_reported) return;
+static void ReportFailIfNeeded(const char* message) {
+  if (failure_already_reported) return;
 
-  was_failure_already_reported = true;
+  failure_already_reported = true;
   FAIL() << message;
 }
 
-static int FailWhenNotInitialized(void) {
-  if (expectations) return 0;
+static int FailWhenNotCreated(void) {
+  if (its_expectations) return 0;
 
-  Fail(kReportMockIoDataNotInitialized);
+  ReportFailIfNeeded("MockIoData is not created, call MockIoData_Create()");
   return -1;
 }
 
-static int FailWhenNoRoomForExpectations(const char* message) {
-  if (FailWhenNotInitialized()) return -1;
+static int FailWhenNoRoomForExpectations(const char* function_name) {
   if (set_expectation_count < max_expectation_count) return 0;
 
-  Fail(message);
+  char message[100];
+  int size = sizeof message;
+  snprintf(message, size, "%s%s", function_name, ": Too many expectations");
+  ReportFailIfNeeded(message);
   return -1;
 }
 
 static void RecordExpectation(int kind, ioAddress offset, ioData data) {
-  expectations[set_expectation_count].kind = kind;
-  expectations[set_expectation_count].offset = offset;
-  expectations[set_expectation_count].data = data;
+  its_expectations[set_expectation_count].kind = kind;
+  its_expectations[set_expectation_count].offset = offset;
+  its_expectations[set_expectation_count].data = data;
   set_expectation_count++;
 }
 
 void MockIoData_ExpectWrite(ioAddress offset, ioData data) {
-  if (FailWhenNoRoomForExpectations(kReportTooManyWriteExpectations)) return;
-
+  if (FailWhenNotCreated()) return;
+  if (FailWhenNoRoomForExpectations("MockIoData_ExpectWrite")) return;
   RecordExpectation(kIoDataWrite, offset, data);
 }
 
 void MockIoData_ExpectReadThenReturn(ioAddress offset, ioData to_return) {
-  if (FailWhenNoRoomForExpectations(kReportTooManyReadExpectations)) return;
-
+  if (FailWhenNotCreated()) return;
+  if (FailWhenNoRoomForExpectations("MockIoData_ExpectReadThenReturn")) return;
   RecordExpectation(kIoDataRead, offset, to_return);
 }
 
 static void FailWhenNotAllExpectationsUsed(void) {
   if (get_expectation_count == set_expectation_count) return;
 
-  char format[] = "Expected %d reads/writes but got %d";
+  char format[] = "Expected %d function(s) used but got %d";
   char message[sizeof(format) + 5 + 5];
   snprintf(message, sizeof(message), format, set_expectation_count,
            get_expectation_count);
-  Fail(message);
+  ReportFailIfNeeded(message);
 }
 
 void MockIoData_VerifyCompletion(void) {
-  if (was_failure_already_reported) return;
-
-  FailWhenNotAllExpectationsUsed();
+  if (!failure_already_reported) FailWhenNotAllExpectationsUsed();
 }
 
 static void SetExpectedAndActual(ioAddress offset, ioData data) {
-  expected.offset = expectations[get_expectation_count].offset;
-  expected.data = expectations[get_expectation_count].data;
-  actual.offset = offset;
-  actual.data = data;
+  its_expected.offset = its_expectations[get_expectation_count].offset;
+  its_expected.data = its_expectations[get_expectation_count].data;
+  its_actual.offset = offset;
+  its_actual.data = data;
 }
 
 static void FailWhenNoUnusedExpectations(const char* format) {
   if (get_expectation_count < set_expectation_count) return;
 
   char message[100];
-  int size = sizeof(message) - 1;
-  int offset = snprintf(message, size, kReportNoMoreExpectations,
+  int size = sizeof message;
+  int offset = snprintf(message, size, "(%d): No more expectations but was ",
                         get_expectation_count + 1);
-  snprintf(message + offset, size - offset, format, actual.offset, actual.data);
-  Fail(message);
+  snprintf(message + offset, size - offset, format, its_actual.offset,
+           its_actual.data);
+  ReportFailIfNeeded(message);
 }
 
 static void FailExpectation(const char* expectationFailMessage) {
   char message[100];
   int size = sizeof message - 1;
-  int offset = snprintf(message, size, kReportExpectationNumber,
-                        get_expectation_count + 1);
+  int offset = snprintf(message, size, "R/W %d: ", get_expectation_count + 1);
   snprintf(message + offset, size - offset, expectationFailMessage,
-           expected.offset, expected.data, actual.offset, actual.data);
-  Fail(message);
+           its_expected.offset, its_expected.data, its_actual.offset,
+           its_actual.data);
+  ReportFailIfNeeded(message);
 }
 
 static void FailWhen(int condition, const char* expectationFailMessage) {
@@ -155,20 +145,20 @@ static void FailWhen(int condition, const char* expectationFailMessage) {
 }
 
 static int ExpectationIsNot(int kind) {
-  return kind != expectations[get_expectation_count].kind;
+  return kind != its_expectations[get_expectation_count].kind;
 }
 
 static int ExpectedAddressIsNot(ioAddress offset) {
-  return offset != expected.offset;
+  return offset != its_expected.offset;
 }
 
-static int ExpectedDataIsNot(ioData data) { return expected.data != data; }
+static int ExpectedDataIsNot(ioData data) { return its_expected.data != data; }
 
 static void IoData_Write(ioAddress offset, ioData data) {
-  if (FailWhenNotInitialized()) return;
+  if (FailWhenNotCreated()) return;
 
-  SetExpectedAndActual(offset, (ioData)data);
-  FailWhenNoUnusedExpectations(kReportWriteButOutOfExpectations);
+  SetExpectedAndActual(offset, data);
+  FailWhenNoUnusedExpectations("IoData_Write(0x%x, 0x%x)");
   FailWhen(ExpectationIsNot(kIoDataWrite), kReportExpectReadWasWrite);
   FailWhen(ExpectedAddressIsNot(offset), kReportWriteDoesNotMatch);
   FailWhen(ExpectedDataIsNot(data), kReportWriteDoesNotMatch);
@@ -188,13 +178,13 @@ void IoData_Write32bit(ioAddress offset, uint32_t data) {
 }
 
 static ioData IoData_Read(ioAddress offset) {
-  if (FailWhenNotInitialized()) return 0;
+  if (FailWhenNotCreated()) return 0;
 
   SetExpectedAndActual(offset, NoExpectedValue);
-  FailWhenNoUnusedExpectations(kReportReadButOutOfExpectations);
+  FailWhenNoUnusedExpectations("IoData_Read(0x%x)");
   FailWhen(ExpectationIsNot(kIoDataRead), kReportExpectWriteWasRead);
   FailWhen(ExpectedAddressIsNot(offset), kReportReadWrongAddress);
-  return expectations[get_expectation_count++].data;
+  return its_expectations[get_expectation_count++].data;
 }
 
 uint8_t IoData_Read8bit(ioAddress offset) {

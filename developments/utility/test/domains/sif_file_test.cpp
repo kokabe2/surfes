@@ -9,7 +9,7 @@ extern "C" {
 }
 
 namespace {
-SifHeaderStruct dummy_file_template = {
+const SifHeaderStruct kDummyFileTemplate = {
     {0x7F, 'S', 'I', 'F', kSc64, kSd2Lsb, kSvCurrent},
     kStData,
     kSmRx,
@@ -44,7 +44,7 @@ class SifFileTest : public ::testing::Test {
   virtual void SetUp() {
     called_function = "None";
     instance = NULL;
-    dummy_file = dummy_file_template;
+    dummy_file = kDummyFileTemplate;
     dummy_file.file_address = reinterpret_cast<uintptr_t>(&dummy_file);
     UpdateChecksum();
   }
@@ -105,7 +105,6 @@ TEST_F(SifFileTest, CloseFileHasNoCloseFunction) {
 TEST_F(SifFileTest, CloseFileHasCloseFunction) {
   dummy_file.close_function_address = reinterpret_cast<uintptr_t>(Close);
   UpdateChecksum();
-
   instance = SifFile_Open(dummy_file.file_address);
 
   SifFile_Close(&instance);
@@ -120,33 +119,31 @@ TEST_F(SifFileTest, CloseWithNull) {
   SUCCEED();
 }
 
-TEST_F(SifFileTest, CloseMoreThanOnce) {
+TEST_F(SifFileTest, CloseAfterClose) {
   instance = SifFile_Open(dummy_file.file_address);
 
   SifFile_Close(&instance);
   SifFile_Close(&instance);
 
-  EXPECT_EQ(NULL, instance);
+  SUCCEED();
 }
 
 TEST_F(SifFileTest, GetVersion) {
   instance = SifFile_Open(dummy_file.file_address);
 
-  ASSERT_EQ(0x0000000100000000, SifFile_getVersion(instance));
+  EXPECT_EQ(0x0000000100000000, SifFile_getVersion(instance));
 }
 
 TEST_F(SifFileTest, GetVersionWithNull) {
-  ASSERT_EQ(0, SifFile_getVersion(NULL));
+  EXPECT_EQ(0, SifFile_getVersion(NULL));
 }
 
 TEST_F(SifFileTest, GetEntryPoint) {
   instance = SifFile_Open(dummy_file.file_address);
 
-  uintptr_t entry_point = SifFile_getEntryPoint(instance);
-
-  ASSERT_EQ(0x0123456789ABCDEF, entry_point);
+  EXPECT_EQ(0x0123456789ABCDEF, SifFile_getEntryPoint(instance));
 }
 
 TEST_F(SifFileTest, GetEntryPointWithNull) {
-  ASSERT_EQ(0, SifFile_getEntryPoint(NULL));
+  EXPECT_EQ(0, SifFile_getEntryPoint(NULL));
 }

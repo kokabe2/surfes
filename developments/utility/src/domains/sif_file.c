@@ -6,12 +6,18 @@
 
 #include "instance_helper.h"
 #include "sif_file_validator.h"
+#include "sif_header.h"
 
 typedef struct SifFileStruct {
   uint64_t version;
   uintptr_t entry_point;
   closeFunction Close;
 } SifFileStruct;
+
+static int CallOpenIfNeeded(SifHeader header) {
+  openFunction Open = (openFunction)header->open_function_address;
+  return Open ? Open() : 0;
+}
 
 static SifFile NewInstance(SifHeader header) {
   SifFile self = (SifFile)InstanceHelper_New(sizeof(SifFileStruct));
@@ -20,15 +26,7 @@ static SifFile NewInstance(SifHeader header) {
     self->entry_point = header->entry_point;
     self->Close = (closeFunction)header->close_function_address;
   }
-
   return self;
-}
-
-static int CallOpenIfNeeded(SifHeader header) {
-  openFunction Open = (openFunction)header->open_function_address;
-  if (Open) return Open();
-
-  return 0;
 }
 
 SifFile SifFile_Open(uintptr_t file_address) {
@@ -49,14 +47,8 @@ void SifFile_Close(SifFile* self) {
   InstanceHelper_Delete(self);
 }
 
-uint64_t SifFile_getVersion(SifFile self) {
-  if (self) return self->version;
-
-  return 0;
-}
+uint64_t SifFile_getVersion(SifFile self) { return self ? self->version : 0; }
 
 uintptr_t SifFile_getEntryPoint(SifFile self) {
-  if (self) return self->entry_point;
-
-  return 0;
+  return self ? self->entry_point : 0;
 }

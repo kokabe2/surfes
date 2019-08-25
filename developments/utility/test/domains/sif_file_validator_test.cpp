@@ -6,11 +6,10 @@ extern "C" {
 #include "domains/sif_file_validator.h"
 #include "modular_sum.h"
 #include "sif_header.h"
-#include "spy_runtime_error.h"
 }
 
 namespace {
-SifHeaderStruct dummy_file_template = {
+const SifHeaderStruct kDummyFileTemplate = {
     {0x7F, 'S', 'I', 'F', kSc64, kSd2Lsb, kSvCurrent},
     kStData,
     kSmRx,
@@ -33,8 +32,7 @@ class SifFileValidatorTest : public ::testing::Test {
   SifHeaderStruct dummy_file;
 
   virtual void SetUp() {
-    SpyRuntimeError_Reset();
-    dummy_file = dummy_file_template;
+    dummy_file = kDummyFileTemplate;
     dummy_file.file_address = reinterpret_cast<uintptr_t>(&dummy_file);
     UpdateChecksum();
   }
@@ -47,79 +45,47 @@ class SifFileValidatorTest : public ::testing::Test {
 };
 
 TEST_F(SifFileValidatorTest, ValidateFile) {
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfvNoError, error);
+  EXPECT_EQ(kSfveNoError, SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasWrongMagicNumber) {
-  dummy_file.identification[kSifIdMagicNumber2] = 0;
+  dummy_file.identification[kSiiMagicNumber2] = 0;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfvMagicNumberError, error);
-  EXPECT_STREQ("SIF File Validator: non SIF file",
-               SpyRuntimeError_GetLastError());
-  EXPECT_EQ(kSifIdMagicNumber2, SpyRuntimeError_GetLastParameter());
+  EXPECT_EQ(kSfveMagicNumberError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasInvalidClass) {
-  dummy_file.identification[kSifIdClass] = kScNone;
+  dummy_file.identification[kSiiClass] = kScNone;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfvClassError, error);
-  EXPECT_STREQ("SIF File Validator: invalid SIF class",
-               SpyRuntimeError_GetLastError());
-  EXPECT_EQ(kScNone, SpyRuntimeError_GetLastParameter());
+  EXPECT_EQ(kSfveClassError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasInvalidVersion) {
-  dummy_file.identification[kSifIdVersion] = kSvNone;
+  dummy_file.identification[kSiiVersion] = kSvNone;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfvVersionError, error);
-  EXPECT_STREQ("SIF File Validator: invalid SIF version",
-               SpyRuntimeError_GetLastError());
-  EXPECT_EQ(kSvNone, SpyRuntimeError_GetLastParameter());
+  EXPECT_EQ(kSfveVersionError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileHasInvalidHeaderSize) {
   dummy_file.header_size = 200;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfvHeaderSizeError, error);
-  EXPECT_STREQ("SIF File Validator: invalid header size",
-               SpyRuntimeError_GetLastError());
-  EXPECT_EQ(200, SpyRuntimeError_GetLastParameter());
+  EXPECT_EQ(kSfveHeaderSizeError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateFileThatFileSizeIsLessThanHeaderSize) {
   dummy_file.file_size = 204;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfvFileSizeError, error);
-  EXPECT_STREQ("SIF File Validator: invalid file size",
-               SpyRuntimeError_GetLastError());
-  EXPECT_EQ(204, SpyRuntimeError_GetLastParameter());
+  EXPECT_EQ(kSfveFileSizeError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }
 
 TEST_F(SifFileValidatorTest, ValidateImperfectFile) {
   dummy_file.checksum = 0;
 
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfvChecksumError, error);
-}
-
-TEST_F(SifFileValidatorTest, ValidateFileThatFileSizeIsNotMultiplesOfFour) {
-  dummy_file.file_size = 209;
-  UpdateChecksum();
-
-  int error = SifFileValidator_Validate(dummy_file.file_address);
-
-  EXPECT_EQ(kSfvChecksumError, error);
+  EXPECT_EQ(kSfveChecksumError,
+            SifFileValidator_Validate(dummy_file.file_address));
 }

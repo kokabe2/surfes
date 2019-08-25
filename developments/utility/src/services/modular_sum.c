@@ -4,15 +4,10 @@
 
 #include <stdbool.h>
 
-#include "runtime_error.h"
+inline static bool IsMultiplesOfFour(int size) { return (size % 4) == 0; }
 
-static bool IsMultiplesOfFour(int size) { return (size % 4) == 0; }
-
-static bool IsInvalid(int size) {
-  if (size > 0 && IsMultiplesOfFour(size)) return false;
-
-  RUNTIME_ERROR("Modular Sum: invalid size", size);
-  return true;
+inline static bool IsValid(int size) {
+  return size > 0 && IsMultiplesOfFour(size);
 }
 
 static uint32_t Sum(const uint32_t *data, int size) {
@@ -24,13 +19,9 @@ static uint32_t Sum(const uint32_t *data, int size) {
 }
 
 uint32_t ModularSum_Verify(const uint32_t *data, int size) {
-  if (IsInvalid(size)) return 1;
-
-  return Sum(data, size);
+  return IsValid(size) ? Sum(data, size) : ~0;
 }
 
 uint32_t ModularSum_Calculate(const uint32_t *data, int size) {
-  if (IsInvalid(size)) return 0;
-
-  return ~Sum(data, size) + 1;
+  return IsValid(size) ? ~Sum(data, size) + 1 : 0;
 }
