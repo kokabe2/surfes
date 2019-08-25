@@ -27,8 +27,6 @@ static const char* kReportExpectReadWasWrite =
 static const char* kReportWriteDoesNotMatch =
     "Expected IoData_Write(0x%x, 0x%x)\n"
     "\t        But was IoData_Write(0x%x, 0x%x)";
-static const char* kReportTooManyReadExpectations =
-    "MockIoData_ExpectReadThenReturn: Too many expectations";
 static const char* kReportWriteButOutOfExpectations =
     "IoData_Write(0x%x, 0x%x)";
 static const char* kReportReadButOutOfExpectations = "IoData_Read(0x%x)";
@@ -100,7 +98,9 @@ void MockIoData_ExpectWrite(ioAddress offset, ioData data) {
 
 void MockIoData_ExpectReadThenReturn(ioAddress offset, ioData to_return) {
   if (FailWhenNotCreated()) return;
-  if (FailWhenNoRoomForExpectations(kReportTooManyReadExpectations)) return;
+  if (FailWhenNoRoomForExpectations(
+          "MockIoData_ExpectReadThenReturn: Too many expectations"))
+    return;
   RecordExpectation(kIoDataRead, offset, to_return);
 }
 
