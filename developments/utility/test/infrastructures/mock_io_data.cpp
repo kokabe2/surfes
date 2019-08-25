@@ -71,7 +71,7 @@ static void Fail(const char* message) {
   FAIL() << message;
 }
 
-static int FailWhenNotInitialized(void) {
+static int FailWhenNotCreated(void) {
   if (its_expectations) return 0;
 
   Fail(kReportMockIoDataNotInitialized);
@@ -95,13 +95,13 @@ static void RecordExpectation(int kind, ioAddress offset, ioData data) {
 static const char* kReportTooManyWriteExpectations =
     "MockIoData_ExpectWrite: Too many expectations";
 void MockIoData_ExpectWrite(ioAddress offset, ioData data) {
-  if (FailWhenNotInitialized()) return;
+  if (FailWhenNotCreated()) return;
   if (FailWhenNoRoomForExpectations(kReportTooManyWriteExpectations)) return;
   RecordExpectation(kIoDataWrite, offset, data);
 }
 
 void MockIoData_ExpectReadThenReturn(ioAddress offset, ioData to_return) {
-  if (FailWhenNotInitialized()) return;
+  if (FailWhenNotCreated()) return;
   if (FailWhenNoRoomForExpectations(kReportTooManyReadExpectations)) return;
   RecordExpectation(kIoDataRead, offset, to_return);
 }
@@ -165,7 +165,7 @@ static int ExpectedAddressIsNot(ioAddress offset) {
 static int ExpectedDataIsNot(ioData data) { return its_expected.data != data; }
 
 static void IoData_Write(ioAddress offset, ioData data) {
-  if (FailWhenNotInitialized()) return;
+  if (FailWhenNotCreated()) return;
 
   SetExpectedAndActual(offset, data);
   FailWhenNoUnusedExpectations(kReportWriteButOutOfExpectations);
@@ -188,7 +188,7 @@ void IoData_Write32bit(ioAddress offset, uint32_t data) {
 }
 
 static ioData IoData_Read(ioAddress offset) {
-  if (FailWhenNotInitialized()) return 0;
+  if (FailWhenNotCreated()) return 0;
 
   SetExpectedAndActual(offset, NoExpectedValue);
   FailWhenNoUnusedExpectations(kReportReadButOutOfExpectations);
