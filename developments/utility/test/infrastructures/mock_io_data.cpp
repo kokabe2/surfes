@@ -56,7 +56,7 @@ void MockIoData_Create(int expectation_count) {
   set_expectation_count = 0;
   get_expectation_count = 0;
   max_expectation_count = expectation_count;
-  was_failure_already_reported = 0;
+  was_failure_already_reported = false;
 }
 
 void MockIoData_Destroy(void) {
