@@ -64,7 +64,7 @@ void MockIoData_Destroy(void) {
   its_expectations = nullptr;
 }
 
-static void Fail(const char* message) {
+static void RepotFailIfNeeded(const char* message) {
   if (failure_already_reported) return;
 
   failure_already_reported = true;
@@ -74,14 +74,14 @@ static void Fail(const char* message) {
 static int FailWhenNotCreated(void) {
   if (its_expectations) return 0;
 
-  Fail(kReportMockIoDataNotInitialized);
+  RepotFailIfNeeded(kReportMockIoDataNotInitialized);
   return -1;
 }
 
 static int FailWhenNoRoomForExpectations(const char* message) {
   if (set_expectation_count < max_expectation_count) return 0;
 
-  Fail(message);
+  RepotFailIfNeeded(message);
   return -1;
 }
 
@@ -113,7 +113,7 @@ static void FailWhenNotAllExpectationsUsed(void) {
   char message[sizeof(format) + 5 + 5];
   snprintf(message, sizeof(message), format, set_expectation_count,
            get_expectation_count);
-  Fail(message);
+  RepotFailIfNeeded(message);
 }
 
 void MockIoData_VerifyCompletion(void) {
@@ -136,7 +136,7 @@ static void FailWhenNoUnusedExpectations(const char* format) {
                         get_expectation_count + 1);
   snprintf(message + offset, size - offset, format, its_actual.offset,
            its_actual.data);
-  Fail(message);
+  RepotFailIfNeeded(message);
 }
 
 static void FailExpectation(const char* expectationFailMessage) {
@@ -147,7 +147,7 @@ static void FailExpectation(const char* expectationFailMessage) {
   snprintf(message + offset, size - offset, expectationFailMessage,
            its_expected.offset, its_expected.data, its_actual.offset,
            its_actual.data);
-  Fail(message);
+  RepotFailIfNeeded(message);
 }
 
 static void FailWhen(int condition, const char* expectationFailMessage) {
