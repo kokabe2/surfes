@@ -27,7 +27,6 @@ static const char* kReportExpectReadWasWrite =
 static const char* kReportWriteDoesNotMatch =
     "Expected IoData_Write(0x%x, 0x%x)\n"
     "\t        But was IoData_Write(0x%x, 0x%x)";
-static const char* kReportReadButOutOfExpectations = "IoData_Read(0x%x)";
 
 static Expectation* its_expectations = nullptr;
 static int set_expectation_count;
@@ -182,7 +181,7 @@ static ioData IoData_Read(ioAddress offset) {
   if (FailWhenNotCreated()) return 0;
 
   SetExpectedAndActual(offset, NoExpectedValue);
-  FailWhenNoUnusedExpectations(kReportReadButOutOfExpectations);
+  FailWhenNoUnusedExpectations("IoData_Read(0x%x)");
   FailWhen(ExpectationIsNot(kIoDataRead), kReportExpectWriteWasRead);
   FailWhen(ExpectedAddressIsNot(offset), kReportReadWrongAddress);
   return its_expectations[get_expectation_count++].data;
