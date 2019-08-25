@@ -103,5 +103,5 @@ TEST_F(MockIoDataTest, NotAllExpectationsUsed) {
   MockIoData_ExpectReadThenReturn(0x1000, 0xaa);
   MockIoData_ExpectWrite(0x1000, 0x55);
   EXPECT_FATAL_FAILURE(MockIoData_VerifyCompletion(),
-                       "Expected 2 reads/writes but got 0");
+                       "Expected 2 function(s) used but got 0");
 }

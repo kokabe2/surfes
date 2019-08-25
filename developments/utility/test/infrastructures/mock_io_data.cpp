@@ -109,7 +109,7 @@ void MockIoData_ExpectReadThenReturn(ioAddress offset, ioData to_return) {
 static void FailWhenNotAllExpectationsUsed(void) {
   if (get_expectation_count == set_expectation_count) return;
 
-  char format[] = "Expected %d reads/writes but got %d";
+  char format[] = "Expected %d function(s) used but got %d";
   char message[sizeof(format) + 5 + 5];
   snprintf(message, sizeof(message), format, set_expectation_count,
            get_expectation_count);
@@ -117,9 +117,7 @@ static void FailWhenNotAllExpectationsUsed(void) {
 }
 
 void MockIoData_VerifyCompletion(void) {
-  if (failure_already_reported) return;
-
-  FailWhenNotAllExpectationsUsed();
+  if (!failure_already_reported) FailWhenNotAllExpectationsUsed();
 }
 
 static void SetExpectedAndActual(ioAddress offset, ioData data) {
