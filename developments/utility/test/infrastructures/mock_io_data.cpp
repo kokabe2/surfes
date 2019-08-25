@@ -79,7 +79,6 @@ static int FailWhenNotInitialized(void) {
 }
 
 static int FailWhenNoRoomForExpectations(const char* message) {
-  if (FailWhenNotInitialized()) return -1;
   if (set_expectation_count < max_expectation_count) return 0;
 
   Fail(message);
@@ -96,13 +95,14 @@ static void RecordExpectation(int kind, ioAddress offset, ioData data) {
 static const char* kReportTooManyWriteExpectations =
     "MockIoData_ExpectWrite: Too many expectations";
 void MockIoData_ExpectWrite(ioAddress offset, ioData data) {
-  if (!FailWhenNoRoomForExpectations(kReportTooManyWriteExpectations))
-    RecordExpectation(kIoDataWrite, offset, data);
+  if (FailWhenNotInitialized()) return;
+  if (FailWhenNoRoomForExpectations(kReportTooManyWriteExpectations)) return;
+  RecordExpectation(kIoDataWrite, offset, data);
 }
 
 void MockIoData_ExpectReadThenReturn(ioAddress offset, ioData to_return) {
+  if (FailWhenNotInitialized()) return;
   if (FailWhenNoRoomForExpectations(kReportTooManyReadExpectations)) return;
-
   RecordExpectation(kIoDataRead, offset, to_return);
 }
 
