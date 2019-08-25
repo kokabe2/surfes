@@ -90,11 +90,11 @@ static void RecordExpectation(int kind, ioAddress offset, ioData data) {
   set_expectation_count++;
 }
 
-static const char* kReportTooManyWriteExpectations =
-    "MockIoData_ExpectWrite: Too many expectations";
 void MockIoData_ExpectWrite(ioAddress offset, ioData data) {
   if (FailWhenNotCreated()) return;
-  if (FailWhenNoRoomForExpectations(kReportTooManyWriteExpectations)) return;
+  if (FailWhenNoRoomForExpectations(
+          "MockIoData_ExpectWrite: Too many expectations"))
+    return;
   RecordExpectation(kIoDataWrite, offset, data);
 }
 
