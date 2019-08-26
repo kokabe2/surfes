@@ -19,7 +19,7 @@ endif()
 set(UTILITY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/src)
 set(UTILITY_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/test)
 set(UTILITY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/inc)
-set(BOOT_BOOT_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/boot/inc)
+set(ITS_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/boot/inc)
 set(BOOT_REGISTRY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/registry/src)
 set(BOOT_REGISTRY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/registry/inc)
 
