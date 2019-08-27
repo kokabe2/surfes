@@ -74,7 +74,7 @@ bool ComposeThenSend(Inbox self, int message_size, const void* message,
                      TMO timeout) {
   if (!self || !Validate(message_size, message)) return false;
 
-  void* mail = NewMail(self, message_size, TMO_POL);
+  void* mail = NewMail(self, message_size, timeout);
   if (!mail) return false;
 
   EditMail(mail, message_size, message);
@@ -104,7 +104,7 @@ void* DeleteThenGet(Inbox self, TMO timeout) {
   if (!self) return NULL;
 
   DeletePreviousMail(self);
-  return GetNextMail(self, TMO_POL) ? ExtractMessage(self) : NULL;
+  return GetNextMail(self, timeout) ? ExtractMessage(self) : NULL;
 }
 
 void* Inbox_Get(Inbox self) { return DeleteThenGet(self, TMO_POL); }
