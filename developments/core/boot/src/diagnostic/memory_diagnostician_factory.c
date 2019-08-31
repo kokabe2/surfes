@@ -5,7 +5,9 @@
 #include <limits.h>
 #include <stddef.h>
 
-#define COUNTOF(x) (sizeof(x) / sizeof(x[0]))
+enum {
+  kNonsenseBusWidth = 0,
+};
 
 inline static bool Validate(uintptr_t top_address, int size) {
   return (size >= 0) && (top_address <= (UINTPTR_MAX - size));
@@ -56,12 +58,13 @@ static const MemoryDiagnosticianSetStruct kDiagnosticians[] = {
     {1, {.ReadAfterWrite = ReadAfterWriteIn8Bit}},
     {2, {.ReadAfterWrite = ReadAfterWriteIn16Bit}},
     {4, {.ReadAfterWrite = ReadAfterWriteIn32Bit}},
+    {kNonsenseBusWidth, {.ReadAfterWrite = NULL}},
 };
 
 static IMemoryDiagnosable RetrieveDiagnostician(int bus_width) {
-  for (int i = 0; i < COUNTOF(kDiagnosticians); ++i)
-    if (kDiagnosticians[i].bus_width == bus_width)
-      return (IMemoryDiagnosable)&kDiagnosticians[i].diagnostician;
+  for (MemoryDiagnosticianSet mds = (MemoryDiagnosticianSet)kDiagnosticians;
+       mds->bus_width != kNonsenseBusWidth; ++mds)
+    if (mds->bus_width == bus_width) return &mds->diagnostician;
   return NULL;
 }
 
