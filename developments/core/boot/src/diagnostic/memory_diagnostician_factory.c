@@ -3,7 +3,6 @@
 #include "memory_diagnostician_factory.h"
 
 #include <limits.h>
-#include <stddef.h>
 
 enum {
   kNonsenseBusWidth = 0,
@@ -49,6 +48,8 @@ static bool ReadAfterWriteIn32Bit(uintptr_t top_address, int size,
   return true;
 }
 
+static bool DummyReadAfterWrite(uintptr_t a, int b, int c) { return false; }
+
 typedef struct {
   int bus_width;
   IMemoryDiagnosableStruct diagnostician;
@@ -58,14 +59,14 @@ static const MemoryDiagnosticianSetStruct kDiagnosticians[] = {
     {1, {.ReadAfterWrite = ReadAfterWriteIn8Bit}},
     {2, {.ReadAfterWrite = ReadAfterWriteIn16Bit}},
     {4, {.ReadAfterWrite = ReadAfterWriteIn32Bit}},
-    {kNonsenseBusWidth, {.ReadAfterWrite = NULL}},
+    {kNonsenseBusWidth, {.ReadAfterWrite = DummyReadAfterWrite}},
 };
 
 static IMemoryDiagnosable RetrieveDiagnostician(int bus_width) {
-  for (MemoryDiagnosticianSet mds = (MemoryDiagnosticianSet)kDiagnosticians;
-       mds->bus_width != kNonsenseBusWidth; ++mds)
+  MemoryDiagnosticianSet mds = (MemoryDiagnosticianSet)kDiagnosticians;
+  for (; mds->bus_width != kNonsenseBusWidth; ++mds)
     if (mds->bus_width == bus_width) return &mds->diagnostician;
-  return NULL;
+  return &mds->diagnostician;  // = DummyReadAfterWrite
 }
 
 IMemoryDiagnosable MemoryDiagnosticianFactory_Make(int bus_width) {

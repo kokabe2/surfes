@@ -42,10 +42,14 @@ TEST(MemoryDiagnosticianFactoryTest, DiagnosticMemoryIn32Bit) {
 }
 
 TEST(MemoryDiagnosticianFactoryTest, MakeWithInvalidBusWidth) {
-  EXPECT_EQ(NULL, MemoryDiagnosticianFactory_Make(0));
-  EXPECT_EQ(NULL, MemoryDiagnosticianFactory_Make(3));
-  EXPECT_EQ(NULL, MemoryDiagnosticianFactory_Make(-1));
-  EXPECT_EQ(NULL, MemoryDiagnosticianFactory_Make(1314));
+  IMemoryDiagnosable imd = MemoryDiagnosticianFactory_Make(0);
+  ASSERT_TRUE(imd != NULL);
+  EXPECT_EQ(imd, MemoryDiagnosticianFactory_Make(3));
+  EXPECT_EQ(imd, MemoryDiagnosticianFactory_Make(-1));
+  EXPECT_EQ(imd, MemoryDiagnosticianFactory_Make(1314));
+
+  uint8_t dummy_memory[1] = {0};
+  EXPECT_FALSE(imd->ReadAfterWrite((uintptr_t)dummy_memory, 1, 0x5A));
 }
 
 TEST(MemoryDiagnosticianFactoryTest, ReadAfterWriteWithSizeLessThanZero) {
