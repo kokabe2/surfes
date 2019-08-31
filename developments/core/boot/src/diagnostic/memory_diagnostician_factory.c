@@ -47,10 +47,12 @@ static bool ReadAfterWriteIn32Bit(uintptr_t top_address, int size,
   return true;
 }
 
-static const struct {
+typedef struct {
   int bus_width;
   IMemoryDiagnosableStruct diagnostician;
-} kDiagnosticians[] = {
+} MemoryDiagnosticianSetStruct, *MemoryDiagnosticianSet;
+
+static const MemoryDiagnosticianSetStruct kDiagnosticians[] = {
     {1, {.ReadAfterWrite = ReadAfterWriteIn8Bit}},
     {2, {.ReadAfterWrite = ReadAfterWriteIn16Bit}},
     {4, {.ReadAfterWrite = ReadAfterWriteIn32Bit}},
