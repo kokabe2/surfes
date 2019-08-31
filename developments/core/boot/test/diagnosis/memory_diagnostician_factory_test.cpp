@@ -2,8 +2,6 @@
 // This software is released under the MIT License, see LICENSE.
 #include "gtest/gtest.h"
 
-#include <limits.h>
-
 extern "C" {
 #include "diagnosis/memory_diagnostician_factory.h"
 }
