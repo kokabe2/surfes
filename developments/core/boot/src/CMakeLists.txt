@@ -4,7 +4,7 @@ target_sources(surfes_core_boot
   PRIVATE
     bootstrapper.c
     config/file_header.c
-    diagnostic/memory_diagnostician_factory.c
+    diagnosis/memory_diagnostician_factory.c
     ${BOOT_REGISTRY_SOURCE_DIR}/registry_api.c
     ${BOOT_REGISTRY_SOURCE_DIR}/database/int_registry_getter.c
     ${BOOT_REGISTRY_SOURCE_DIR}/database/uintptr_registry_getter.c

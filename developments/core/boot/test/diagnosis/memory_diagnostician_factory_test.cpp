@@ -5,7 +5,7 @@
 #include <limits.h>
 
 extern "C" {
-#include "diagnostic/memory_diagnostician_factory.h"
+#include "diagnosis/memory_diagnostician_factory.h"
 }
 
 TEST(MemoryDiagnosticianFactoryTest, DiagnosticMemoryIn8Bit) {
