@@ -7,7 +7,8 @@
 #include <stdint.h>
 
 typedef struct {
-  bool (*ReadAfterWrite)(uintptr_t top_address, int size, int bit_pattern);
+  bool (*ReadAfterWrite)(uintptr_t top_address, int size,
+                         uint_fast32_t bit_pattern);
 } IMemoryDiagnosableStruct, *IMemoryDiagnosable;
 
 IMemoryDiagnosable MemoryDiagnosticianFactory_Make(int bus_width);

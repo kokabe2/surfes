@@ -13,7 +13,7 @@ inline static bool Validate(uintptr_t top_address, int size) {
 }
 
 static bool ReadAfterWriteIn8Bit(uintptr_t top_address, int size,
-                                 int bit_pattern) {
+                                 uint_fast32_t bit_pattern) {
   if (!Validate(top_address, size) || (bit_pattern > UINT8_MAX)) return false;
 
   uint8_t* address = (uint8_t*)top_address;
@@ -25,7 +25,7 @@ static bool ReadAfterWriteIn8Bit(uintptr_t top_address, int size,
 }
 
 static bool ReadAfterWriteIn16Bit(uintptr_t top_address, int size,
-                                  int bit_pattern) {
+                                  uint_fast32_t bit_pattern) {
   if (!Validate(top_address, size) || (bit_pattern > UINT16_MAX)) return false;
 
   uint16_t* address = (uint16_t*)top_address;
@@ -37,7 +37,7 @@ static bool ReadAfterWriteIn16Bit(uintptr_t top_address, int size,
 }
 
 static bool ReadAfterWriteIn32Bit(uintptr_t top_address, int size,
-                                  int bit_pattern) {
+                                  uint_fast32_t bit_pattern) {
   if (!Validate(top_address, size) || (bit_pattern > UINT32_MAX)) return false;
 
   uint32_t* address = (uint32_t*)top_address;
@@ -48,7 +48,9 @@ static bool ReadAfterWriteIn32Bit(uintptr_t top_address, int size,
   return true;
 }
 
-static bool DummyReadAfterWrite(uintptr_t a, int b, int c) { return false; }
+static bool DummyReadAfterWrite(uintptr_t a, int b, uint_fast32_t c) {
+  return false;
+}
 
 typedef struct {
   int bus_width;
