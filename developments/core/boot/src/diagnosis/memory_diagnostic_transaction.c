@@ -20,8 +20,8 @@ static uint_fast32_t* NewBitPattern(uint_fast32_t bit_pattern) {
   return self;
 }
 
-inline static void DeleteBitPattern(uint_fast32_t* self) {
-  InstanceHelper_Delete(&self);
+inline static void DeleteBitPattern(void** self) {
+  InstanceHelper_Delete(self);
 }
 
 inline static bool Created(void) { return its_bit_patterns != NULL; }
@@ -29,7 +29,7 @@ inline static bool Created(void) { return its_bit_patterns != NULL; }
 static void DeleteBitPatterns(void) {
   uint_fast32_t* bp;
   while ((bp = (uint_fast32_t*)List_Pop(its_bit_patterns, 0)) != NULL)
-    DeleteBitPattern(bp);
+    DeleteBitPattern((void**)&bp);
   List_Destroy(&its_bit_patterns);
 }
 
