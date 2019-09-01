@@ -16,14 +16,16 @@ typedef struct ListNodeStruct {
 typedef struct ListStruct {
   ListNode head;
   itemComparator Compare;
+  itemDestructor Delete;
   ListNode* tail;
   int count;
 } ListStruct;
 
-List List_Create(itemComparator function) {
+List List_Create(itemComparator ic, itemDestructor id) {
   List self = (List)InstanceHelper_New(sizeof(ListStruct));
   if (self) {
-    self->Compare = function;
+    self->Compare = ic;
+    self->Delete = id;
     self->tail = &self->head;
   }
   return self;
@@ -42,9 +44,14 @@ static ListNode PopFirst(List self) {
   return node;
 }
 
+static inline void DeleteItemIfNeeded(List self, void** item) {
+  if (self->Delete) self->Delete(item);
+}
+
 void DeleteAllNodes(List self) {
   while (!IsEmpty(self)) {
     ListNode node = PopFirst(self);
+    DeleteItemIfNeeded(self, &node->item);
     InstanceHelper_Delete(&node);
   }
 }

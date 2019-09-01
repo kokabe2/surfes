@@ -12,13 +12,23 @@ int CompareInteger(void* v1, void* v2) {
   int* i2 = (int*)v2;
   return *i1 - *i2;
 }
+
+int destruction_count;
+void* last_item;
+void DummyDelete(void** self) {
+  last_item = *self;
+  destruction_count++;
+}
 }  // namespace
 
 class ListTest : public ::testing::Test {
  protected:
   List instance;
-
-  virtual void SetUp() { instance = List_Create(CompareInteger); }
+  virtual void SetUp() {
+    destruction_count = 0;
+    last_item = NULL;
+    instance = List_Create(CompareInteger, DummyDelete);
+  }
   virtual void TearDown() { List_Destroy(&instance); }
 };
 
@@ -30,10 +40,35 @@ TEST_F(ListTest, Create) {
   EXPECT_EQ(NULL, List_Last(instance));
 }
 
+TEST_F(ListTest, CreateWithNullComparator) {
+  List l = List_Create(NULL, DummyDelete);
+  EXPECT_EQ(0, List_Count(instance));
+  EXPECT_EQ(NULL, List_Get(instance, 0));
+  EXPECT_EQ(NULL, List_First(instance));
+  EXPECT_EQ(NULL, List_Last(instance));
+  List_Destroy(&l);
+}
+
+TEST_F(ListTest, CreateWithNullDestructor) {
+  List l = List_Create(CompareInteger, NULL);
+  EXPECT_EQ(0, List_Count(instance));
+  EXPECT_EQ(NULL, List_Get(instance, 0));
+  EXPECT_EQ(NULL, List_First(instance));
+  EXPECT_EQ(NULL, List_Last(instance));
+  List_Destroy(&l);
+}
+
 TEST_F(ListTest, Destroy) {
+  int item = 0;
+  List_Add(instance, NULL);
+  List_Add(instance, NULL);
+  List_Add(instance, &item);
+
   List_Destroy(&instance);
 
   EXPECT_EQ(NULL, instance);
+  EXPECT_EQ(3, destruction_count);
+  EXPECT_EQ(&item, last_item);
 }
 
 TEST_F(ListTest, DestroyMutipleTimes) {
@@ -148,7 +183,7 @@ TEST_F(ListTest, FindWithNullItem) {
 }
 
 TEST_F(ListTest, FindIfComparatorIsNotSet) {
-  List list = List_Create(NULL);
+  List list = List_Create(NULL, NULL);
   int item = 256;
   List_Add(list, &item);
 

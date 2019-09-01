@@ -4,9 +4,10 @@
 #define DEVELOPMENTS_UTILITY_INC_LIST_H_
 
 typedef int (*itemComparator)(void*, void*);
+typedef void (*itemDestructor)(void**);
 typedef struct ListStruct* List;
 
-List List_Create(itemComparator function);
+List List_Create(itemComparator ic, itemDestructor id);
 void List_Destroy(List* self);
 int List_Count(List self);
 void* List_Get(List self, int index);
