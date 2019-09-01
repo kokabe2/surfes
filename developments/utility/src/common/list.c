@@ -15,16 +15,20 @@ typedef struct ListNodeStruct {
 
 typedef struct ListStruct {
   ListNode head;
-  comparator Compare;
+  itemComparator Compare;
+  itemDestructor Delete;
   ListNode* tail;
   int count;
 } ListStruct;
 
-List List_Create(comparator function) {
+inline static void ResetTail(List self) { self->tail = &self->head; }
+
+List List_Create(itemComparator ic, itemDestructor id) {
   List self = (List)InstanceHelper_New(sizeof(ListStruct));
   if (self) {
-    self->Compare = function;
-    self->tail = &self->head;
+    self->Compare = ic;
+    self->Delete = id;
+    ResetTail(self);
   }
   return self;
 }
@@ -42,11 +46,19 @@ static ListNode PopFirst(List self) {
   return node;
 }
 
+inline static void DeleteItemIfNeeded(List self, void** item) {
+  if (self->Delete) self->Delete(item);
+}
+
+inline static void DeleteNode(ListNode* node) { InstanceHelper_Delete(node); }
+
 void DeleteAllNodes(List self) {
   while (!IsEmpty(self)) {
     ListNode node = PopFirst(self);
-    InstanceHelper_Delete(&node);
+    DeleteItemIfNeeded(self, &node->item);
+    DeleteNode(&node);
   }
+  ResetTail(self);
 }
 
 void List_Destroy(List* self) {
@@ -125,7 +137,7 @@ static ListNode PopNode(List self, int index) {
 
 static void* PopItem(ListNode node) {
   void* item = node->item;
-  InstanceHelper_Delete(&node);
+  DeleteNode(&node);
   return item;
 }
 

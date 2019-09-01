@@ -20,22 +20,15 @@ static uint_fast32_t* NewBitPattern(uint_fast32_t bit_pattern) {
   return self;
 }
 
-inline static void DeleteBitPattern(uint_fast32_t* self) {
-  InstanceHelper_Delete(&self);
-}
+static void DeleteBitPattern(void** self) { InstanceHelper_Delete(self); }
 
 inline static bool Created(void) { return its_bit_patterns != NULL; }
 
-static void DeleteBitPatterns(void) {
-  uint_fast32_t* bp;
-  while ((bp = (uint_fast32_t*)List_Pop(its_bit_patterns, 0)) != NULL)
-    DeleteBitPattern(bp);
-  List_Destroy(&its_bit_patterns);
-}
-
 static void NewBitPatterns(void) {
-  if (Created()) DeleteBitPatterns();
-  its_bit_patterns = List_Create(NULL);
+  if (Created())
+    List_Clear(its_bit_patterns);
+  else
+    its_bit_patterns = List_Create(NULL, DeleteBitPattern);
 }
 
 void MemoryDiagnosticTransaction_Create(uintptr_t top_address, int memory_size,
@@ -46,7 +39,9 @@ void MemoryDiagnosticTransaction_Create(uintptr_t top_address, int memory_size,
   NewBitPatterns();
 }
 
-void MemoryDiagnosticTransaction_Destroy(void) { DeleteBitPatterns(); }
+void MemoryDiagnosticTransaction_Destroy(void) {
+  List_Destroy(&its_bit_patterns);
+}
 
 void MemoryDiagnosticTransaction_Add(uint_fast32_t bit_pattern) {
   if (!Created()) return;
@@ -59,8 +54,7 @@ bool MemoryDiagnosticTransaction_Execute(void) {
   if (!Created()) return false;
 
   IMemoryDiagnosable imd = MemoryDiagnosticianFactory_Make(its_bus_width);
-  int count = List_Count(its_bit_patterns);
-  for (int i = 0; i < count; ++i) {
+  for (int i = 0; i < List_Count(its_bit_patterns); ++i) {
     uint_fast32_t* bp = (uint_fast32_t*)List_Get(its_bit_patterns, i);
     if (!imd->ReadAfterWrite(its_top_address, its_memory_size, *bp))
       return false;
