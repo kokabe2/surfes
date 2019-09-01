@@ -24,10 +24,11 @@ static void DeleteBitPattern(void** self) { InstanceHelper_Delete(self); }
 
 inline static bool Created(void) { return its_bit_patterns != NULL; }
 
-
 static void NewBitPatterns(void) {
-  if (Created()) List_Destroy(&its_bit_patterns);
-  its_bit_patterns = List_Create(NULL, DeleteBitPattern);
+  if (Created())
+    List_Clear(its_bit_patterns);
+  else
+    its_bit_patterns = List_Create(NULL, DeleteBitPattern);
 }
 
 void MemoryDiagnosticTransaction_Create(uintptr_t top_address, int memory_size,
