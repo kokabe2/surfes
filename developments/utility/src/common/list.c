@@ -21,12 +21,14 @@ typedef struct ListStruct {
   int count;
 } ListStruct;
 
+inline static void ResetTail(List self) { self->tail = &self->head; }
+
 List List_Create(itemComparator ic, itemDestructor id) {
   List self = (List)InstanceHelper_New(sizeof(ListStruct));
   if (self) {
     self->Compare = ic;
     self->Delete = id;
-    self->tail = &self->head;
+    ResetTail(self);
   }
   return self;
 }
@@ -56,7 +58,7 @@ void DeleteAllNodes(List self) {
     DeleteItemIfNeeded(self, &node->item);
     DeleteNode(&node);
   }
-  self->tail = &self->head;
+  ResetTail(self);
 }
 
 void List_Destroy(List* self) {
