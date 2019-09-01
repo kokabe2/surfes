@@ -44,7 +44,7 @@ static ListNode PopFirst(List self) {
   return node;
 }
 
-static inline void DeleteItemIfNeeded(List self, void** item) {
+inline static void DeleteItemIfNeeded(List self, void** item) {
   if (self->Delete) self->Delete(item);
 }
 
