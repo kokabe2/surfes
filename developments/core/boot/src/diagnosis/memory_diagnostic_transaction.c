@@ -35,7 +35,7 @@ static void DeleteBitPatterns(void) {
 
 static void NewBitPatterns(void) {
   if (Created()) DeleteBitPatterns();
-  its_bit_patterns = List_Create(NULL);
+  its_bit_patterns = List_Create(NULL, NULL);
 }
 
 void MemoryDiagnosticTransaction_Create(uintptr_t top_address, int memory_size,
