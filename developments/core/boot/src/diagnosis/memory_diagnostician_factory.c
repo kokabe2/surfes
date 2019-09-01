@@ -16,7 +16,7 @@ static bool ReadAfterWriteIn8Bit(uintptr_t top_address, int size,
                                  uint_fast32_t bit_pattern) {
   if (!Validate(top_address, size) || (bit_pattern > UINT8_MAX)) return false;
 
-  uint8_t* address = (uint8_t*)top_address;
+  uint8_t* volatile address = (uint8_t*)top_address;
   int count = size;
   for (int i = 0; i < count; ++i) address[i] = bit_pattern;
   for (int i = 0; i < count; ++i)
@@ -28,7 +28,7 @@ static bool ReadAfterWriteIn16Bit(uintptr_t top_address, int size,
                                   uint_fast32_t bit_pattern) {
   if (!Validate(top_address, size) || (bit_pattern > UINT16_MAX)) return false;
 
-  uint16_t* address = (uint16_t*)top_address;
+  uint16_t* volatile address = (uint16_t*)top_address;
   int count = size / 2;
   for (int i = 0; i < count; ++i) address[i] = bit_pattern;
   for (int i = 0; i < count; ++i)
@@ -40,7 +40,7 @@ static bool ReadAfterWriteIn32Bit(uintptr_t top_address, int size,
                                   uint_fast32_t bit_pattern) {
   if (!Validate(top_address, size) || (bit_pattern > UINT32_MAX)) return false;
 
-  uint32_t* address = (uint32_t*)top_address;
+  uint32_t* volatile address = (uint32_t*)top_address;
   int count = size / 4;
   for (int i = 0; i < count; ++i) address[i] = bit_pattern;
   for (int i = 0; i < count; ++i)
