@@ -3,10 +3,10 @@
 #ifndef DEVELOPMENTS_UTILITY_INC_LIST_H_
 #define DEVELOPMENTS_UTILITY_INC_LIST_H_
 
-typedef int (*comparator)(void*, void*);
+typedef int (*itemComparator)(void*, void*);
 typedef struct ListStruct* List;
 
-List List_Create(comparator function);
+List List_Create(itemComparator function);
 void List_Destroy(List* self);
 int List_Count(List self);
 void* List_Get(List self, int index);

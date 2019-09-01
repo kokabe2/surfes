@@ -15,12 +15,12 @@ typedef struct ListNodeStruct {
 
 typedef struct ListStruct {
   ListNode head;
-  comparator Compare;
+  itemComparator Compare;
   ListNode* tail;
   int count;
 } ListStruct;
 
-List List_Create(comparator function) {
+List List_Create(itemComparator function) {
   List self = (List)InstanceHelper_New(sizeof(ListStruct));
   if (self) {
     self->Compare = function;
