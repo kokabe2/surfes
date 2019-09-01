@@ -16,12 +16,12 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES Clang)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
+set(ITS_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/boot/inc)
+set(BOOT_REGISTRY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/registry/inc)
+set(BOOT_REGISTRY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/registry/src)
+set(UTILITY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/inc)
 set(UTILITY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/src)
 set(UTILITY_TEST_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/test)
-set(UTILITY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../utility/inc)
-set(BOOT_BOOT_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/boot/inc)
-set(BOOT_REGISTRY_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/registry/src)
-set(BOOT_REGISTRY_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../boot/registry/inc)
 
 add_subdirectory(src)
 
