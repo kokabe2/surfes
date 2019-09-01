@@ -48,11 +48,13 @@ inline static void DeleteItemIfNeeded(List self, void** item) {
   if (self->Delete) self->Delete(item);
 }
 
+inline static void DeleteNode(ListNode* node) { InstanceHelper_Delete(node); }
+
 void DeleteAllNodes(List self) {
   while (!IsEmpty(self)) {
     ListNode node = PopFirst(self);
     DeleteItemIfNeeded(self, &node->item);
-    InstanceHelper_Delete(&node);
+    DeleteNode(&node);
   }
   self->tail = &self->head;
 }
@@ -133,7 +135,7 @@ static ListNode PopNode(List self, int index) {
 
 static void* PopItem(ListNode node) {
   void* item = node->item;
-  InstanceHelper_Delete(&node);
+  DeleteNode(&node);
   return item;
 }
 
