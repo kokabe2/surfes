@@ -150,6 +150,21 @@ TEST_F(ListTest, Clear) {
   EXPECT_EQ(0, List_Count(instance));
 }
 
+TEST_F(ListTest, ClearThenAdd) {
+  List_Add(instance, NULL);
+  List_Clear(instance);
+
+  int item0 = 1;
+  int item1 = -1;
+  List_Add(instance, &item0);
+  List_Add(instance, &item1);
+
+  EXPECT_EQ(2, List_Count(instance));
+  EXPECT_EQ(&item0, List_Get(instance, 0));
+  EXPECT_EQ(&item0, List_First(instance));
+  EXPECT_EQ(&item1, List_Last(instance));
+}
+
 TEST_F(ListTest, ClearWithNull) {
   List_Clear(NULL);
 

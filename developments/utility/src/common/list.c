@@ -54,6 +54,7 @@ void DeleteAllNodes(List self) {
     DeleteItemIfNeeded(self, &node->item);
     InstanceHelper_Delete(&node);
   }
+  self->tail = &self->head;
 }
 
 void List_Destroy(List* self) {
