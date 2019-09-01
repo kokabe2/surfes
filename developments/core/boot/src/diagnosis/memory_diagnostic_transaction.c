@@ -54,8 +54,7 @@ bool MemoryDiagnosticTransaction_Execute(void) {
   if (!Created()) return false;
 
   IMemoryDiagnosable imd = MemoryDiagnosticianFactory_Make(its_bus_width);
-  int count = List_Count(its_bit_patterns);
-  for (int i = 0; i < count; ++i) {
+  for (int i = 0; i < List_Count(its_bit_patterns); ++i) {
     uint_fast32_t* bp = (uint_fast32_t*)List_Get(its_bit_patterns, i);
     if (!imd->ReadAfterWrite(its_top_address, its_memory_size, *bp))
       return false;
