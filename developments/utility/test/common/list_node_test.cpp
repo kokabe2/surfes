@@ -9,25 +9,27 @@ extern "C" {
 class ListNodeTest : public ::testing::Test {
  protected:
   int item;
-  ListNode instance;
-  virtual void SetUp() { instance = NULL; }
-  virtual void TearDown() { ListNode_Destroy(&instance); }
+  ListNode item_node;
+  ListNode null_node;
+
+  virtual void SetUp() {
+    item_node = ListNode_Create(&item);
+    null_node = ListNode_Create(NULL);
+  }
+
+  virtual void TearDown() { ListNode_Destroy(&item_node); }
 };
 
 TEST_F(ListNodeTest, Create) {
-  instance = ListNode_Create(&item);
-
-  ASSERT_TRUE(instance != NULL);
-  EXPECT_EQ(&item, ListNode_getItem(instance));
-  EXPECT_EQ(NULL, ListNode_getNext(instance));
+  ASSERT_TRUE(item_node != NULL);
+  EXPECT_EQ(&item, ListNode_getItem(item_node));
+  EXPECT_EQ(NULL, ListNode_getNext(item_node));
 }
 
 TEST_F(ListNodeTest, CreateWithNull) {
-  instance = ListNode_Create(NULL);
-
-  ASSERT_TRUE(instance != NULL);
-  EXPECT_EQ(NULL, ListNode_getItem(instance));
-  EXPECT_EQ(NULL, ListNode_getNext(instance));
+  ASSERT_TRUE(null_node != NULL);
+  EXPECT_EQ(NULL, ListNode_getItem(null_node));
+  EXPECT_EQ(NULL, ListNode_getNext(null_node));
 }
 
 TEST_F(ListNodeTest, GetItemWithNull) {
@@ -35,11 +37,9 @@ TEST_F(ListNodeTest, GetItemWithNull) {
 }
 
 TEST_F(ListNodeTest, SetItem) {
-  instance = ListNode_Create(NULL);
+  ListNode_setItem(null_node, &item);
 
-  ListNode_setItem(instance, &item);
-
-  EXPECT_EQ(&item, ListNode_getItem(instance));
+  EXPECT_EQ(&item, ListNode_getItem(null_node));
 }
 
 TEST_F(ListNodeTest, SetItemWithNullInstance) {
@@ -49,11 +49,9 @@ TEST_F(ListNodeTest, SetItemWithNullInstance) {
 }
 
 TEST_F(ListNodeTest, SetItemWithNullItem) {
-  instance = ListNode_Create(&item);
+  ListNode_setItem(item_node, NULL);
 
-  ListNode_setItem(instance, NULL);
-
-  EXPECT_EQ(NULL, ListNode_getItem(instance));
+  EXPECT_EQ(NULL, ListNode_getItem(item_node));
 }
 
 TEST_F(ListNodeTest, GetNextWithNull) {
@@ -61,28 +59,21 @@ TEST_F(ListNodeTest, GetNextWithNull) {
 }
 
 TEST_F(ListNodeTest, SetNext) {
-  instance = ListNode_Create(NULL);
-  ListNode ln = ListNode_Create(&item);
+  ListNode_setNext(item_node, null_node);
 
-  ListNode_setNext(instance, ln);
-
-  EXPECT_EQ(ln, ListNode_getNext(instance));
-  ListNode_Destroy(&ln);
+  EXPECT_EQ(null_node, ListNode_getNext(item_node));
 }
 
 TEST_F(ListNodeTest, SetNextWithNullInstance) {
-  ListNode ln = ListNode_Create(&item);
-
-  ListNode_setNext(NULL, ln);
+  ListNode_setNext(NULL, item_node);
 
   SUCCEED();
-  ListNode_Destroy(&ln);
 }
 
 TEST_F(ListNodeTest, SetNextWithNullNextNode) {
-  instance = ListNode_Create(NULL);
+  ListNode_setNext(item_node, null_node);
 
-  ListNode_setNext(instance, NULL);
+  ListNode_setNext(item_node, NULL);
 
-  EXPECT_EQ(NULL, ListNode_getNext(instance));
+  EXPECT_EQ(NULL, ListNode_getNext(item_node));
 }
