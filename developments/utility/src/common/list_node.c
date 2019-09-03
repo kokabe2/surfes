@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2019 Ken Okabe
+// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "list_node.h"
 
@@ -20,5 +20,9 @@ ListNode ListNode_Create(void* item) {
 void ListNode_Destroy(ListNode* self) { InstanceHelper_Delete(self); }
 
 void* ListNode_getItem(ListNode self) { return self ? self->item : NULL; }
+
+void ListNode_setItem(ListNode self, void* item) {
+  if (self) self->item = item;
+}
 
 ListNode ListNode_getNext(ListNode self) { return self ? self->next : NULL; }

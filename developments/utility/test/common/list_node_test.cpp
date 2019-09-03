@@ -1,4 +1,4 @@
-// Copyright(c) 2019 Ken Okabe
+﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "gtest/gtest.h"
 
@@ -32,6 +32,28 @@ TEST_F(ListNodeTest, CreateWithNull) {
 
 TEST_F(ListNodeTest, GetItemWithNull) {
   EXPECT_EQ(NULL, ListNode_getItem(NULL));
+}
+
+TEST_F(ListNodeTest, SetItem) {
+  instance = ListNode_Create(NULL);
+
+  ListNode_setItem(instance, &item);
+
+  EXPECT_EQ(&item, ListNode_getItem(instance));
+}
+
+TEST_F(ListNodeTest, SetItemWithNullInstance) {
+  ListNode_setItem(NULL, &item);
+
+  SUCCEED();
+}
+
+TEST_F(ListNodeTest, SetItemWithNullItem) {
+  instance = ListNode_Create(&item);
+
+  ListNode_setItem(instance, NULL);
+
+  EXPECT_EQ(NULL, ListNode_getItem(instance));
 }
 
 TEST_F(ListNodeTest, GetNextWithNull) {
