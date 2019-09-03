@@ -59,3 +59,30 @@ TEST_F(ListNodeTest, SetItemWithNullItem) {
 TEST_F(ListNodeTest, GetNextWithNull) {
   EXPECT_EQ(NULL, ListNode_getNext(NULL));
 }
+
+TEST_F(ListNodeTest, SetNext) {
+  instance = ListNode_Create(NULL);
+  ListNode ln = ListNode_Create(&item);
+
+  ListNode_setNext(instance, ln);
+
+  EXPECT_EQ(ln, ListNode_getNext(instance));
+  ListNode_Destroy(&ln);
+}
+
+TEST_F(ListNodeTest, SetNextWithNullInstance) {
+  ListNode ln = ListNode_Create(&item);
+
+  ListNode_setNext(NULL, ln);
+
+  SUCCEED();
+  ListNode_Destroy(&ln);
+}
+
+TEST_F(ListNodeTest, SetNextWithNullNextNode) {
+  instance = ListNode_Create(NULL);
+
+  ListNode_setNext(instance, NULL);
+
+  EXPECT_EQ(NULL, ListNode_getNext(instance));
+}

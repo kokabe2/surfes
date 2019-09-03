@@ -1,4 +1,4 @@
-// Copyright(c) 2019 Ken Okabe
+﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "list_node.h"
 
@@ -26,3 +26,7 @@ void ListNode_setItem(ListNode self, void* item) {
 }
 
 ListNode ListNode_getNext(ListNode self) { return self ? self->next : NULL; }
+
+void ListNode_setNext(ListNode self, ListNode next) {
+  if (self) self->next = next;
+}
