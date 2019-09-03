@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2019 Ken Okabe
+// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "gtest/gtest.h"
 
@@ -8,14 +8,13 @@ extern "C" {
 
 class ListNodeTest : public ::testing::Test {
  protected:
+  int item;
   ListNode instance;
   virtual void SetUp() { instance = NULL; }
   virtual void TearDown() { ListNode_Destroy(&instance); }
 };
 
 TEST_F(ListNodeTest, Create) {
-  int item = 100;
-
   instance = ListNode_Create(&item);
 
   ASSERT_TRUE(instance != NULL);
