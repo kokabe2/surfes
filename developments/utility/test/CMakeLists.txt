@@ -3,6 +3,7 @@ add_executable(gtests "")
 target_sources(gtests
   PRIVATE
     common/instance_helper_test.cpp
+    common/list_node_test.cpp
     common/list_test.cpp
     common/spy_runtime_error.c
     domains/sif_file_test.cpp
