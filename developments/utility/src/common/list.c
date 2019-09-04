@@ -70,8 +70,12 @@ void List_Destroy(List* self) {
 
 int List_Count(List self) { return self ? self->count : 0; }
 
+inline static bool Validate(List self, int index) {
+  return (index >= 0) && (index < self->count);
+}
+
 void* List_Get(List self, int index) {
-  if (!self || (index < 0) || (index >= self->count)) return NULL;
+  if (!self || !Validate(self, index)) return NULL;
 
   ListNode node = getFirst(self);
   for (int i = 0; i < index; ++i) node = node->next;
@@ -142,7 +146,7 @@ static void* PopItem(ListNode node) {
 }
 
 void* List_Pop(List self, int index) {
-  if (!self || (index < 0) || (index >= self->count)) return NULL;
+  if (!self || !Validate(self, index)) return NULL;
   ListNode node = PopNode(self, index);
   return PopItem(node);
 }
