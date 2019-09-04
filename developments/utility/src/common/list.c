@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2019 Ken Okabe
+// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "list.h"
 
@@ -37,11 +37,11 @@ inline static bool IsEmpty(List self) { return self->count == 0; }
 
 inline static ListNode getFirst(List self) { return self->head; }
 
-inline static void UpdateFirst(List self, ListNode node) { self->head = node; }
+inline static void setFirst(List self, ListNode node) { self->head = node; }
 
 static ListNode PopFirst(List self) {
   ListNode node = getFirst(self);
-  UpdateFirst(self, node->next);
+  setFirst(self, node->next);
   self->count--;
   return node;
 }
