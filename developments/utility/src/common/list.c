@@ -1,4 +1,4 @@
-// Copyright(c) 2019 Ken Okabe
+﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "list.h"
 
@@ -46,8 +46,8 @@ static ListNode PopFirst(List self) {
   return node;
 }
 
-inline static void DeleteItemIfNeeded(List self, void** item) {
-  if (self->Delete) self->Delete(item);
+inline static void DeleteItemIfNeeded(List self, void* item) {
+  if (self->Delete) self->Delete(&item);
 }
 
 inline static void DeleteNode(ListNode* node) { InstanceHelper_Delete(node); }
@@ -55,7 +55,7 @@ inline static void DeleteNode(ListNode* node) { InstanceHelper_Delete(node); }
 void DeleteAllNodes(List self) {
   while (!IsEmpty(self)) {
     ListNode node = PopFirst(self);
-    DeleteItemIfNeeded(self, &node->item);
+    DeleteItemIfNeeded(self, node->item);
     DeleteNode(&node);
   }
   ResetTail(self);
