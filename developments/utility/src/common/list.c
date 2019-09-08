@@ -15,20 +15,17 @@ typedef struct ListNodeStruct {
 
 typedef struct ListStruct {
   ListNode head;
+  ListNode tail;
   itemComparator Compare;
   itemDestructor Delete;
-  ListNode* tail;
   int count;
 } ListStruct;
-
-inline static void ResetTail(List self) { self->tail = &self->head; }
 
 List List_Create(itemComparator ic, itemDestructor id) {
   List self = (List)InstanceHelper_New(sizeof(ListStruct));
   if (self) {
     self->Compare = ic;
     self->Delete = id;
-    ResetTail(self);
   }
   return self;
 }
@@ -58,7 +55,7 @@ void DeleteAllNodes(List self) {
     DeleteItemIfNeeded(self, node->item);
     DeleteNode(&node);
   }
-  ResetTail(self);
+  self->tail = NULL;
 }
 
 void List_Destroy(List* self) {
@@ -96,9 +93,17 @@ static ListNode NewNode(void* item) {
   return node;
 }
 
+inline static void setLast(List self, ListNode node) {
+  self->tail->next = node;
+}
+
 static void AddToTail(List self, ListNode node) {
-  *self->tail = node;
-  self->tail = &node->next;
+  if (IsEmpty(self))
+    setFirst(self, node);
+  else
+    setLast(self, node);
+
+  self->tail = node;
   self->count++;
 }
 
@@ -134,7 +139,6 @@ static ListNode PopNode(List self, int index) {
   ListNode* next = &self->head;
   for (int i = 0; i < index; ++i, node = node->next) next = &node->next;
   *next = node->next;
-  if (IsLast(self, index)) self->tail = &node->next;
   self->count--;
   return node;
 }
