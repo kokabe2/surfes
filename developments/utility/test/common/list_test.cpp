@@ -206,6 +206,11 @@ TEST_F(ListTest, FindIfComparatorIsNotSet) {
   List_Destroy(&list);
 }
 
+TEST_F(ListTest, PopFromListHasNoItem) {
+  EXPECT_EQ(NULL, List_Pop(instance, 0));
+  EXPECT_EQ(0, List_Count(instance));
+}
+
 TEST_F(ListTest, PopFromListHasOneItem) {
   int item = 1;
   List_Add(instance, &item);
