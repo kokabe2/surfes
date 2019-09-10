@@ -29,13 +29,13 @@ inline static bool IsEmpty(List self) { return self->count == 0; }
 
 inline static ListNode getFirst(List self) { return self->head; }
 
-inline static void setFirst(List self, ListNode node) { self->head = node; }
+inline static void setFirst(List self, ListNode ln) { self->head = ln; }
 
 static ListNode PopFirst(List self) {
-  ListNode node = getFirst(self);
-  setFirst(self, ListNode_getNext(node));
+  ListNode ln = getFirst(self);
+  setFirst(self, ListNode_getNext(ln));
   self->count--;
-  return node;
+  return ln;
 }
 
 inline static void DeleteItemIfNeeded(List self, void* item) {
@@ -44,9 +44,9 @@ inline static void DeleteItemIfNeeded(List self, void* item) {
 
 void DeleteAllNodes(List self) {
   while (!IsEmpty(self)) {
-    ListNode node = PopFirst(self);
-    DeleteItemIfNeeded(self, ListNode_getItem(node));
-    ListNode_Destroy(&node);
+    ListNode ln = PopFirst(self);
+    DeleteItemIfNeeded(self, ListNode_getItem(ln));
+    ListNode_Destroy(&ln);
   }
   self->tail = NULL;
 }
@@ -67,9 +67,9 @@ inline static bool Validate(List self, int index) {
 void* List_Get(List self, int index) {
   if (!self || !Validate(self, index)) return NULL;
 
-  ListNode node = getFirst(self);
-  for (int i = 0; i < index; ++i) node = ListNode_getNext(node);
-  return ListNode_getItem(node);
+  ListNode ln = getFirst(self);
+  for (int i = 0; i < index; ++i) ln = ListNode_getNext(ln);
+  return ListNode_getItem(ln);
 }
 
 void* List_First(List self) {
@@ -80,25 +80,25 @@ void* List_Last(List self) {
   return (self && !IsEmpty(self)) ? List_Get(self, self->count - 1) : NULL;
 }
 
-inline static void setLast(List self, ListNode node) {
-  ListNode_setNext(self->tail, node);
+inline static void setLast(List self, ListNode ln) {
+  ListNode_setNext(self->tail, ln);
 }
 
-static void AddToTail(List self, ListNode node) {
+static void AddToTail(List self, ListNode ln) {
   if (IsEmpty(self))
-    setFirst(self, node);
+    setFirst(self, ln);
   else
-    setLast(self, node);
+    setLast(self, ln);
 
-  self->tail = node;
+  self->tail = ln;
   self->count++;
 }
 
 void List_Add(List self, void* item) {
   if (!self) return;
 
-  ListNode node = ListNode_Create(item);
-  if (node) AddToTail(self, node);
+  ListNode ln = ListNode_Create(item);
+  if (ln) AddToTail(self, ln);
 }
 
 void List_Clear(List self) {
@@ -112,9 +112,8 @@ static bool Equals(List self, void* item, void* match) {
 void* List_Find(List self, void* match) {
   if (!self || !self->Compare || !match) return NULL;
 
-  for (ListNode node = getFirst(self); node; node = ListNode_getNext(node))
-    if (Equals(self, ListNode_getItem(node), match))
-      return ListNode_getItem(node);
+  for (ListNode ln = getFirst(self); ln; ln = ListNode_getNext(ln))
+    if (Equals(self, ListNode_getItem(ln), match)) return ListNode_getItem(ln);
   return NULL;
 }
 
@@ -123,26 +122,26 @@ inline static bool IsLast(List self, int index) {
 }
 
 static ListNode PopNode(List self, int index) {
-  ListNode node = getFirst(self);
+  ListNode ln = getFirst(self);
   ListNode pre = NULL;
-  for (int i = 0; i < index; ++i, node = ListNode_getNext(node)) pre = node;
-  ListNode next = ListNode_getNext(node);
+  for (int i = 0; i < index; ++i, ln = ListNode_getNext(ln)) pre = ln;
+  ListNode next = ListNode_getNext(ln);
   if (pre)
     ListNode_setNext(pre, next);
   else
     setFirst(self, next);
   self->count--;
-  return node;
+  return ln;
 }
 
-static void* PopItem(ListNode node) {
-  void* item = ListNode_getItem(node);
-  ListNode_Destroy(&node);
+static void* PopItem(ListNode ln) {
+  void* item = ListNode_getItem(ln);
+  ListNode_Destroy(&ln);
   return item;
 }
 
 void* List_Pop(List self, int index) {
   if (!self || !Validate(self, index)) return NULL;
-  ListNode node = PopNode(self, index);
-  return PopItem(node);
+  ListNode ln = PopNode(self, index);
+  return PopItem(ln);
 }
