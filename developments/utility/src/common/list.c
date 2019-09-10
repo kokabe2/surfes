@@ -78,8 +78,10 @@ void* List_getFirst(List self) {
   return (self && !IsEmpty(self)) ? ListNode_getItem(getFirstNode(self)) : NULL;
 }
 
+inline static ListNode getLastNode(List self) { return self->tail; }
+
 void* List_getLast(List self) {
-  return (self && !IsEmpty(self)) ? List_Get(self, self->count - 1) : NULL;
+  return (self && !IsEmpty(self)) ? ListNode_getItem(getLastNode(self)) : NULL;
 }
 
 inline static void setLastNode(List self, ListNode ln) {
