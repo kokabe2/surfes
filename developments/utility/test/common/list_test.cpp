@@ -37,7 +37,7 @@ TEST_F(ListTest, Create) {
   EXPECT_EQ(0, List_Count(instance));
   EXPECT_EQ(NULL, List_Get(instance, 0));
   EXPECT_EQ(NULL, List_getFirst(instance));
-  EXPECT_EQ(NULL, List_Last(instance));
+  EXPECT_EQ(NULL, List_getLast(instance));
 }
 
 TEST_F(ListTest, CreateWithNullComparator) {
@@ -45,7 +45,7 @@ TEST_F(ListTest, CreateWithNullComparator) {
   EXPECT_EQ(0, List_Count(instance));
   EXPECT_EQ(NULL, List_Get(instance, 0));
   EXPECT_EQ(NULL, List_getFirst(instance));
-  EXPECT_EQ(NULL, List_Last(instance));
+  EXPECT_EQ(NULL, List_getLast(instance));
   List_Destroy(&l);
 }
 
@@ -54,7 +54,7 @@ TEST_F(ListTest, CreateWithNullDestructor) {
   EXPECT_EQ(0, List_Count(instance));
   EXPECT_EQ(NULL, List_Get(instance, 0));
   EXPECT_EQ(NULL, List_getFirst(instance));
-  EXPECT_EQ(NULL, List_Last(instance));
+  EXPECT_EQ(NULL, List_getLast(instance));
   List_Destroy(&l);
 }
 
@@ -92,7 +92,7 @@ TEST_F(ListTest, AddOneItem) {
   EXPECT_EQ(1, List_Count(instance));
   EXPECT_EQ(&item, List_Get(instance, 0));
   EXPECT_EQ(&item, List_getFirst(instance));
-  EXPECT_EQ(&item, List_Last(instance));
+  EXPECT_EQ(&item, List_getLast(instance));
 }
 
 TEST_F(ListTest, AddMultipleItems) {
@@ -107,7 +107,7 @@ TEST_F(ListTest, AddMultipleItems) {
   EXPECT_EQ(3, List_Count(instance));
   EXPECT_EQ(&item1, List_Get(instance, 1));
   EXPECT_EQ(&item0, List_getFirst(instance));
-  EXPECT_EQ(&item2, List_Last(instance));
+  EXPECT_EQ(&item2, List_getLast(instance));
 }
 
 TEST_F(ListTest, AddWithNull) {
@@ -138,7 +138,7 @@ TEST_F(ListTest, GetWithIndexLessThanZero) {
 
 TEST_F(ListTest, GetFirstWithNull) { EXPECT_EQ(NULL, List_getFirst(NULL)); }
 
-TEST_F(ListTest, LastWithNull) { EXPECT_EQ(NULL, List_Last(NULL)); }
+TEST_F(ListTest, GetLastWithNull) { EXPECT_EQ(NULL, List_getLast(NULL)); }
 
 TEST_F(ListTest, Clear) {
   List_Add(instance, NULL);
@@ -162,7 +162,7 @@ TEST_F(ListTest, ClearThenAdd) {
   EXPECT_EQ(2, List_Count(instance));
   EXPECT_EQ(&item0, List_Get(instance, 0));
   EXPECT_EQ(&item0, List_getFirst(instance));
-  EXPECT_EQ(&item1, List_Last(instance));
+  EXPECT_EQ(&item1, List_getLast(instance));
 }
 
 TEST_F(ListTest, ClearWithNull) {
