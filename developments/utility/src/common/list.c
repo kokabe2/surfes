@@ -38,14 +38,16 @@ static ListNode PopFirst(List self) {
   return ln;
 }
 
-inline static void DeleteItemIfNeeded(List self, void* item) {
-  if (self->Delete) self->Delete(&item);
+inline static void DeleteItemIfNeeded(List self, ListNode ln) {
+  if (!self->Delete) return;
+  void* item = ListNode_getItem(ln);
+  self->Delete(&item);
 }
 
 void DeleteAllNodes(List self) {
   while (!IsEmpty(self)) {
     ListNode ln = PopFirst(self);
-    DeleteItemIfNeeded(self, ListNode_getItem(ln));
+    DeleteItemIfNeeded(self, ln);
     ListNode_Destroy(&ln);
   }
   self->tail = NULL;
