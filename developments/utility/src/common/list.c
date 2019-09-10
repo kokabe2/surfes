@@ -27,12 +27,12 @@ List List_Create(itemComparator ic, itemDestructor id) {
 
 inline static bool IsEmpty(List self) { return self->count == 0; }
 
-inline static ListNode getFirst(List self) { return self->head; }
+inline static ListNode getFirstNode(List self) { return self->head; }
 
 inline static void setFirst(List self, ListNode ln) { self->head = ln; }
 
 static ListNode PopFirst(List self) {
-  ListNode ln = getFirst(self);
+  ListNode ln = getFirstNode(self);
   setFirst(self, ListNode_getNext(ln));
   self->count--;
   return ln;
@@ -69,13 +69,13 @@ inline static bool Validate(List self, int index) {
 void* List_Get(List self, int index) {
   if (!self || !Validate(self, index)) return NULL;
 
-  ListNode ln = getFirst(self);
+  ListNode ln = getFirstNode(self);
   for (int i = 0; i < index; ++i) ln = ListNode_getNext(ln);
   return ListNode_getItem(ln);
 }
 
 void* List_getFirst(List self) {
-  return (self && !IsEmpty(self)) ? ListNode_getItem(getFirst(self)) : NULL;
+  return (self && !IsEmpty(self)) ? ListNode_getItem(getFirstNode(self)) : NULL;
 }
 
 void* List_getLast(List self) {
@@ -114,7 +114,7 @@ static bool Equals(List self, void* item, void* match) {
 void* List_Find(List self, void* match) {
   if (!self || !self->Compare || !match) return NULL;
 
-  for (ListNode ln = getFirst(self); ln; ln = ListNode_getNext(ln))
+  for (ListNode ln = getFirstNode(self); ln; ln = ListNode_getNext(ln))
     if (Equals(self, ListNode_getItem(ln), match)) return ListNode_getItem(ln);
   return NULL;
 }
@@ -124,7 +124,7 @@ inline static bool IsLast(List self, int index) {
 }
 
 static ListNode PopNode(List self, int index) {
-  ListNode ln = getFirst(self);
+  ListNode ln = getFirstNode(self);
   ListNode pre = NULL;
   for (int i = 0; i < index; ++i, ln = ListNode_getNext(ln)) pre = ln;
   ListNode next = ListNode_getNext(ln);
