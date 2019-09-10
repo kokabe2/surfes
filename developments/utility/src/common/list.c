@@ -88,7 +88,7 @@ inline static void setLastNode(List self, ListNode ln) {
   ListNode_setNext(self->tail, ln);
 }
 
-static void AddToTail(List self, ListNode ln) {
+static void AddNode(List self, ListNode ln) {
   if (IsEmpty(self))
     setFirstNode(self, ln);
   else
@@ -102,7 +102,7 @@ void List_Add(List self, void* item) {
   if (!self) return;
 
   ListNode ln = ListNode_Create(item);
-  if (ln) AddToTail(self, ln);
+  if (ln) AddNode(self, ln);
 }
 
 void List_Clear(List self) {
