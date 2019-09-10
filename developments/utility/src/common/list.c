@@ -74,7 +74,7 @@ void* List_Get(List self, int index) {
   return ListNode_getItem(ln);
 }
 
-void* List_First(List self) {
+void* List_getFirst(List self) {
   return (self && !IsEmpty(self)) ? ListNode_getItem(getFirst(self)) : NULL;
 }
 
