@@ -29,11 +29,11 @@ inline static bool IsEmpty(List self) { return self->count == 0; }
 
 inline static ListNode getFirstNode(List self) { return self->head; }
 
-inline static void setFirst(List self, ListNode ln) { self->head = ln; }
+inline static void setFirstNode(List self, ListNode ln) { self->head = ln; }
 
 static ListNode PopFirst(List self) {
   ListNode ln = getFirstNode(self);
-  setFirst(self, ListNode_getNext(ln));
+  setFirstNode(self, ListNode_getNext(ln));
   self->count--;
   return ln;
 }
@@ -88,7 +88,7 @@ inline static void setLast(List self, ListNode ln) {
 
 static void AddToTail(List self, ListNode ln) {
   if (IsEmpty(self))
-    setFirst(self, ln);
+    setFirstNode(self, ln);
   else
     setLast(self, ln);
 
@@ -131,7 +131,7 @@ static ListNode PopNode(List self, int index) {
   if (pre)
     ListNode_setNext(pre, next);
   else
-    setFirst(self, next);
+    setFirstNode(self, next);
   self->count--;
   return ln;
 }
