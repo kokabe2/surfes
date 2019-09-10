@@ -82,7 +82,7 @@ void* List_getLast(List self) {
   return (self && !IsEmpty(self)) ? List_Get(self, self->count - 1) : NULL;
 }
 
-inline static void setLast(List self, ListNode ln) {
+inline static void setLastNode(List self, ListNode ln) {
   ListNode_setNext(self->tail, ln);
 }
 
@@ -90,7 +90,7 @@ static void AddToTail(List self, ListNode ln) {
   if (IsEmpty(self))
     setFirstNode(self, ln);
   else
-    setLast(self, ln);
+    setLastNode(self, ln);
 
   self->tail = ln;
   self->count++;
