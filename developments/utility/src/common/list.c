@@ -121,10 +121,6 @@ void* List_Find(List self, void* match) {
   return NULL;
 }
 
-inline static bool IsLast(List self, int index) {
-  return (self->count - 1) == index;
-}
-
 static ListNode PopNode(List self, int index) {
   ListNode ln = getFirstNode(self);
   ListNode pre = NULL;
