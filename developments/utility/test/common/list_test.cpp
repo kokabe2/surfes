@@ -1,4 +1,4 @@
-﻿// Copyright(c) 2019 Ken Okabe
+// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "gtest/gtest.h"
 
@@ -23,55 +23,66 @@ void DummyDelete(void** self) {
 
 class ListTest : public ::testing::Test {
  protected:
+  int items[8];
   List instance;
   virtual void SetUp() {
     destruction_count = 0;
     last_item = NULL;
+    memset(items, 0, sizeof(items));
     instance = List_Create(CompareInteger, DummyDelete);
   }
   virtual void TearDown() { List_Destroy(&instance); }
+
+  void AssertInitialCondition(List l) {
+    ASSERT_TRUE(l != NULL);
+    EXPECT_EQ(0, List_Count(l));
+    EXPECT_EQ(NULL, List_Get(l, 0));
+    EXPECT_EQ(NULL, List_getFirst(l));
+    EXPECT_EQ(NULL, List_getLast(l));
+  }
+  void AssertDeletion(int count) {
+    EXPECT_EQ(count, destruction_count);
+    EXPECT_EQ(&items[count - 1], last_item);
+  }
+  void AssertAddition(int count) {
+    EXPECT_EQ(count, List_Count(instance));
+    EXPECT_EQ(&items[0], List_getFirst(instance));
+    EXPECT_EQ(&items[count - 1], List_getLast(instance));
+    for (int i = 0; i < count; ++i) EXPECT_EQ(&items[i], List_Get(instance, i));
+  }
+  void AddItems(int count) {
+    for (int i = 0; i < count; ++i) List_Add(instance, &items[i]);
+  }
 };
 
-TEST_F(ListTest, Create) {
-  EXPECT_TRUE(instance != NULL);
-  EXPECT_EQ(0, List_Count(instance));
-  EXPECT_EQ(NULL, List_Get(instance, 0));
-  EXPECT_EQ(NULL, List_getFirst(instance));
-  EXPECT_EQ(NULL, List_getLast(instance));
-}
+TEST_F(ListTest, Create) { AssertInitialCondition(instance); }
 
 TEST_F(ListTest, CreateWithNullComparator) {
   List l = List_Create(NULL, DummyDelete);
-  EXPECT_EQ(0, List_Count(instance));
-  EXPECT_EQ(NULL, List_Get(instance, 0));
-  EXPECT_EQ(NULL, List_getFirst(instance));
-  EXPECT_EQ(NULL, List_getLast(instance));
+
+  AssertInitialCondition(l);
+
   List_Destroy(&l);
 }
 
 TEST_F(ListTest, CreateWithNullDestructor) {
   List l = List_Create(CompareInteger, NULL);
-  EXPECT_EQ(0, List_Count(instance));
-  EXPECT_EQ(NULL, List_Get(instance, 0));
-  EXPECT_EQ(NULL, List_getFirst(instance));
-  EXPECT_EQ(NULL, List_getLast(instance));
+
+  AssertInitialCondition(l);
+
   List_Destroy(&l);
 }
 
 TEST_F(ListTest, Destroy) {
-  int item = 0;
-  List_Add(instance, NULL);
-  List_Add(instance, NULL);
-  List_Add(instance, &item);
+  AddItems(4);
 
   List_Destroy(&instance);
 
   EXPECT_EQ(NULL, instance);
-  EXPECT_EQ(3, destruction_count);
-  EXPECT_EQ(&item, last_item);
+  AssertDeletion(4);
 }
 
-TEST_F(ListTest, DestroyMutipleTimes) {
+TEST_F(ListTest, DestroyAfterDestroy) {
   List_Destroy(&instance);
   List_Destroy(&instance);
 
@@ -85,33 +96,19 @@ TEST_F(ListTest, DestroyWithNull) {
 }
 
 TEST_F(ListTest, AddOneItem) {
-  int item = 1234;
+  AddItems(1);
 
-  List_Add(instance, &item);
-
-  EXPECT_EQ(1, List_Count(instance));
-  EXPECT_EQ(&item, List_Get(instance, 0));
-  EXPECT_EQ(&item, List_getFirst(instance));
-  EXPECT_EQ(&item, List_getLast(instance));
+  AssertAddition(1);
 }
 
-TEST_F(ListTest, AddMultipleItems) {
-  int item0 = -42;
-  int item1 = 256;
-  int item2 = 3141;
+TEST_F(ListTest, Add) {
+  AddItems(3);
 
-  List_Add(instance, &item0);
-  List_Add(instance, &item1);
-  List_Add(instance, &item2);
-
-  EXPECT_EQ(3, List_Count(instance));
-  EXPECT_EQ(&item1, List_Get(instance, 1));
-  EXPECT_EQ(&item0, List_getFirst(instance));
-  EXPECT_EQ(&item2, List_getLast(instance));
+  AssertAddition(3);
 }
 
-TEST_F(ListTest, AddWithNull) {
-  int item = 1234;
+TEST_F(ListTest, AddWithNullInstance) {
+  int item;
 
   List_Add(NULL, &item);
 
@@ -123,9 +120,7 @@ TEST_F(ListTest, CountWithNull) { EXPECT_EQ(0, List_Count(NULL)); }
 TEST_F(ListTest, GetWithNull) { EXPECT_EQ(NULL, List_Get(NULL, 0)); }
 
 TEST_F(ListTest, GetWithIndexMoreThanAdded) {
-  int item = 1234;
-
-  List_Add(instance, &item);
+  AddItems(1);
 
   EXPECT_EQ(NULL, List_Get(NULL, 1));
   EXPECT_EQ(NULL, List_Get(NULL, 124));
@@ -141,28 +136,20 @@ TEST_F(ListTest, GetFirstWithNull) { EXPECT_EQ(NULL, List_getFirst(NULL)); }
 TEST_F(ListTest, GetLastWithNull) { EXPECT_EQ(NULL, List_getLast(NULL)); }
 
 TEST_F(ListTest, Clear) {
-  List_Add(instance, NULL);
-  List_Add(instance, NULL);
-  EXPECT_EQ(2, List_Count(instance));
+  AddItems(8);
 
   List_Clear(instance);
 
-  EXPECT_EQ(0, List_Count(instance));
+  AssertInitialCondition(instance);
+  AssertDeletion(8);
 }
 
 TEST_F(ListTest, ClearThenAdd) {
-  List_Add(instance, NULL);
+  AddItems(5);
   List_Clear(instance);
+  AddItems(6);
 
-  int item0 = 1;
-  int item1 = -1;
-  List_Add(instance, &item0);
-  List_Add(instance, &item1);
-
-  EXPECT_EQ(2, List_Count(instance));
-  EXPECT_EQ(&item0, List_Get(instance, 0));
-  EXPECT_EQ(&item0, List_getFirst(instance));
-  EXPECT_EQ(&item1, List_getLast(instance));
+  AssertAddition(6);
 }
 
 TEST_F(ListTest, ClearWithNull) {
@@ -172,25 +159,22 @@ TEST_F(ListTest, ClearWithNull) {
 }
 
 TEST_F(ListTest, Find) {
-  int item0 = 128;
-  int item1 = -6;
-  List_Add(instance, &item0);
-  List_Add(instance, &item1);
-  int match = item1;
+  items[2] = 1234;
+  int match = items[2];
+  AddItems(4);
 
-  EXPECT_EQ(&item1, (int*)List_Find(instance, &match));
+  EXPECT_EQ(&items[2], (int*)List_Find(instance, &match));
 }
 
 TEST_F(ListTest, FindWithNotAddedItem) {
-  int match = 0;
+  int match = -128;
+  AddItems(4);
 
   EXPECT_EQ(NULL, (int*)List_Find(instance, &match));
 }
 
 TEST_F(ListTest, FindWithNullInstance) {
-  int match;
-
-  EXPECT_EQ(NULL, List_Find(NULL, &match));
+  EXPECT_EQ(NULL, List_Find(NULL, items));
 }
 
 TEST_F(ListTest, FindWithNullItem) {
@@ -198,12 +182,12 @@ TEST_F(ListTest, FindWithNullItem) {
 }
 
 TEST_F(ListTest, FindIfComparatorIsNotSet) {
-  List list = List_Create(NULL, NULL);
-  int item = 256;
-  List_Add(list, &item);
+  List l = List_Create(NULL, DummyDelete);
+  AddItems(2);
 
-  EXPECT_EQ(NULL, List_Find(list, &item));
-  List_Destroy(&list);
+  EXPECT_EQ(NULL, List_Find(l, &items[1]));
+
+  List_Destroy(&l);
 }
 
 TEST_F(ListTest, PopFromListHasNoItem) {
