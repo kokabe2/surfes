@@ -1,4 +1,4 @@
-// Copyright(c) 2019 Ken Okabe
+﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "list.h"
 
@@ -126,15 +126,14 @@ void* List_Find(List self, void* match) {
   return NULL;
 }
 
+inline static bool IsFirstNode(int index) { return index == 0; }
+
 static ListNode PopNode(List self, int index) {
-  ListNode ln = getFirstNode(self);
-  ListNode pre = NULL;
-  for (int i = 0; i < index; ++i, ln = ListNode_getNext(ln)) pre = ln;
-  ListNode next = ListNode_getNext(ln);
-  if (pre)
-    ListNode_setNext(pre, next);
-  else
-    setFirstNode(self, next);
+  if (IsFirstNode(index)) return PopFirstNode(self);
+
+  ListNode pre = getNode(self, index - 1);
+  ListNode ln = ListNode_getNext(pre);
+  ListNode_setNext(pre, ListNode_getNext(ln));
   self->count--;
   return ln;
 }
