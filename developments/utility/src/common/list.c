@@ -66,11 +66,16 @@ inline static bool Validate(List self, int index) {
   return (index >= 0) && (index < self->count);
 }
 
+static ListNode getNode(List self, int index) {
+  ListNode ln = getFirstNode(self);
+  for (int i = 0; i < index; ++i) ln = ListNode_getNext(ln);
+  return ln;
+}
+
 void* List_Get(List self, int index) {
   if (!self || !Validate(self, index)) return NULL;
 
-  ListNode ln = getFirstNode(self);
-  for (int i = 0; i < index; ++i) ln = ListNode_getNext(ln);
+  ListNode ln = getNode(self, index);
   return ListNode_getItem(ln);
 }
 
