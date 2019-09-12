@@ -1,4 +1,4 @@
-// Copyright(c) 2019 Ken Okabe
+﻿// Copyright(c) 2019 Ken Okabe
 // This software is released under the MIT License, see LICENSE.
 #include "gtest/gtest.h"
 
@@ -191,29 +191,23 @@ TEST_F(ListTest, FindIfComparatorIsNotSet) {
   List_Destroy(&l);
 }
 
-TEST_F(ListTest, PopFromListHasNoItem) {
+TEST_F(ListTest, PopWithInstanceHasNoItem) {
   EXPECT_EQ(NULL, List_Pop(instance, 0));
-  EXPECT_EQ(0, List_Count(instance));
+  AssertInitialCondition(instance);
 }
 
 TEST_F(ListTest, PopFromListHasOneItem) {
-  int item = 1;
-  List_Add(instance, &item);
+  AddItems(1);
 
-  EXPECT_EQ(&item, List_Pop(instance, 0));
+  EXPECT_EQ(&items[0], List_Pop(instance, 0));
   EXPECT_EQ(0, List_Count(instance));
 }
 
 TEST_F(ListTest, Pop) {
-  int item0 = -42;
-  int item1 = 256;
-  int item2 = 3141;
-  List_Add(instance, &item0);
-  List_Add(instance, &item1);
-  List_Add(instance, &item2);
+  AddItems(3);
 
-  EXPECT_EQ(&item1, List_Pop(instance, 1));
-  EXPECT_EQ(&item2, List_Pop(instance, 1));
+  EXPECT_EQ(&items[1], List_Pop(instance, 1));
+  EXPECT_EQ(&items[2], List_Pop(instance, 1));
   EXPECT_EQ(1, List_Count(instance));
 }
 
@@ -224,23 +218,15 @@ TEST_F(ListTest, PopWithIndexLessThanZero) {
 }
 
 TEST_F(ListTest, PopWithIndexMoreThanAdded) {
-  int item = 1;
-  List_Add(instance, &item);
+  AddItems(7);
 
-  EXPECT_EQ(NULL, List_Pop(instance, 1));
+  EXPECT_EQ(NULL, List_Pop(instance, 7));
 }
 
 TEST_F(ListTest, PopThenAdd) {
-  int item0 = -42;
-  int item1 = 256;
-  int item2 = 3141;
-  List_Add(instance, &item0);
-  List_Add(instance, &item1);
-  List_Add(instance, &item2);
-  List_Pop(instance, 0);
+  AddItems(3);
+  List_Pop(instance, 2);
+  List_Add(instance, &items[2]);
 
-  List_Add(instance, &item0);
-
-  EXPECT_EQ(&item0, List_Pop(instance, 2));
-  EXPECT_EQ(2, List_Count(instance));
+  AssertAddition(3);
 }
