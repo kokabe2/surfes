@@ -133,7 +133,10 @@ static ListNode PopNode(List self, int index) {
 
   ListNode pre = getNode(self, index - 1);
   ListNode ln = ListNode_getNext(pre);
-  ListNode_setNext(pre, ListNode_getNext(ln));
+  ListNode next = ListNode_getNext(ln);
+  ListNode_setNext(pre, next);
+
+  if (!next) self->tail = pre;
   self->count--;
   return ln;
 }
