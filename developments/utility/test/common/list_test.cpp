@@ -48,7 +48,8 @@ class ListTest : public ::testing::Test {
     EXPECT_EQ(count, List_Count(instance));
     EXPECT_EQ(&items[0], List_getFirst(instance));
     EXPECT_EQ(&items[count - 1], List_getLast(instance));
-    for (int i = 0; i < count; ++i) EXPECT_EQ(&items[i], List_Get(instance, i));
+    for (int i = 0; i < count; ++i)
+      EXPECT_EQ(&items[i], List_Get(instance, i)) << "Failure at index " << i;
   }
   void AddItems(int count) {
     for (int i = 0; i < count; ++i) List_Add(instance, &items[i]);
