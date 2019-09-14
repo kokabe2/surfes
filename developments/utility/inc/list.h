@@ -11,8 +11,6 @@ List List_Create(itemComparator ic, itemDestructor id);
 void List_Destroy(List* self);
 int List_Count(List self);
 void* List_Get(List self, int index);
-void* List_getFirst(List self);
-void* List_getLast(List self);
 void List_Add(List self, void* item);
 void List_Clear(List self);
 void* List_Find(List self, void* match);

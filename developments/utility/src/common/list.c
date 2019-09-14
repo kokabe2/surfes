@@ -79,16 +79,6 @@ void* List_Get(List self, int index) {
   return ListNode_getItem(ln);
 }
 
-void* List_getFirst(List self) {
-  return (self && !IsEmpty(self)) ? ListNode_getItem(getFirstNode(self)) : NULL;
-}
-
-inline static ListNode getLastNode(List self) { return self->tail; }
-
-void* List_getLast(List self) {
-  return (self && !IsEmpty(self)) ? ListNode_getItem(getLastNode(self)) : NULL;
-}
-
 inline static void setLastNode(List self, ListNode ln) {
   ListNode_setNext(self->tail, ln);
 }

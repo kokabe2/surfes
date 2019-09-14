@@ -37,8 +37,6 @@ class ListTest : public ::testing::Test {
     ASSERT_TRUE(l != NULL);
     EXPECT_EQ(0, List_Count(l));
     EXPECT_EQ(NULL, List_Get(l, 0));
-    EXPECT_EQ(NULL, List_getFirst(l));
-    EXPECT_EQ(NULL, List_getLast(l));
   }
   void AssertDeletion(int count) {
     EXPECT_EQ(count, destruction_count);
@@ -46,8 +44,6 @@ class ListTest : public ::testing::Test {
   }
   void AssertAddition(int count) {
     EXPECT_EQ(count, List_Count(instance));
-    EXPECT_EQ(&items[0], List_getFirst(instance));
-    EXPECT_EQ(&items[count - 1], List_getLast(instance));
     for (int i = 0; i < count; ++i)
       EXPECT_EQ(&items[i], List_Get(instance, i)) << "Failure at index " << i;
   }
@@ -131,10 +127,6 @@ TEST_F(ListTest, GetWithIndexLessThanZero) {
   EXPECT_EQ(NULL, List_Get(instance, -1));
   EXPECT_EQ(NULL, List_Get(instance, -243));
 }
-
-TEST_F(ListTest, GetFirstWithNull) { EXPECT_EQ(NULL, List_getFirst(NULL)); }
-
-TEST_F(ListTest, GetLastWithNull) { EXPECT_EQ(NULL, List_getLast(NULL)); }
 
 TEST_F(ListTest, Clear) {
   AddItems(8);
