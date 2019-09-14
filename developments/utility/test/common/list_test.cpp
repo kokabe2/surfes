@@ -222,3 +222,19 @@ TEST_F(ListTest, PopThenAdd) {
 
   AssertAddition(3);
 }
+
+TEST_F(ListTest, SampleTransaction) {
+  AddItems(9);
+  List_Pop(instance, 2);
+  List_Pop(instance, 0);
+  List_Pop(instance, 0);
+  List_Pop(instance, 5);
+  List_Add(instance, &items[1]);
+  List_Pop(instance, 5);
+  List_Add(instance, &items[5]);
+  List_Add(instance, &items[10]);
+
+  EXPECT_EQ(7, List_Count(instance));
+  EXPECT_EQ(&items[3], List_Get(instance, 0));
+  EXPECT_EQ(&items[10], List_Get(instance, 6));
+}
