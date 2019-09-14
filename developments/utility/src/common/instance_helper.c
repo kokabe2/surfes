@@ -2,7 +2,6 @@
 // This software is released under the MIT License, see LICENSE.
 #include "instance_helper.h"
 
-#include <stdbool.h>
 #include <stdlib.h>
 
 void* InstanceHelper_New(int size) { return size > 0 ? calloc(1, size) : NULL; }

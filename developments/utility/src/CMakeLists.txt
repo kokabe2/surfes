@@ -3,6 +3,7 @@ add_library(surfes_utility "")
 target_sources(surfes_utility
   PRIVATE
     common/instance_helper.c
+    common/list_node.c
     common/list.c
     domains/sif_file.c
     domains/sif_file_validator.c
