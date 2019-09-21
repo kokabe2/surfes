@@ -5,13 +5,13 @@ target_sources(surfes_utility
     common/instance_helper.c
     common/list_node.c
     common/list.c
-    domains/sif_file.c
-    domains/sif_file_validator.c
-    infrastructures/led_driver.c
-    infrastructures/micro_time.c
-    infrastructures/ssd_driver.c
+    domains/sjis_code_converter.c
+    infrastructures/drivers/led_driver.c
+    infrastructures/drivers/micro_time.c
+    infrastructures/drivers/ssd_driver.c
+    infrastructures/frameworks/sif_file.c
+    infrastructures/frameworks/sif_file_validator.c
     services/modular_sum.c
-    services/sjis_code_converter.c
 )
 target_include_directories(surfes_utility
   PUBLIC
