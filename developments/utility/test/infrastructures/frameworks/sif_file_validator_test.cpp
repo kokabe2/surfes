@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 
 extern "C" {
-#include "domains/sif_file_validator.h"
+#include "infrastructures/frameworks/sif_file_validator.h"
 #include "modular_sum.h"
 #include "sif_header.h"
 }

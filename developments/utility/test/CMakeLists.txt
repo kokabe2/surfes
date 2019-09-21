@@ -6,13 +6,13 @@ target_sources(gtests
     common/list_node_test.cpp
     common/list_test.cpp
     common/spy_runtime_error.c
-    domains/sif_file_test.cpp
-    domains/sif_file_validator_test.cpp
     infrastructures/drivers/led_driver_test.cpp
     infrastructures/drivers/micro_time_test.cpp
     infrastructures/drivers/mock_io_data.cpp
     infrastructures/drivers/mock_io_data_test.cpp
     infrastructures/drivers/ssd_driver_test.cpp
+    infrastructures/frameworks/sif_file_test.cpp
+    infrastructures/frameworks/sif_file_validator_test.cpp
     services/modular_sum_test.cpp
     services/sjis_code_converter_test.cpp
 )

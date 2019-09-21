@@ -20,8 +20,8 @@ target_sources(surfes_boot_boot
     ${BOOT_REGISTRY_SOURCE_DIR}/database/int_registry_getter.c
     ${BOOT_REGISTRY_SOURCE_DIR}/database/uintptr_registry_getter.c
     ${UTILITY_SOURCE_DIR}/common/instance_helper.c
-    ${UTILITY_SOURCE_DIR}/domains/sif_file.c
-    ${UTILITY_SOURCE_DIR}/domains/sif_file_validator.c
+    ${UTILITY_SOURCE_DIR}/infrastructures/frameworks/sif_file.c
+    ${UTILITY_SOURCE_DIR}/infrastructures/frameworks/sif_file_validator.c
     ${UTILITY_SOURCE_DIR}/services/modular_sum.c
 )
 target_include_directories(surfes_boot_boot
