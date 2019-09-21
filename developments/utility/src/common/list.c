@@ -104,11 +104,11 @@ void List_Clear(List self) {
   if (self) DeleteAllNodes(self);
 }
 
-inline static bool Equals(List self, void* item, void* match) {
+inline static bool Equals(List self, const void* item, const void* match) {
   return self->Compare(item, match) == 0;
 }
 
-void* List_Find(List self, void* match) {
+void* List_Find(List self, const void* match) {
   if (!self || !self->Compare || !match) return NULL;
 
   for (ListNode ln = getFirstNode(self); ln; ln = ListNode_getNext(ln))

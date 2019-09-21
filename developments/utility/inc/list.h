@@ -3,7 +3,7 @@
 #ifndef DEVELOPMENTS_UTILITY_INC_LIST_H_
 #define DEVELOPMENTS_UTILITY_INC_LIST_H_
 
-typedef int (*itemComparator)(void*, void*);
+typedef int (*itemComparator)(const void*, const void*);
 typedef void (*itemDestructor)(void**);
 typedef struct ListStruct* List;
 
@@ -13,7 +13,7 @@ int List_Count(List self);
 void* List_Get(List self, int index);
 void List_Add(List self, void* item);
 void List_Clear(List self);
-void* List_Find(List self, void* match);
+void* List_Find(List self, const void* match);
 void* List_Pop(List self, int index);
 
 #endif  // DEVELOPMENTS_UTILITY_INC_LIST_H_
