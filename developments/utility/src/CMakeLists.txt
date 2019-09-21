@@ -7,9 +7,9 @@ target_sources(surfes_utility
     common/list.c
     domains/sif_file.c
     domains/sif_file_validator.c
-    infrastructures/led_driver.c
-    infrastructures/micro_time.c
-    infrastructures/ssd_driver.c
+    infrastructures/drivers/led_driver.c
+    infrastructures/drivers/micro_time.c
+    infrastructures/drivers/ssd_driver.c
     services/modular_sum.c
     services/sjis_code_converter.c
 )

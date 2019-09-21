@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 add_executable(gtests "")
 target_sources(gtests
   PRIVATE
-    ${UTILITY_TEST_DIR}/infrastructures/mock_io_data.cpp
+    ${UTILITY_TEST_DIR}/infrastructures/drivers/mock_io_data.cpp
 )
 target_include_directories(gtests
   PUBLIC

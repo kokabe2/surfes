@@ -4,7 +4,7 @@ target_sources(gtests
   PRIVATE
     diagnosis/memory_diagnostic_transaction_test.cpp
     diagnosis/memory_diagnostician_factory_test.cpp
-    ${UTILITY_TEST_DIR}/infrastructures/mock_io_data.cpp
+    ${UTILITY_TEST_DIR}/infrastructures/drivers/mock_io_data.cpp
 )
 target_include_directories(gtests
   PUBLIC
